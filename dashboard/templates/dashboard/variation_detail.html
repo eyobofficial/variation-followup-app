@@ -1,0 +1,260 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% block page_name %} {{ variation.title|title }} {% endblock page_name %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-4 col-md-6 col-sm-6">
+        <div class="card card-stats">
+            <div class="card-header" data-background-color="blue">
+                <i class="material-icons">info_outline</i>
+            </div>
+            <div class="card-content">
+                <p class="category">Status</p>
+                <h3 class="title">{{ variation.status.title }}</h3>
+            </div>
+        </div>
+    </div>
+    
+    {% if variation.status.id == 6 or variation.status.id == 5 %}
+    <div class="col-lg-4 col-md-6 col-sm-6">
+        <div class="card card-stats">
+            <div class="card-header" data-background-color="orange">
+                <i class="material-icons">date_range</i>
+            </div>
+            <div class="card-content">
+                <p class="category">Approved/Rejected Date</p>
+                <h3 class="title">{{ variation.recieved_date|naturalday:'M d, y'|title }}</h3>
+            </div>
+           
+        </div>
+    </div>
+    {% elif variation.status.id == 4 or variation.status.id == 3 %}
+    <div class="col-lg-4 col-md-6 col-sm-6">
+        <div class="card card-stats">
+            <div class="card-header" data-background-color="orange">
+                <i class="material-icons">date_range</i>
+            </div>
+            <div class="card-content">
+                <p class="category">Submitted Date</p>
+                <h3 class="title">{{ variation.recieved_date|naturalday:'M d, y'|title }}</h3>
+            </div>
+           
+        </div>
+    </div>
+    {% else %}
+     <div class="col-lg-4 col-md-6 col-sm-6">
+        <div class="card card-stats">
+            <div class="card-header" data-background-color="orange">
+                <i class="material-icons">date_range</i>
+            </div>
+            <div class="card-content">
+                <p class="category">Recieved Date</p>
+                <h3 class="title">{{ variation.recieved_date|naturalday:'M d, y'|title }}</h3>
+            </div>
+           
+        </div>
+    </div>
+    {% endif %}
+    <div class="col-lg-4 col-md-6 col-sm-6">
+        <div class="card card-stats">
+            <div class="card-header" data-background-color="green">
+                <i class="material-icons">assignment</i>
+            </div>
+            <div class="card-content">
+                <p class="category">Work Order No.</p>
+
+                {% if variation.work_order %}
+                 <h3 class="title">{{ variation.work_order }}</h3>
+                {% else %}
+                 <h3 class="title text-fade">(None)</h3>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div><!-- /.row -->
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header" data-background-color="purple">
+                <h4 class="title">Variation Summary</h4>
+                <p class="category">Description and summary of the variation works</p>
+            </div>
+            <div class="card-content">
+                <dl>
+                    <dt>Variation Title</dt>
+                    <dd>{{ variation.title|title }}</dd>
+
+                    <dt>Project</dt>
+                    <dd>{{ variation.project.full_name }}</dd>
+
+                    <dt>Recieved Date</dt>
+                    <dd>{{ variation.recieved_date|naturalday:'M d, Y'|title }}</dd>
+
+                    <dt>Recieved Letter Ref. No.</dt>
+                    {% if variation.recieved_letter %}
+                    <dd>{{ variation.recieved_letter }}</dd>
+                    {% else %}
+                    <dd class="text-fade">(None)</dd>
+                    {% endif %}
+
+                    <dt>Status</dt>
+                    {% if variation.status.id == 1 %}
+                    <dd>
+                       <span class="label label-info">
+                          <span class="fa fa-info-circle"></span> {{ variation.status.title|title }} 
+                       </span>
+                    </dd>
+                    {% elif variation.status.id == 2 %}
+                    <dd>
+                       <span class="label label-warning">
+                           <span class="fa fa-warning"></span> {{ variation.status.title|title }}
+                       </span>
+                    </dd>
+                    {% elif variation.status.id == 3 %}
+                    <dd>
+                       <span class="label label-info">
+                           <span class="fa fa-info-circle"></span> {{ variation.status.title|title }}
+                       </span>
+                    </dd>
+                    {% elif variation.status.id == 4 %}
+                    <dd>
+                       <span class="label label-info">
+                           <span class="fa fa-info-circle"></span> {{ variation.status.title|title }}
+                       </span>
+                    </dd>
+                    {% elif variation.status.id == 5 %}
+                    <dd>
+                       <span class="label label-success">
+                           <span class="fa fa-check-square-o"></span> {{ variation.status.title|title }}
+                       </span>
+                    </dd>
+                    {% else %}
+                    <dd>
+                       <span class="label label-danger">
+                          <span class="fa fa-warning"></span> {{ variation.status.title|title }} 
+                       </span>
+                    </dd>
+                    {% endif %}
+
+                    <dt>Short Description</dt>
+                    {% if variation.description %}
+                    <dd>{{ variation.description }}</dd>
+                    {% else %}
+                    <dd class="text-fade text-justify">(No Description)</dd>
+                    {% endif %}
+                </dl>
+            </div>
+        </div>
+    </div>
+</div><!-- /.row -->
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header" data-background-color="purple">
+                <h4 class="title">Submitted vs Approved</h3>
+                <p class="category">Are you looking for more components? Please check our Premium Version of Material Dashboard.</p>
+            </div>
+            <div class="card-content">
+                <div class="table-responsive table-upgrade">
+                    <table class="table">
+                        <thead>
+                            <th></th>
+                            <th class="text-center text-primary">Submitted</th>
+                            <th class="text-center text-primary">Approved/Rejected</th>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Amount (including VAT)</td>
+
+                                {% if variation.submitted_amount %}
+                                <td class="text-center">ETB {{ variation.submitted_amount|intcomma }}</td>
+                                {% else %}
+                                <td class="text-center"> - </td>
+                                {% endif %}
+
+                                {% if variation.approved_amoutn %}
+                                <td class="text-center">ETB {{ variation.approved_amount|intcomma }}</td>
+                                {% else %}
+                                <td class="text-center"> - </td>
+                                {% endif %}                               
+                            </tr>
+
+                            <tr>
+                                <td>Dates</td>
+
+                                {% if variation.submitted_date %}
+                                <td class="text-center">{{ variation.submitted_date|naturalday:'M d, Y'|title }}</td>
+                                {% else %}
+                                <td class="text-center"> - </td>
+                                {% endif %}
+                                
+                                {% if variation.approved_date %}
+                                <td class="text-center">{{ variation.approved_date|naturalday:'M d, Y'|title }}</td>
+                                {% else %}
+                                <td class="text-center"> - </td>
+                                {% endif %}                               
+                            </tr>
+
+                            <tr>
+                                <td>Letter Ref. No.</td>
+
+                                {% if variation.submitted_letter %}
+                                <td class="text-center">{{ variation.submitted_letter }}</td>
+                                {% else %}
+                                <td class="text-center"> - </td>
+                                {% endif %}
+                                
+                                {% if variation.approved_letter %}
+                                <td class="text-center">{{ variation.approved_letter }}</td>
+                                {% else %}
+                                <td class="text-center"> - </td>
+                                {% endif %}
+                            </tr>
+                        </tbody>
+                    </table>
+                </div><!-- /.table-responsive -->
+            </div>
+
+            <div class="card-footer">
+                <div class="stats">
+                    <i class="material-icons">update</i> Last updated on {{ variation.updated_at|date:'M d, Y' }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div><!-- /.row -->
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-sm">
+            <div class="card-header" data-background-color="purple">
+                <h4 class="title">Remarks/Notes</h4>
+                <p class="category">Description and summary of the variation works</p>
+            </div>
+            <div class="card-content">
+            {% if variation.remark %}
+                {{ variation.remark }}
+            {% else %}
+                <span class="text-fade text-center">(No Remark/Note)</span>
+            {% endif %}
+            </div>
+        </div>
+    </div>
+</div><!-- /.row -->
+
+<div class="row">
+    <div class="col-sm-12">
+        <a href="{% url 'dashboard:variation-update' variation.id %}" title="Update Variation" class="btn btn-primary">
+           <span class="fa fa-edit"></span>&nbsp; Update 
+        </a>
+
+        <a href="{% url 'dashboard:variation-delete' variation.id %}" title="Delete Variation" class="btn btn-danger pull-right">
+           Delete  
+        </a>
+    </div>
+</div>
+{% endblock %}

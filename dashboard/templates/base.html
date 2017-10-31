@@ -20,10 +20,11 @@
     <link href="{% static 'assets/css/material-dashboard.css' %}" rel="stylesheet"/>
 
     <!--  CSS for Demo Purpose, don't include it in your project     -->
-    <link href="{% static 'assets/css/demo.css' %}" rel="stylesheet" />
+    <link href="{% static 'assets/css/main.css' %}" rel="stylesheet" />
 
     <!--     Fonts and icons     -->
-    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+    <link href="{% static 'assets/css/font-awesome.min.css' %}" rel="stylesheet" />
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet"> -->
     <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300|Material+Icons' rel='stylesheet' type='text/css'>
 </head>
 
@@ -46,23 +47,23 @@
 
 	    	<div class="sidebar-wrapper">
 	            <ul class="nav">
-	                <li class="active">
-	                    <a href="dashboard.html">
+	                <li {% if page_name == 'dashboard' %} class="active" {% endif %}>
+	                    <a href="{% url 'dashboard:index' %}">
 	                        <i class="material-icons">dashboard</i>
 	                        <p>Dashboard</p>
 	                    </a>
 	                </li>
 
-	                <li>
-	                    <a href="#">
-	                        <i class="material-icons">dashboard</i>
+	                <li {% if page_name == 'variations' %} class="active" {% endif %}>
+	                    <a href="{% url 'dashboard:variation-list' %}">
+	                        <i class="material-icons">assessment</i>
 	                        <p>Variations</p>
 	                    </a>
 	                </li>
 
 	                <li>
 	                    <a href="#">
-	                        <i class="material-icons">dashboard</i>
+	                        <i class="material-icons">date_range</i>
 	                        <p>Time Claims</p>
 	                    </a>
 	                </li>
@@ -83,8 +84,8 @@
 
 	                <li>
 	                    <a href="#">
-	                        <i class="material-icons">dashboard</i>
-	                        <p>Profile</p>
+	                        <i class="material-icons">account_box</i>
+	                        <p>User Profile</p>
 	                    </a>
 	                </li>
 	            </ul>
@@ -101,7 +102,7 @@
 							<span class="icon-bar"></span>
 							<span class="icon-bar"></span>
 						</button>
-						<a class="navbar-brand" href="#">Table List</a>
+						<a class="navbar-brand" href="#">{% block page_name %}Page Name{% endblock %}</a>
 					</div>
 					<div class="collapse navbar-collapse">
 						<ul class="nav navbar-nav navbar-right">
@@ -148,11 +149,10 @@
 
 	        <div class="content">
 	            <div class="container-fluid">
-	                <div class="row">
-                        {% block content %}
-                        {% endblock content %}
-	                </div>
-	            </div>
+                    {% block content %}
+                    
+                    {% endblock content %}
+	            </div><!-- /.container-fluid -->
 	        </div>
 			<footer class="footer">
 	            <div class="container-fluid">

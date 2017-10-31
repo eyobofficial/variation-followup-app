@@ -1,0 +1,79 @@
+/*************** Common Styles *************/
+.text-shade, .text-fade {
+    color: #999999;
+}
+
+
+/******************* DL ********************/
+dl > dt, .dt {
+    font-size: 13px !important;
+    color: gray;
+    font-weight: normal !important;
+    margin-bottom: 0.1em;
+}
+
+dl > dd, .dd {
+    color: inherit;
+    font-size: 1.2em;
+    font-weight: 300;
+    margin-bottom: 1em;
+    line-height: 1.6em;
+    vertical-align: bottom !important;
+}
+
+
+
+/************* Change Default Label Styles *******************/
+.label {
+    padding: 0.4em 0.8em;
+    border-radius: 0.4em;
+}
+
+.label-primary {
+    background: linear-gradient(60deg, #ab47bc, #8e24aa);
+    box-shadow: 0 12px 20px -10px rgba(156, 39, 176, 0.28), 0 4px 20px 0px rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(156, 39, 176, 0.2);
+}
+
+.label-info {
+    background: linear-gradient(60deg, #26c6da, #00acc1);
+    box-shadow: 0 12px 20px -10px rgba(0, 188, 212, 0.28), 0 4px 20px 0px rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(0, 188, 212, 0.2);
+}
+
+.label-success {
+    background: linear-gradient(60deg, #66bb6a, #43a047);
+    box-shadow: 0 12px 20px -10px rgba(76, 175, 80, 0.28), 0 4px 20px 0px rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(76, 175, 80, 0.2);
+}
+
+.label-warning {
+    background: linear-gradient(60deg, #ffa726, #fb8c00);
+    box-shadow: 0 12px 20px -10px rgba(255, 152, 0, 0.28), 0 4px 20px 0px rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(255, 152, 0, 0.2);
+}
+
+.label-danger {
+    background: linear-gradient(60deg, #ef5350, #e53935);
+    box-shadow: 0 12px 20px -10px rgba(244, 67, 54, 0.28), 0 4px 20px 0px rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(244, 67, 54, 0.2);
+}
+
+/*************** Panel Sizing Styles ***************/
+@media only screen and (min-width: 480px) {
+    .card-xs .card-content {
+        min-height: 120px;
+    }
+
+    .card-sm .card-content {
+        min-height: 180px;
+    }
+
+
+    .card-md .card-content {
+        min-height: 220px;
+    }
+
+    .card-lg .card-content {
+        min-height: 410px;
+    }
+
+    .card-xlg .card-content {
+        min-height: 620px;
+    }
+}

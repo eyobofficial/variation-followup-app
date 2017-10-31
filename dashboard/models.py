@@ -24,6 +24,7 @@ class Contractor(models.Model):
     full_name = models.CharField(max_length=100, help_text='Official full name of the Contractor firm')
     short_name = models.CharField(max_length=100, help_text='Short common name of the Contractor firm')
     description = models.TextField(null=True, blank=True, help_text='Short description of the Contractor firm. (Optional)')
+    is_active = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -59,6 +60,9 @@ class Status(models.Model):
     title = models.CharField(max_length=30)
     description = models.TextField(null=True, blank=True, help_text='Short description of the status meaning. (Optional)')
 
+    class Meta:
+        verbose_name_plural = 'Status'
+
     def __str__(self):
         return self.title 
 
@@ -72,9 +76,12 @@ class Variation(models.Model):
     description = models.TextField(null=True, blank=True, help_text='Short description about the variation works and/or work order. (Optional)')
     work_order = models.CharField(max_length=10, null=True, blank=True, help_text='Work order no. of the variation works. (Optional)')
     recieved_date = models.DateField(help_text='Recieved date of the variation or work order. (Use yyyy-mm-dd format)')
+    recieved_letter = models.CharField('Ref. No. for recieved Order (Optional)', max_length=100, null=True, blank=True, help_text='Ref. No. for the letter containing the order recieved.')
     submitted_date = models.DateField(null=True, blank=True, help_text='Submitted date of the variation. (Use yyyy-mm-dd format)')
+    submitted_letter = models.CharField('Ref. No. for submission letter (Optional)', max_length=100, null=True, blank=True, help_text='Ref. No. for the submission letter of the variation.')
     submitted_amount = models.DecimalField(max_digits=14, decimal_places=2, null=True, blank=True, help_text='Submitted amount in ETB')
-    approved_date = models.DateField(null=True, blank=True, help_text='Approved date of the variation. (Use yyyy-mm-dd format)')
+    approved_date = models.DateField('Approved/Rejected Date', null=True, blank=True, help_text='Approved date of the variation. (Use yyyy-mm-dd format)')
+    approved_letter = models.CharField('Ref. No. for approval/rejection letter (Optional)', max_length=100, null=True, blank=True, help_text='Ref. No. for the approval or rejection letter.')
     approved_amount = models.DecimalField(max_digits=14, decimal_places=2, null=True, blank=True, help_text='Approved amount in ETB')
     remark = models.TextField(null=True, blank=True, help_text='Short helpfull remark or not regarding the current status. (Optional)')
     created_at = models.DateTimeField(auto_now_add=True)
