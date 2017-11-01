@@ -40,7 +40,7 @@
 		    -->
 
 			<div class="logo">
-				<a href="http://www.creative-tim.com" class="simple-text">
+				<a href="{% url 'dashboard:index' %}" class="simple-text">
 					Zamra PLC
 				</a>
 			</div>
@@ -61,8 +61,8 @@
 	                    </a>
 	                </li>
 
-	                <li>
-	                    <a href="#">
+	                <li {% if page_name == 'time claims' %} class="active" {% endif %}>
+	                    <a href="{% url 'dashboard:claim-list' %}">
 	                        <i class="material-icons">date_range</i>
 	                        <p>Time Claims</p>
 	                    </a>

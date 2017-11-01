@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% block page_name %} Time Claims {% endblock page_name %}
+
+{% block content %}
+{% include 'partials/messages.html' %}
+<div class="row">
+    <div class="col-lg-3 col-md-6 col-sm-6">
+        <div class="card card-stats">
+            <div class="card-header" data-background-color="orange">
+                <i class="material-icons">content_copy</i>
+            </div>
+            <div class="card-content">
+                <p class="category">Used Space</p>
+                <h3 class="title">49/50<small>GB</small></h3>
+            </div>
+            <div class="card-footer">
+                <div class="stats">
+                    <i class="material-icons text-danger">warning</i> <a href="#pablo">Get More Space...</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6 col-sm-6">
+        <div class="card card-stats">
+            <div class="card-header" data-background-color="green">
+                <i class="material-icons">store</i>
+            </div>
+            <div class="card-content">
+                <p class="category">Revenue</p>
+                <h3 class="title">$34,245</h3>
+            </div>
+            <div class="card-footer">
+                <div class="stats">
+                    <i class="material-icons">date_range</i> Last 24 Hours
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6 col-sm-6">
+        <div class="card card-stats">
+            <div class="card-header" data-background-color="red">
+                <i class="material-icons">info_outline</i>
+            </div>
+            <div class="card-content">
+                <p class="category">Fixed Issues</p>
+                <h3 class="title">75</h3>
+            </div>
+            <div class="card-footer">
+                <div class="stats">
+                    <i class="material-icons">local_offer</i> Tracked from Github
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-3 col-md-6 col-sm-6">
+        <div class="card card-stats">
+            <div class="card-header" data-background-color="blue">
+                <i class="fa fa-twitter"></i>
+            </div>
+            <div class="card-content">
+                <p class="category">Followers</p>
+                <h3 class="title">+245</h3>
+            </div>
+            <div class="card-footer">
+                <div class="stats">
+                    <i class="material-icons">update</i> Just Updated
+                </div>
+            </div>
+        </div>
+    </div>
+</div><!-- /.row -->
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header" data-background-color="purple">
+                <h4 class="title">All Time Claims</h4>
+                <p class="category">List of all time extension claims for all projects</p>
+            </div>
+            <div class="card-content table-responsive">
+                <table class="table">
+                    <thead class="text-primary">
+                        <th>Title</th>
+                        <th>Project</th>
+                        <th>Status</th>
+                        <th>Last Updated</th>
+                    </thead>
+                    <tbody>
+                    {% for claim in claim_list %}
+                        <tr>
+                            <td><a href="{% url 'dashboard:claim-detail' claim.id %}">{{ claim.title|title }}</a></td>
+                            <td>{{ claim.project.short_name }}</td>
+
+                            {% if claim.status.id == 1 %}
+                            <td>
+                               <span class="label label-info">
+                                   <span class="fa fa-info-circle"></span> {{ claim.status.title|title }}
+                               </span>
+                            </td>
+                            {% elif claim.status.id == 2 %}
+                            <td>
+                               <span class="label label-warning">
+                                   <span class="fa fa-warning"></span> {{ claim.status.title|title }}
+                               </span>
+                            </td>
+                            {% elif claim.status.id == 3 %}
+                            <td>
+                               <span class="label label-info">
+                                   <span class="fa fa-info-circle"></span> {{ claim.status.title|title }}
+                               </span>
+                            </td>
+                            {% elif claim.status.id == 4 %}
+                            <td>
+                               <span class="label label-info">
+                                   <span class="fa fa-info-circle"></span> {{ claim.status.title|title }}
+                               </span>
+                            </td>
+                            {% elif claim.status.id == 5 %}
+                            <td>
+                               <span class="label label-success">
+                                   <span class="fa fa-check-square-o"></span> {{ claim.status.title|title }}
+                               </span>
+                            </td>
+                            {% else %}
+                            <td>
+                               <span class="label label-danger">
+                                   <span class="fa fa-warning"></span> {{ claim.status.title|title }}
+                               </span>
+                            </td>
+                            {% endif %}
+
+                            <td>{{ claim.updated_at|naturalday:'M d, Y'|title }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div><!-- /.row -->
+
+<div class="row">
+    <div class="col-sm-12">
+        <a href="{% url 'dashboard:claim-create' %}" title="Add new time claim" class="btn btn-primary pull-right">
+           <span class="fa fa-plus-circle"></span>&nbsp; Add 
+        </a>
+    </div>
+</div>
+{% endblock %}

@@ -87,4 +87,143 @@ dl > dd, .dd {
     .card-xlg .card-content {
         min-height: 620px;
     }
+
+    /***************** Default padding and margin styles ***********/
+    .margin-right-sm {
+        margin-right: 1.2em;
+    }
+
+
+    .margin-right-md {
+        margin-right: 2em;
+    }
+
+    .margin-right-lg {
+        margin-right: 2.6em;
+    }
+
+
+    .margin-left-sm {
+        margin-left: 1.2em;
+    }
+
+
+    .margin-left-md {
+        margin-left: 2em;
+    }
+
+    .margin-left-lg {
+        margin-left: 2.6em;
+    }
+
+
+
+    .margin-down-sm {
+        margin-bottom: 1.2em;
+    }
+
+
+    .margin-down-md {
+        margin-bottom: 2em;
+    }
+
+    .margin-down-lg {
+        margin-bottom: 2.6em;
+    }
+
+    .margin-up-sm {
+        margin-top: 1.2em;
+    }
+
+
+    .margin-up-md {
+        margin-top: 3.2em;
+    }
+
+    .margin-both-sm {
+        margin-top: 1.2em;
+        margin-bottom: 1.2em;
+    }
+
+
+    .margin-up-xs {
+        margin-top: 0.6em;
+    }
+
+
+    .margin-down-xs {
+        margin-bottom: 0.6em;
+    }
+
+
+    .margin-both-md {
+        margin-top: 2em !important;
+        margin-bottom: 2em;
+    }
+
+
+    .margin-both-lg {
+        margin-top: 2.6em;
+        margin-bottom: 2.6em;
+    }
+
+
+
+    .pad-down-sm {
+        padding-bottom: 1.2em;
+    }
+
+
+
+    .pad-down-md {
+        padding-bottom: 2em;
+    }
+
+
+    .pad-down-lg {
+        padding-bottom: 2.8em;
+    }
+
+
+    .pad-up-sm {
+        padding-top: 1.2em;
+    }
+
+
+
+    .pad-up-md {
+        padding-top: 2em !important;
+    }
+
+
+    .pad-up-lg {
+        padding-top: 2.8em;
+    }
+
+    .pad-left-sm {
+        padding-left: 1.2em;
+    }
+
+    .pad-left-md {
+        padding-left: 2.8em;
+    }
+
+    .pad-left-lg {
+        padding-left: 4em;
+    }
+
+
+    .pad-right-sm {
+        padding-right: 1.2em;
+    }
+
+    .pad-right-md {
+        padding-right: 2.8em;
+    }
+
+    .pad-right-lg {
+        padding-right: 4em;
+    }
+
+
 }

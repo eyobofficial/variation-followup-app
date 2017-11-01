@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load humanize %}
 
-{% block page_name %} {{ variation.title|title }} {% endblock page_name %}
+{% block page_name %} {{ claim.title|title }} {% endblock page_name %}
 
 {% block content %}
 {% include 'partials/messages.html' %}
@@ -13,64 +13,32 @@
             </div>
             <div class="card-content">
                 <p class="category">Status</p>
-                <h3 class="title">{{ variation.status.title }}</h3>
+                <h3 class="title">{{ claim.status.title }}</h3>
             </div>
         </div>
     </div>
     
-    {% if variation.status.id == 6 or variation.status.id == 5 %}
     <div class="col-lg-4 col-md-6 col-sm-6">
         <div class="card card-stats">
             <div class="card-header" data-background-color="orange">
                 <i class="material-icons">date_range</i>
             </div>
             <div class="card-content">
-                <p class="category">Approved/Rejected Date</p>
-                <h3 class="title">{{ variation.recieved_date|naturalday:'M d, y'|title }}</h3>
+                <p class="category">Time Claim No.</p>
+                <h3 class="title">{{ claim.number|stringformat:'02d' }}</h3>
             </div>
            
         </div>
     </div>
-    {% elif variation.status.id == 4 or variation.status.id == 3 %}
-    <div class="col-lg-4 col-md-6 col-sm-6">
-        <div class="card card-stats">
-            <div class="card-header" data-background-color="orange">
-                <i class="material-icons">date_range</i>
-            </div>
-            <div class="card-content">
-                <p class="category">Submitted Date</p>
-                <h3 class="title">{{ variation.recieved_date|naturalday:'M d, y'|title }}</h3>
-            </div>
-           
-        </div>
-    </div>
-    {% else %}
-     <div class="col-lg-4 col-md-6 col-sm-6">
-        <div class="card card-stats">
-            <div class="card-header" data-background-color="orange">
-                <i class="material-icons">date_range</i>
-            </div>
-            <div class="card-content">
-                <p class="category">Recieved Date</p>
-                <h3 class="title">{{ variation.recieved_date|naturalday:'M d, y'|title }}</h3>
-            </div>
-           
-        </div>
-    </div>
-    {% endif %}
+   
     <div class="col-lg-4 col-md-6 col-sm-6">
         <div class="card card-stats">
             <div class="card-header" data-background-color="green">
-                <i class="material-icons">assignment</i>
+                <i class="material-icons">cached</i>
             </div>
             <div class="card-content">
-                <p class="category">Work Order No.</p>
-
-                {% if variation.work_order %}
-                 <h3 class="title">{{ variation.work_order }}</h3>
-                {% else %}
-                 <h3 class="title text-fade">(None)</h3>
-                {% endif %}
+                <p class="category">Last Updated</p>
+                <h3 class="title">{{ claim.updated_at|naturalday:'M d, Y'|title }}</h3>
             </div>
         </div>
     </div>
@@ -80,69 +48,62 @@
     <div class="col-md-12">
         <div class="card">
             <div class="card-header" data-background-color="purple">
-                <h4 class="title">Variation Summary</h4>
-                <p class="category">Description and summary of the variation works</p>
+                <h4 class="title">Time Claim Summary</h4>
+                <p class="category">Description and summary of the time extension claim</p>
             </div>
             <div class="card-content">
                 <dl>
-                    <dt>Variation Title</dt>
-                    <dd>{{ variation.title|title }}</dd>
+                    <dt>Time Claim Title</dt>
+                    <dd>{{ claim.title|title }}</dd>
 
                     <dt>Project</dt>
-                    <dd>{{ variation.project.full_name }}</dd>
+                    <dd>{{ claim.project.full_name }}</dd>
 
-                    <dt>Recieved Date</dt>
-                    <dd>{{ variation.recieved_date|naturalday:'M d, Y'|title }}</dd>
-
-                    <dt>Recieved Letter Ref. No.</dt>
-                    {% if variation.recieved_letter %}
-                    <dd>{{ variation.recieved_letter }}</dd>
-                    {% else %}
-                    <dd class="text-fade">(None)</dd>
-                    {% endif %}
+                    <dt>Time Claim No.</dt>
+                    <dd>{{ claim.number|stringformat:'02d' }}</dd>
 
                     <dt>Status</dt>
-                    {% if variation.status.id == 1 %}
+                    {% if claim.status.id == 1 %}
                     <dd>
                        <span class="label label-info">
-                          <span class="fa fa-info-circle"></span> {{ variation.status.title|title }} 
+                          <span class="fa fa-info-circle"></span> {{ claim.status.title|title }} 
                        </span>
                     </dd>
-                    {% elif variation.status.id == 2 %}
+                    {% elif claim.status.id == 2 %}
                     <dd>
                        <span class="label label-warning">
-                           <span class="fa fa-warning"></span> {{ variation.status.title|title }}
+                           <span class="fa fa-warning"></span> {{ claim.status.title|title }}
                        </span>
                     </dd>
-                    {% elif variation.status.id == 3 %}
+                    {% elif claim.status.id == 3 %}
                     <dd>
                        <span class="label label-info">
-                           <span class="fa fa-info-circle"></span> {{ variation.status.title|title }}
+                           <span class="fa fa-info-circle"></span> {{ claim.status.title|title }}
                        </span>
                     </dd>
-                    {% elif variation.status.id == 4 %}
+                    {% elif claim.status.id == 4 %}
                     <dd>
                        <span class="label label-info">
-                           <span class="fa fa-info-circle"></span> {{ variation.status.title|title }}
+                           <span class="fa fa-info-circle"></span> {{ claim.status.title|title }}
                        </span>
                     </dd>
-                    {% elif variation.status.id == 5 %}
+                    {% elif claim.status.id == 5 %}
                     <dd>
                        <span class="label label-success">
-                           <span class="fa fa-check-square-o"></span> {{ variation.status.title|title }}
+                           <span class="fa fa-check-square-o"></span> {{ claim.status.title|title }}
                        </span>
                     </dd>
                     {% else %}
                     <dd>
                        <span class="label label-danger">
-                          <span class="fa fa-warning"></span> {{ variation.status.title|title }} 
+                          <span class="fa fa-warning"></span> {{ claim.status.title|title }} 
                        </span>
                     </dd>
                     {% endif %}
 
                     <dt>Short Description</dt>
-                    {% if variation.description %}
-                    <dd>{{ variation.description }}</dd>
+                    {% if claim.description %}
+                    <dd>{{ claim.description }}</dd>
                     {% else %}
                     <dd class="text-fade text-justify">(No Description)</dd>
                     {% endif %}
@@ -169,16 +130,16 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td>Amount (including VAT)</td>
+                                <td>Amount (in Calendar Days)</td>
 
-                                {% if variation.submitted_amount %}
-                                <td class="text-center">ETB {{ variation.submitted_amount|intcomma }}</td>
+                                {% if claim.submitted_amount %}
+                                <td class="text-center">{{ claim.submitted_amount|intcomma }}</td>
                                 {% else %}
                                 <td class="text-center"> - </td>
                                 {% endif %}
 
-                                {% if variation.approved_amount %}
-                                <td class="text-center">ETB {{ variation.approved_amount|intcomma }}</td>
+                                {% if claim.approved_amount %}
+                                <td class="text-center">{{ claim.approved_amount|intcomma }}</td>
                                 {% else %}
                                 <td class="text-center"> - </td>
                                 {% endif %}                               
@@ -187,14 +148,14 @@
                             <tr>
                                 <td>Dates</td>
 
-                                {% if variation.submitted_date %}
-                                <td class="text-center">{{ variation.submitted_date|naturalday:'M d, Y'|title }}</td>
+                                {% if claim.submitted_date %}
+                                <td class="text-center">{{ claim.submitted_date|naturalday:'M d, Y'|title }}</td>
                                 {% else %}
                                 <td class="text-center"> - </td>
                                 {% endif %}
                                 
-                                {% if variation.approved_date %}
-                                <td class="text-center">{{ variation.approved_date|naturalday:'M d, Y'|title }}</td>
+                                {% if claim.approved_date %}
+                                <td class="text-center">{{ claim.approved_date|naturalday:'M d, Y'|title }}</td>
                                 {% else %}
                                 <td class="text-center"> - </td>
                                 {% endif %}                               
@@ -203,14 +164,14 @@
                             <tr>
                                 <td>Letter Ref. No.</td>
 
-                                {% if variation.submitted_letter %}
-                                <td class="text-center">{{ variation.submitted_letter }}</td>
+                                {% if claim.submitted_letter %}
+                                <td class="text-center">{{ claim.submitted_letter }}</td>
                                 {% else %}
                                 <td class="text-center"> - </td>
                                 {% endif %}
                                 
-                                {% if variation.approved_letter %}
-                                <td class="text-center">{{ variation.approved_letter }}</td>
+                                {% if claim.approved_letter %}
+                                <td class="text-center">{{ claim.approved_letter }}</td>
                                 {% else %}
                                 <td class="text-center"> - </td>
                                 {% endif %}
@@ -222,7 +183,7 @@
 
             <div class="card-footer">
                 <div class="stats">
-                    <i class="material-icons">update</i> Last updated on {{ variation.updated_at|date:'M d, Y' }}
+                    <i class="material-icons">update</i> Last updated on {{ claim.updated_at|date:'M d, Y' }}
                 </div>
             </div>
         </div>
@@ -237,8 +198,8 @@
                 <p class="category">Description and summary of the variation works</p>
             </div>
             <div class="card-content">
-            {% if variation.remark %}
-                {{ variation.remark }}
+            {% if claim.remark %}
+                {{ claim.remark }}
             {% else %}
                 <span class="text-fade text-center">(No Remark/Note)</span>
             {% endif %}
@@ -249,11 +210,11 @@
 
 <div class="row">
     <div class="col-sm-12">
-        <a href="{% url 'dashboard:variation-update' variation.id %}" title="Update Variation" class="btn btn-primary">
+        <a href="{% url 'dashboard:claim-update' claim.id %}" title="Update time claim" class="btn btn-primary">
            <span class="fa fa-edit"></span>&nbsp; Update 
         </a>
 
-        <a href="{% url 'dashboard:variation-delete' variation.id %}" title="Delete Variation" class="btn btn-danger pull-right">
+        <a href="{% url 'dashboard:claim-delete' claim.id %}" title="Delete time claim" class="btn btn-danger pull-right">
            Delete  
         </a>
     </div>

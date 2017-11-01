@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block page_name %} {{ claim.title|title }} {% endblock page_name %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-sm">
+            <div class="card-header" data-background-color="purple">
+                <h4 class="title"><span class="fa fa-warning"></span> Delete Time Claim</h4>
+                <p class="category">Deleting a time claim record is irreversable</p>
+            </div>
+            <div class="card-content">
+              <p class="text-center margin-up-md"><span class=" text-danger fa fa-warning"></span> You are about to delete this time claim. Please confirm to proceed with this action.</p>
+            </div>
+        </div>
+    </div>
+</div><!-- /.row -->
+
+<div class="row">
+    <div class="col-sm-12">
+        <form method="POST">
+            {% csrf_token %}
+            <button type="submit" title="Confirm and Delete" class="btn btn-primary"> Delete </button>
+            <a href="{% url 'dashboard:claim-detail' claim.id %}" title="Delete Variation" class="btn btn-danger pull-right"> Cancel</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

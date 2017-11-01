@@ -5,7 +5,8 @@ from .models import (Consultant,
                      Contractor,
                      Project,
                      Status,
-                     Variation,)
+                     Variation,
+                     Claim,)
 
 @admin.register(Status)
 class StatusAdmin(admin.ModelAdmin):
@@ -30,3 +31,8 @@ class ProjectAdmin(admin.ModelAdmin):
 class VariationAdmin(admin.ModelAdmin):
     list_display = ('title', 'project', 'work_order', 'status', 'recieved_date', 'created_at', 'updated_at', 'id')
     list_filter = ('project', 'status', 'work_order', 'recieved_date', 'submitted_date', 'approved_date',)
+
+@admin.register(Claim)
+class ClaimAdmin(admin.ModelAdmin):
+    list_display = ('title', 'number', 'project', 'status', 'created_at', 'updated_at', 'id')
+    list_filter = ('project', 'status', 'submitted_date', 'approved_date',)

@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block page_name %} 
+{% if claim %}
+{{ claim.title|title }} 
+{% else %}
+Add New Time Claim
+{% endif %}
+{% endblock page_name %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header" data-background-color="purple">
+                {% if claim %}
+                <h4 class="title">Update Claim</h4>
+                {% else %}
+                 <h4 class="title">New Time Claim</h4>
+                {% endif %}
+                <p class="category">Details and summary of the time claim</p>
+            </div>
+            <div class="card-content">
+                <div class="row">
+                    <div class="col-sm-8 col-sm-offset-2">
+                       <form method="POST">
+                           {% csrf_token %}
+                           {{ form|crispy }}                      
+                    </div>
+                </div><!-- /.row -->
+            </div><!-- /.card-content -->
+        </div><!-- /.card -->
+    </div>
+</div><!-- /.row -->
+
+<div class="row">
+    <div class="col-sm-12">
+        <button type="submit" title="Save Changes" class="btn btn-primary">
+            <span class="fa fa-edit"></span>&nbsp; Save 
+        </button>
+        
+        {% if claim %}
+        <a href="{% url 'dashboard:claim-detail' claim.id %}" title="Discard Chages" class="btn btn-danger pull-right">
+            Cancel
+        </a>
+        {% else %}
+        <a href="{% url 'dashboard:claim-list' %}" title="Discard Chages" class="btn btn-danger pull-right">
+            Cancel
+        </a>
+        {% endif %}
+    </div>
+</div>
+</form>
+{% endblock %}

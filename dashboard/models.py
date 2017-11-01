@@ -83,7 +83,7 @@ class Variation(models.Model):
     approved_date = models.DateField('Approved/Rejected Date', null=True, blank=True, help_text='Approved date of the variation. (Use yyyy-mm-dd format)')
     approved_letter = models.CharField('Ref. No. for approval/rejection letter (Optional)', max_length=100, null=True, blank=True, help_text='Ref. No. for the approval or rejection letter.')
     approved_amount = models.DecimalField(max_digits=14, decimal_places=2, null=True, blank=True, help_text='Approved amount in ETB')
-    remark = models.TextField(null=True, blank=True, help_text='Short helpfull remark or not regarding the current status. (Optional)')
+    remark = models.TextField(null=True, blank=True, help_text='Short helpfull remarks or notes regarding the current status. (Optional)')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -92,4 +92,29 @@ class Variation(models.Model):
 
     def get_absolute_url(self):
         return reverse('dashboard:variation-detail', kwargs={'pk': str(self.pk)})
+
+class Claim(models.Model):
+    """
+    Represents a construction time extension claims
+    """
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    status = models.ForeignKey(Status, on_delete=models.CASCADE)
+    title = models.CharField(max_length=100, help_text='Title for the Time Extension Claim')
+    number = models.IntegerField('Time Claim Number')
+    description = models.TextField(null=True, blank=True, help_text='Short description about the time extension and claimant arguments. (Optional)')
+    submitted_date = models.DateField(null=True, blank=True, help_text='Submitted date of the time extension request. (Use yyyy-mm-dd format)')
+    submitted_letter = models.CharField('Ref. No. for submission letter (Optional)', max_length=100, null=True, blank=True, help_text='Ref. No. for the submission letter of the time extension request.')
+    submitted_amount = models.IntegerField('Requested Amount in Calendar Days', help_text='Submitted amount in calendar days')
+    approved_date = models.DateField('Approved/Rejected Date', null=True, blank=True, help_text='Approved date of the time extension request. (Use yyyy-mm-dd format)')
+    approved_letter = models.CharField('Ref. No. for approval/rejection letter (Optional)', max_length=100, null=True, blank=True, help_text='Ref. No. for the approval or rejection letter.')
+    approved_amount = models.IntegerField('Approved Amount in Calendar Days', null=True, blank=True, help_text='Approved amount in calendar days')
+    remark = models.TextField(null=True, blank=True, help_text='Short helpfull remarks or notes regarding the current status. (Optional)')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.title 
+
+    def get_absolute_url(self):
+        return reverse('dashboard:claim-detail', kwargs={'pk': str(self.pk)})
 

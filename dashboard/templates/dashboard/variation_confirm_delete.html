@@ -1,18 +1,17 @@
 {% extends 'base.html' %}
-{% load humanize %}
 
 {% block page_name %} {{ variation.title|title }} {% endblock page_name %}
 
 {% block content %}
 <div class="row">
     <div class="col-md-12">
-        <div class="card">
+        <div class="card card-sm">
             <div class="card-header" data-background-color="purple">
                 <h4 class="title"><span class="fa fa-warning"></span> Delete Variation</h4>
                 <p class="category">Deleting a variation record is irreversable</p>
             </div>
             <div class="card-content">
-              <p class="text-center text-danger"><span class="fa fa-warning"></span> You are about to delete this variation. Please confirm to proceed with this action.</p>
+              <p class="text-center margin-up-md"><span class=" text-danger fa fa-warning"></span> You are about to delete this variation. Please confirm to proceed with this action.</p>
             </div>
         </div>
     </div>
