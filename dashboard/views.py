@@ -2,6 +2,10 @@ from django.shortcuts import render
 from django.views import generic
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
+# Import Message Framework
+from django.contrib import messages
+from django.contrib.messages.views import SuccessMessageMixin
+
 # Import models
 from .models import (Consultant,
                      Contractor,
@@ -39,36 +43,43 @@ class VariationDetail(generic.DetailView):
         context['page_name'] = 'variations'
         return context
 
-class VariationUpdate(UpdateView):
+class VariationUpdate(SuccessMessageMixin, UpdateView):
     """
     Update a particular variation record
     """
     model = Variation
     fields = ('title', 'work_order', 'description', 'status', 'recieved_date', 'recieved_letter', 'submitted_amount', 'submitted_date', 'submitted_letter', 'approved_amount', 'approved_date', 'approved_letter', 'remark', )
+    success_message = 'Variation updated successfully.'
 
     def get_context_data(self, *args, **kwargs):
         context = super(VariationUpdate, self).get_context_data(*args, **kwargs)
         context['page_name'] = 'variations'
         return context
 
-class VariationCreate(CreateView):
+class VariationCreate(SuccessMessageMixin, CreateView):
     """
     Update a particular variation record
     """
     model = Variation
     fields = ('project', 'title', 'work_order', 'description', 'status', 'recieved_date', 'recieved_letter', 'submitted_amount', 'submitted_date', 'submitted_letter', 'approved_amount', 'approved_date', 'approved_letter', 'remark', )
+    success_message = 'Variation created successfully.'
 
     def get_context_data(self, *args, **kwargs):
         context = super(VariationCreate, self).get_context_data(*args, **kwargs)
         context['page_name'] = 'variations'
         return context
 
-class VariationDelete(DeleteView):
+class VariationDelete(SuccessMessageMixin, DeleteView):
     """
     Delete a particular variation record
     """
     model = Variation
     success_url = '/dashboard/variations/'
+    success_message = 'Variation deleted successfully.'
+
+    def delete(self, *args, **kwargs):
+        messages.success(self.request, self.success_message)
+        return super(VariationDelete, self).delete(*args, **kwargs)
 
     def get_context_data(self, *args, **kwargs):
         context = super(VariationDelete, self).get_context_data(*args, **kwargs)
