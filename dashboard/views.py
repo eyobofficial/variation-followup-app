@@ -9,15 +9,39 @@ from django.contrib.messages.views import SuccessMessageMixin
 # Import models
 from .models import (Consultant,
                      Contractor,
+                     ProjectStatus,
                      Project,
-                     Status,
+                     VariationStatus,
                      Variation,
+                     ClaimStatus,
                      Claim)
 
 def index(request):
     return render(request, 'dashboard/index.html', {
             'page_name': 'dashboard',
         })
+
+class ProjectList(generic.ListView):
+    """
+    List all projects for a particular contractor
+    """
+    model = Project
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(ProjectList, self).get_context_data(*args, **kwargs)
+        context['page_name'] = 'projects'
+        return context
+
+class ProjectDetail(generic.DetailView):
+    """
+    Detail for a particular variation record
+    """
+    model = Project
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(ProjectDetail, self).get_context_data(*args, **kwargs)
+        context['page_name'] = 'projects'
+        return context
 
 class VariationList(generic.ListView):
     """

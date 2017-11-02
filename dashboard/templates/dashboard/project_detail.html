@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% block page_name %} {{ project.full_name }} {% endblock page_name %}
+
+{% block content %}
+{% include 'partials/messages.html' %}
+<div class="row">
+    <div class="col-lg-4 col-md-6 col-sm-6">
+        <div class="card card-stats">
+            <div class="card-header" data-background-color="blue">
+                <i class="material-icons">info_outline</i>
+            </div>
+            <div class="card-content">
+                <p class="category">Status</p>
+                <h3 class="title">{{ project.status.title }}</h3>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-4 col-md-6 col-sm-6">
+        <div class="card card-stats">
+            <div class="card-header" data-background-color="orange">
+                <i class="material-icons">date_range</i>
+            </div>
+            <div class="card-content">
+                <p class="category">Something</p>
+                <h3 class="title">Something</h3>
+            </div>
+           
+        </div>
+    </div>
+   
+    <div class="col-lg-4 col-md-6 col-sm-6">
+        <div class="card card-stats">
+            <div class="card-header" data-background-color="green">
+                <i class="material-icons">cached</i>
+            </div>
+            <div class="card-content">
+                <p class="category">Last Updated</p>
+                <h3 class="title">{{ project.updated_at|naturalday:'M d, Y'|title }}</h3>
+            </div>
+        </div>
+    </div>
+</div><!-- /.row -->
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header" data-background-color="purple">
+                <h4 class="title">Project Claim Summary</h4>
+                <p class="category">Description and summary of the construction project</p>
+            </div>
+            <div class="card-content">
+                <dl>
+                    <dt>Project Title</dt>
+                    <dd>{{ project.full_name }}</dd>
+
+                    <dt>Short Title</dt>
+                    <dd>{{ project.short_name }}</dd>
+
+                    <dt>Status</dt>
+                    {% if project.status.level == 10 %}
+                    <dd>
+                       <span class="label label-info">
+                          <span class="fa fa-info-circle"></span> {{ project.status.title|title }} 
+                       </span>
+                    </dd>
+                    {% elif project.status.level == 2 %}
+                    <dd>
+                       <span class="label label-warning">
+                           <span class="fa fa-warning"></span> {{ project.status.title|title }}
+                       </span>
+                    </dd>
+                    {% elif project.status.level == 30 %}
+                    <dd>
+                       <span class="label label-info">
+                           <span class="fa fa-info-circle"></span> {{ project.status.title|title }}
+                       </span>
+                    </dd>
+                    {% elif project.status.id == 4 %}
+                    <dd>
+                       <span class="label label-info">
+                           <span class="fa fa-info-circle"></span> {{ project.status.title|title }}
+                       </span>
+                    </dd>
+                    {% else %}
+                    <dd>
+                       <span class="label label-danger">
+                          <span class="fa fa-warning"></span> {{ claim.status.title|title }} 
+                       </span>
+                    </dd>
+                    {% endif %}
+
+                    <dt>Short Description</dt>
+                    {% if project.description %}
+                    <dd>{{ project.description }}</dd>
+                    {% else %}
+                    <dd class="text-fade text-justify">(No Description)</dd>
+                    {% endif %}
+                </dl>
+            </div>
+        </div>
+    </div>
+</div><!-- /.row -->
+
+
+<div class="row">
+    <div class="col-sm-12">
+        <a href="#" title="Update project" class="btn btn-primary">
+           <span class="fa fa-edit"></span>&nbsp; Update 
+        </a>
+
+        <a href="#" title="Delete time claim" class="btn btn-danger pull-right">
+           Delete  
+        </a>
+    </div>
+</div>
+{% endblock %}

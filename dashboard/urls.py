@@ -19,4 +19,9 @@ urlpatterns = [
     url(r'^claim/add/$', views.ClaimCreate.as_view(), name='claim-create'),
     url(r'^claim/(?P<pk>[0-9]+)/update/$', views.ClaimUpdate.as_view(), name='claim-update'),
     url(r'^claim/(?P<pk>[0-9]+)/delete/$', views.ClaimDelete.as_view(), name='claim-delete'),
+
+    # Project URLs
+    url(r'^projects/$', views.ProjectList.as_view(), name='project-list'),
+    url(r'^project/(?P<pk>[0-9]+)$', views.ProjectDetail.as_view(), name='project-detail'),
+
 ]

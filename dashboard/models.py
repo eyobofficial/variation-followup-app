@@ -34,6 +34,20 @@ class Contractor(models.Model):
     def get_absolute_url(self):
         return reverse('dashboard:contractor-detail', kwargs={'pk': str(self.pk)})
 
+class ProjectStatus(models.Model):
+    """
+    Represents status of a project
+    """
+    title = models.CharField(max_length=30)
+    level = models.IntegerField()
+    description = models.TextField(null=True, blank=True, help_text='Short description of the status meaning. (Optional)')
+
+    class Meta:
+        verbose_name_plural = 'Project Status'
+
+    def __str__(self):
+        return self.title 
+
 class Project(models.Model):
     """
     Represents a Construction Project
@@ -41,6 +55,7 @@ class Project(models.Model):
     consultant = models.ForeignKey(Consultant, on_delete=models.CASCADE)
     contractor = models.ForeignKey(Contractor, on_delete=models.CASCADE)
     employer = models.CharField(max_length=100, help_text='Official full name of the Employer')
+    status = models.ForeignKey(ProjectStatus, on_delete=models.CASCADE)
     full_name = models.CharField(max_length=100, help_text='Official full name of the construction project')
     short_name = models.CharField(max_length=100, help_text='Short common name of the construction project')
     description = models.TextField(null=True, blank=True, help_text='Short description of the construction project. (Optional)')
@@ -53,15 +68,16 @@ class Project(models.Model):
     def get_absolute_url(self):
         return reverse('dashboard:project-detail', kwargs={'pk': str(self.pk)})
 
-class Status(models.Model):
+class VariationStatus(models.Model):
     """
-    Represents status of variation, time claims or payments
+    Represents status of a variation
     """
     title = models.CharField(max_length=30)
+    level = models.IntegerField()
     description = models.TextField(null=True, blank=True, help_text='Short description of the status meaning. (Optional)')
 
     class Meta:
-        verbose_name_plural = 'Status'
+        verbose_name_plural = 'Variation Status'
 
     def __str__(self):
         return self.title 
@@ -71,7 +87,7 @@ class Variation(models.Model):
     Represents a construction Variation Works
     """
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
-    status = models.ForeignKey(Status, on_delete=models.CASCADE)
+    status = models.ForeignKey(VariationStatus, on_delete=models.CASCADE)
     title = models.CharField(max_length=100, help_text='Title for the variation works')
     description = models.TextField(null=True, blank=True, help_text='Short description about the variation works and/or work order. (Optional)')
     work_order = models.CharField(max_length=10, null=True, blank=True, help_text='Work order no. of the variation works. (Optional)')
@@ -93,12 +109,26 @@ class Variation(models.Model):
     def get_absolute_url(self):
         return reverse('dashboard:variation-detail', kwargs={'pk': str(self.pk)})
 
+class ClaimStatus(models.Model):
+    """
+    Represents status of a time claim
+    """
+    title = models.CharField(max_length=30)
+    level = models.IntegerField()
+    description = models.TextField(null=True, blank=True, help_text='Short description of the status meaning. (Optional)')
+
+    class Meta:
+        verbose_name_plural = 'Time Claim Status'
+
+    def __str__(self):
+        return self.title 
+
 class Claim(models.Model):
     """
     Represents a construction time extension claims
     """
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
-    status = models.ForeignKey(Status, on_delete=models.CASCADE)
+    status = models.ForeignKey(ClaimStatus, on_delete=models.CASCADE)
     title = models.CharField(max_length=100, help_text='Title for the Time Extension Claim')
     number = models.IntegerField('Time Claim Number')
     description = models.TextField(null=True, blank=True, help_text='Short description about the time extension and claimant arguments. (Optional)')
