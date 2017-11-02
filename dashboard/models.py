@@ -39,6 +39,7 @@ class ProjectStatus(models.Model):
     Represents status of a project
     """
     title = models.CharField(max_length=30)
+    short_title = models.CharField(max_length=30)
     level = models.IntegerField()
     description = models.TextField(null=True, blank=True, help_text='Short description of the status meaning. (Optional)')
 
@@ -56,9 +57,15 @@ class Project(models.Model):
     contractor = models.ForeignKey(Contractor, on_delete=models.CASCADE)
     employer = models.CharField(max_length=100, help_text='Official full name of the Employer')
     status = models.ForeignKey(ProjectStatus, on_delete=models.CASCADE)
-    full_name = models.CharField(max_length=100, help_text='Official full name of the construction project')
-    short_name = models.CharField(max_length=100, help_text='Short common name of the construction project')
-    description = models.TextField(null=True, blank=True, help_text='Short description of the construction project. (Optional)')
+    full_name = models.CharField('Official Project Title', max_length=100, help_text='Official full name of the construction project')
+    short_name = models.CharField('Short Unofficial Project Title', max_length=100, help_text='Short common name of the construction project')
+    project_code = models.CharField('Project Code (Optional)', max_length=30, null=True, blank=True)
+    description = models.TextField('Short Project Description', null=True, blank=True, help_text='Short description of the construction project. (Optional)')
+    signing_date = models.DateTimeField('Agreement Signing Date', null=True, blank=True, help_text='User yyyy-mm-dd format')
+    site_handover = models.DateTimeField('Site Handover Date', null=True, blank=True, help_text='User yyyy-mm-dd format')
+    mobilzation_period = models.IntegerField(null=True, blank=True)
+    commencement_date = models.DateTimeField('Commenecment Date', null=True, blank=True, help_text='User yyyy-mm-dd format')
+    completion_date = models.DateTimeField('Intended Completion Date', null=True, blank=True, help_text='User yyyy-mm-dd format')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -73,6 +80,7 @@ class VariationStatus(models.Model):
     Represents status of a variation
     """
     title = models.CharField(max_length=30)
+    short_title = models.CharField(max_length=30)
     level = models.IntegerField()
     description = models.TextField(null=True, blank=True, help_text='Short description of the status meaning. (Optional)')
 
@@ -114,6 +122,7 @@ class ClaimStatus(models.Model):
     Represents status of a time claim
     """
     title = models.CharField(max_length=30)
+    short_title = models.CharField(max_length=30)
     level = models.IntegerField()
     description = models.TextField(null=True, blank=True, help_text='Short description of the status meaning. (Optional)')
 

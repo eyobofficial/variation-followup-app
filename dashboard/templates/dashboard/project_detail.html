@@ -13,7 +13,7 @@
             </div>
             <div class="card-content">
                 <p class="category">Status</p>
-                <h3 class="title">{{ project.status.title }}</h3>
+                <h3 class="title">{{ project.status.short_title }}</h3>
             </div>
         </div>
     </div>
@@ -48,7 +48,7 @@
     <div class="col-md-12">
         <div class="card">
             <div class="card-header" data-background-color="purple">
-                <h4 class="title">Project Claim Summary</h4>
+                <h4 class="title">Project Summary</h4>
                 <p class="category">Description and summary of the construction project</p>
             </div>
             <div class="card-content">
@@ -107,11 +107,11 @@
 
 <div class="row">
     <div class="col-sm-12">
-        <a href="#" title="Update project" class="btn btn-primary">
+        <a href="{% url 'dashboard:project-update' project.id %}" title="Update project" class="btn btn-primary">
            <span class="fa fa-edit"></span>&nbsp; Update 
         </a>
 
-        <a href="#" title="Delete time claim" class="btn btn-danger pull-right">
+        <a href="{% url 'dashboard:project-delete' project.id %}" title="Delete project" class="btn btn-danger pull-right">
            Delete  
         </a>
     </div>

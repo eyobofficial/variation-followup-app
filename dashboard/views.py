@@ -43,6 +43,50 @@ class ProjectDetail(generic.DetailView):
         context['page_name'] = 'projects'
         return context
 
+class ProjectCreate(SuccessMessageMixin, CreateView):
+    """
+    Create a new project record
+    """
+    model = Project
+    fields = ('consultant', 'employer', 'contractor', 'full_name', 'short_name', 'status', 'description', )
+    success_message = 'New project created successfully.'
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(ProjectCreate, self).get_context_data(*args, **kwargs)
+        context['page_name'] = 'projects'
+        return context
+
+class ProjectUpdate(SuccessMessageMixin, UpdateView):
+    """
+    Update a particular project record
+    """
+    model = Project
+    fields = ('consultant', 'employer', 'full_name', 'short_name', 'status', 'description', )
+    success_message = 'Project updated created successfully.'
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(ProjectUpdate, self).get_context_data(*args, **kwargs)
+        context['page_name'] = 'projects'
+        return context
+
+class ProjectDelete(DeleteView):
+    """
+    Delete a particular a project record
+    """
+    model = Project
+    success_url = '/dashboard/projects/'
+    success_message = 'A project is deleted successfully.'
+
+    def delete(self, *args, **kwargs):
+        messages.success(self.request, self.success_message)
+        return super(ProjectDelete, self).delete(*args, **kwargs)
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(ProjectDelete, self).get_context_data(*args, **kwargs)
+        context['page_name'] = 'projects'
+        return context
+
+
 class VariationList(generic.ListView):
     """
     Lists all variations for all project
