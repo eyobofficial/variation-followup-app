@@ -48,7 +48,7 @@ class ProjectCreate(SuccessMessageMixin, CreateView):
     Create a new project record
     """
     model = Project
-    fields = ('consultant', 'employer', 'contractor', 'full_name', 'short_name', 'status', 'description', )
+    fields = ('construction_type', 'consultant', 'employer', 'contractor', 'full_name', 'short_name', 'status', 'description', )
     success_message = 'New project created successfully.'
 
     def get_context_data(self, *args, **kwargs):
@@ -61,7 +61,7 @@ class ProjectUpdate(SuccessMessageMixin, UpdateView):
     Update a particular project record
     """
     model = Project
-    fields = ('consultant', 'employer', 'full_name', 'short_name', 'status', 'description', )
+    fields = ('construction_type', 'consultant', 'employer', 'full_name', 'short_name', 'status', 'description', )
     success_message = 'Project updated created successfully.'
 
     def get_context_data(self, *args, **kwargs):
@@ -117,7 +117,7 @@ class VariationCreate(SuccessMessageMixin, CreateView):
     Create a new variation record
     """
     model = Variation
-    fields = ('project', 'title', 'work_order', 'description', 'status', 'recieved_date', 'recieved_letter', 'submitted_amount', 'submitted_date', 'submitted_letter', 'approved_amount', 'approved_date', 'approved_letter', 'remark', )
+    fields = ('project', 'title', 'work_order', 'activity', 'description', 'status', 'recieved_date', 'recieved_letter', 'submitted_amount', 'submitted_date', 'submitted_letter', 'approved_amount', 'approved_date', 'approved_letter', 'remark', )
     success_message = 'Variation created successfully.'
 
     def get_context_data(self, *args, **kwargs):
@@ -130,7 +130,7 @@ class VariationUpdate(SuccessMessageMixin, UpdateView):
     Update a particular variation record
     """
     model = Variation
-    fields = ('title', 'work_order', 'description', 'status', 'recieved_date', 'recieved_letter', 'submitted_amount', 'submitted_date', 'submitted_letter', 'approved_amount', 'approved_date', 'approved_letter', 'remark', )
+    fields = ('title', 'work_order', 'activity', 'description', 'status', 'recieved_date', 'recieved_letter', 'submitted_amount', 'submitted_date', 'submitted_letter', 'approved_amount', 'approved_date', 'approved_letter', 'remark', )
     success_message = 'Variation updated successfully.'
 
     def get_context_data(self, *args, **kwargs):

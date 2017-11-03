@@ -3,8 +3,10 @@ from django.contrib import admin
 # Import models
 from .models import (Consultant,
                      Contractor,
+                     ConstructionType,
                      ProjectStatus,
                      Project,
+                     Activity,
                      VariationStatus,
                      Variation,
                      ClaimStatus,
@@ -20,6 +22,10 @@ class ContractorAdmin(admin.ModelAdmin):
     list_display = ('short_name', 'is_active', 'created_at', 'updated_at', 'id',)
     list_filter = ('is_active', 'created_at', 'updated_at',)
 
+@admin.register(ConstructionType)
+class ConstructionTypeAdmin(admin.ModelAdmin):
+    list_display = ('title',)
+
 @admin.register(ProjectStatus)
 class ProjectStatusAdmin(admin.ModelAdmin):
     list_display = ('title', 'level', 'id')
@@ -27,8 +33,12 @@ class ProjectStatusAdmin(admin.ModelAdmin):
 
 @admin.register(Project)
 class ProjectAdmin(admin.ModelAdmin):
-    list_display = ('short_name', 'employer', 'consultant', 'contractor', 'created_at', 'updated_at', 'id',)
-    list_filter = ('consultant', 'contractor', 'created_at', 'updated_at',)
+    list_display = ('short_name', 'employer', 'consultant', 'contractor', 'construction_type', 'created_at', 'updated_at', 'id',)
+    list_filter = ('consultant', 'contractor', 'construction_type', 'created_at', 'updated_at',)
+
+@admin.register(Activity)
+class ActivityTypeAdmin(admin.ModelAdmin):
+    list_display = ('title',)
 
 @admin.register(VariationStatus)
 class VariationStatusAdmin(admin.ModelAdmin):
@@ -37,8 +47,8 @@ class VariationStatusAdmin(admin.ModelAdmin):
 
 @admin.register(Variation)
 class VariationAdmin(admin.ModelAdmin):
-    list_display = ('title', 'project', 'work_order', 'status', 'recieved_date', 'created_at', 'updated_at', 'id')
-    list_filter = ('project', 'status', 'work_order', 'recieved_date', 'submitted_date', 'approved_date',)
+    list_display = ('title', 'project', 'work_order', 'status', 'activity', 'recieved_date', 'created_at', 'updated_at', 'id')
+    list_filter = ('project', 'status', 'work_order', 'recieved_date', 'submitted_date', 'approved_date', 'activity',)
 
 @admin.register(ClaimStatus)
 class ClaimStatusAdmin(admin.ModelAdmin):

@@ -34,6 +34,16 @@ class Contractor(models.Model):
     def get_absolute_url(self):
         return reverse('dashboard:contractor-detail', kwargs={'pk': str(self.pk)})
 
+class ConstructionType(models.Model):
+    """
+    Represents a construction type (Example: Building, Road, Irrigation)
+    """
+    title = models.CharField(max_length=100, help_text='Type of the construction. Example: Building, Highway etc..')
+    description = models.TextField(null=True, blank=True)
+
+    def __str__(self):
+        return self.title 
+
 class ProjectStatus(models.Model):
     """
     Represents status of a project
@@ -53,6 +63,7 @@ class Project(models.Model):
     """
     Represents a Construction Project
     """
+    construction_type = models.ForeignKey(ConstructionType, on_delete=models.CASCADE)
     consultant = models.ForeignKey(Consultant, on_delete=models.CASCADE)
     contractor = models.ForeignKey(Contractor, on_delete=models.CASCADE)
     employer = models.CharField(max_length=100, help_text='Official full name of the Employer')
@@ -75,6 +86,20 @@ class Project(models.Model):
     def get_absolute_url(self):
         return reverse('dashboard:project-detail', kwargs={'pk': str(self.pk)})
 
+class Activity(models.Model):
+    """
+    Represents a work activity (Example: Earth work, concrete works, finishing works, electrical works, sanitary works ...)
+    """
+    title = models.CharField(max_length=100, help_text='Type of the work activity. Example: Concrete works, Electrical works, Finishing works..')
+    description = models.TextField(null=True, blank=True)
+
+    class Meta:
+        verbose_name_plural = 'Activities'
+
+    def __str__(self):
+        return self.title 
+
+
 class VariationStatus(models.Model):
     """
     Represents status of a variation
@@ -95,6 +120,7 @@ class Variation(models.Model):
     Represents a construction Variation Works
     """
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    activity = models.ForeignKey(Activity, on_delete=models.CASCADE)
     status = models.ForeignKey(VariationStatus, on_delete=models.CASCADE)
     title = models.CharField(max_length=100, help_text='Title for the variation works')
     description = models.TextField(null=True, blank=True, help_text='Short description about the variation works and/or work order. (Optional)')
