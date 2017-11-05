@@ -1,6 +1,18 @@
 from django.db import models
 from django.urls import reverse
 
+# STATUS MODES REMARKS
+# How to read the level field of status models
+# 
+# Level Ranges        Description
+# ------------        ------------
+#  info               0 - 99
+#  success            100 - 199
+#  warning            200 - 299
+#  error              300 - 399
+
+
+
 class Consultant(models.Model):
     """
     Represents a Consultant Firm

@@ -17,8 +17,9 @@
             </div>
         </div>
     </div>
-    
-    {% if variation.status.id == 6 or variation.status.id == 5 %}
+
+    <!-- Approved or Rejected Variations -->
+    {% if variation.status.level == 110 or variation.status.level >= 300 %}
     <div class="col-lg-4 col-md-6 col-sm-6">
         <div class="card card-stats">
             <div class="card-header" data-background-color="orange">
@@ -31,7 +32,8 @@
            
         </div>
     </div>
-    {% elif variation.status.id == 4 or variation.status.id == 3 %}
+    <!-- Submitted Variations and Variations Returned for corrections -->
+    {% elif variation.status.level == 20 or variation.status.level == 30 or variation.status.level == 40 %}
     <div class="col-lg-4 col-md-6 col-sm-6">
         <div class="card card-stats">
             <div class="card-header" data-background-color="orange">
@@ -44,6 +46,8 @@
            
         </div>
     </div>
+
+    <!-- Under Preparation or Pending variations -->
     {% else %}
      <div class="col-lg-4 col-md-6 col-sm-6">
         <div class="card card-stats">
@@ -58,6 +62,7 @@
         </div>
     </div>
     {% endif %}
+    
     <div class="col-lg-4 col-md-6 col-sm-6">
         <div class="card card-stats">
             <div class="card-header" data-background-color="green">
@@ -102,31 +107,19 @@
                     {% endif %}
 
                     <dt>Status</dt>
-                    {% if variation.status.id == 1 %}
+                    {% if variation.status.level == 10 or variation.status.level == 20 or variation.status.level == 30 or variation.status.level == 40 %}
                     <dd>
                        <span class="label label-info">
                           <span class="fa fa-info-circle"></span> {{ variation.status.title|title }} 
                        </span>
                     </dd>
-                    {% elif variation.status.id == 2 %}
+                    {% elif variation.status.level == 210 %}
                     <dd>
                        <span class="label label-warning">
                            <span class="fa fa-warning"></span> {{ variation.status.title|title }}
                        </span>
                     </dd>
-                    {% elif variation.status.id == 3 %}
-                    <dd>
-                       <span class="label label-info">
-                           <span class="fa fa-info-circle"></span> {{ variation.status.title|title }}
-                       </span>
-                    </dd>
-                    {% elif variation.status.id == 4 %}
-                    <dd>
-                       <span class="label label-info">
-                           <span class="fa fa-info-circle"></span> {{ variation.status.title|title }}
-                       </span>
-                    </dd>
-                    {% elif variation.status.id == 5 %}
+                    {% elif variation.status.level == 110 %}
                     <dd>
                        <span class="label label-success">
                            <span class="fa fa-check-square-o"></span> {{ variation.status.title|title }}

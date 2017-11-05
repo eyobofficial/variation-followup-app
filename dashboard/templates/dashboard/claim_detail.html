@@ -63,31 +63,13 @@
                     <dd>{{ claim.number|stringformat:'02d' }}</dd>
 
                     <dt>Status</dt>
-                    {% if claim.status.id == 1 %}
+                    {% if claim.status.level >= 0 and claim.status.level < 100 %}
                     <dd>
                        <span class="label label-info">
                           <span class="fa fa-info-circle"></span> {{ claim.status.title|title }} 
                        </span>
                     </dd>
-                    {% elif claim.status.id == 2 %}
-                    <dd>
-                       <span class="label label-warning">
-                           <span class="fa fa-warning"></span> {{ claim.status.title|title }}
-                       </span>
-                    </dd>
-                    {% elif claim.status.id == 3 %}
-                    <dd>
-                       <span class="label label-info">
-                           <span class="fa fa-info-circle"></span> {{ claim.status.title|title }}
-                       </span>
-                    </dd>
-                    {% elif claim.status.id == 4 %}
-                    <dd>
-                       <span class="label label-info">
-                           <span class="fa fa-info-circle"></span> {{ claim.status.title|title }}
-                       </span>
-                    </dd>
-                    {% elif claim.status.id == 5 %}
+                    {% elif claim.status.level == 110 %}
                     <dd>
                        <span class="label label-success">
                            <span class="fa fa-check-square-o"></span> {{ claim.status.title|title }}

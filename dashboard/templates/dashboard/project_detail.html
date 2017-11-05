@@ -66,22 +66,16 @@
                           <span class="fa fa-info-circle"></span> {{ project.status.title|title }} 
                        </span>
                     </dd>
-                    {% elif project.status.level == 2 %}
+                    {% elif project.status.level == 210 %}
                     <dd>
                        <span class="label label-warning">
                            <span class="fa fa-warning"></span> {{ project.status.title|title }}
                        </span>
                     </dd>
-                    {% elif project.status.level == 30 %}
+                    {% elif project.status.level == 110 %}
                     <dd>
-                       <span class="label label-info">
-                           <span class="fa fa-info-circle"></span> {{ project.status.title|title }}
-                       </span>
-                    </dd>
-                    {% elif project.status.id == 4 %}
-                    <dd>
-                       <span class="label label-info">
-                           <span class="fa fa-info-circle"></span> {{ project.status.title|title }}
+                       <span class="label label-success">
+                           <span class="fa fa-check-square-o"></span> {{ project.status.title|title }}
                        </span>
                     </dd>
                     {% else %}
