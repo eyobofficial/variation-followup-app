@@ -112,7 +112,7 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td>Amount (in Calendar Days)</td>
+                                <td>Amount (Calendar Days)</td>
 
                                 {% if claim.submitted_amount %}
                                 <td class="text-center">{{ claim.submitted_amount|intcomma }}</td>
@@ -190,6 +190,7 @@
     </div>
 </div><!-- /.row -->
 
+{% if user.is_staff %}
 <div class="row">
     <div class="col-sm-12">
         <a href="{% url 'dashboard:claim-update' claim.id %}" title="Update time claim" class="btn btn-primary">
@@ -201,4 +202,5 @@
         </a>
     </div>
 </div>
+{% endif %}
 {% endblock %}

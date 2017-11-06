@@ -129,6 +129,7 @@
     </div>
 </div><!-- /.row -->
 
+{% if user.is_staff %}
 <div class="row">
     <div class="col-sm-12">
         <a href="{% url 'dashboard:project-create' %}" title="Add new project" class="btn btn-primary pull-right">
@@ -136,4 +137,5 @@
         </a>
     </div>
 </div>
+{% endif %}
 {% endblock %}

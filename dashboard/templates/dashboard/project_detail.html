@@ -98,7 +98,7 @@
     </div>
 </div><!-- /.row -->
 
-
+{% if user.is_staff %}
 <div class="row">
     <div class="col-sm-12">
         <a href="{% url 'dashboard:project-update' project.id %}" title="Update project" class="btn btn-primary">
@@ -110,4 +110,5 @@
         </a>
     </div>
 </div>
+{% endif %}
 {% endblock %}

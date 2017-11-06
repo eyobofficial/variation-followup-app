@@ -240,6 +240,7 @@
     </div>
 </div><!-- /.row -->
 
+{% if user.is_staff %}
 <div class="row">
     <div class="col-sm-12">
         <a href="{% url 'dashboard:variation-update' variation.id %}" title="Update Variation" class="btn btn-primary">
@@ -251,4 +252,5 @@
         </a>
     </div>
 </div>
+{% endif %}
 {% endblock %}

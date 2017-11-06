@@ -225,5 +225,13 @@ dl > dd, .dd {
         padding-right: 4em;
     }
 
+    .login-form {
+        margin-top: 25%;
+    }
+
+    .signup-form {
+        margin-top: 8%;
+    }
+
 
 }

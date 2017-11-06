@@ -55,13 +55,16 @@ def signup(request):
             user.last_name = last_name
             user.email = email
             user.is_active = False
-            user.profile.contractor = form.cleaned_data.get('contractor')
+            user.profile.contractor = form.cleaned_data['contractor']
             user.save()
-            login(request, user)
+            messages.success(request, 'You have successfully created a new account.')
+            messages.warning(request, 'Your account must be activated before you can start using it. Please contact the admin to quickly activate your account.')
             return redirect('dashboard:index')
     else:
         form = form_class()
-    return render(request, template_name, context={'form': form})   
+    return render(request, template_name, {
+            'form': form,
+        })   
 
 @login_required
 def index(request):
