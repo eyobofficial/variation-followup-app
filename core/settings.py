@@ -127,6 +127,8 @@ STATICFILES_DIRS = (
         os.path.join(BASE_DIR, 'static'),
     )
 
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'dashboard:index'
 
 # Setup Message Framework Bootstrap tags
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'

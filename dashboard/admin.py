@@ -1,7 +1,8 @@
 from django.contrib import admin
 
 # Import models
-from .models import (Consultant,
+from .models import (Profile,
+                     Consultant,
                      Contractor,
                      ConstructionType,
                      ProjectStatus,
@@ -11,6 +12,11 @@ from .models import (Consultant,
                      Variation,
                      ClaimStatus,
                      Claim,)
+
+@admin.register(Profile)
+class ProfileAdmin(admin.ModelAdmin):
+    list_display = ('user', 'contractor',)
+    list_filter = ('contractor',)
 
 @admin.register(Consultant)
 class ConsultantAdmin(admin.ModelAdmin):

@@ -15,8 +15,27 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
+from django.conf.urls.static import static
+from django.conf import settings
+from django.views.generic import RedirectView
+from django.contrib.auth import views as auth_views
+from django.contrib import admin
+
+from dashboard import views as dashboard_views
 
 urlpatterns = [
+    # Login to account URL mapper
+    url(r'^login/$', auth_views.LoginView.as_view(), name='login'),
+
+    # Logout URL mapper
+    url(r'^logout/$', auth_views.logout_then_login, name='logout'),
+
+    # User Registration URL mapper
+    url(r'^signup/$', dashboard_views.signup, name='signup'),
+
+    # Dashboard app mapper
     url(r'^dashboard/', include('dashboard.urls')),
+
+    # Admin site mapper
     url(r'^admin/', admin.site.urls),
 ]

@@ -1,5 +1,23 @@
 from django.db import models
 from django.urls import reverse
+from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    contractor = models.ForeignKey('Contractor', null=True, on_delete=models.SET_NULL)
+    title = models.CharField('Job Title', max_length=100)
+    bio = models.TextField('Short Bio', null=True, blank=True)
+
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)
+
+@receiver(post_save, sender=User)
+def save_user_profile(sender, instance, **kwargs):
+    instance.profile.save()
 
 # STATUS MODES REMARKS
 # How to read the level field of status models
@@ -10,8 +28,6 @@ from django.urls import reverse
 #  success            100 - 199
 #  warning            200 - 299
 #  error              300 - 399
-
-
 
 class Consultant(models.Model):
     """
