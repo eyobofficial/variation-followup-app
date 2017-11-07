@@ -94,34 +94,22 @@
                             <td><a href="{% url 'dashboard:claim-detail' claim.id %}">{{ claim.title|title }}</a></td>
                             <td>{{ claim.project.short_name }}</td>
 
-                            {% if claim.status.id == 1 %}
+                            {% if claim.status.level >= 0 and claim.status.level < 100 %}
                             <td>
                                <span class="label label-info">
                                    <span class="fa fa-info-circle"></span> {{ claim.status.title|title }}
                                </span>
                             </td>
-                            {% elif claim.status.id == 2 %}
-                            <td>
-                               <span class="label label-warning">
-                                   <span class="fa fa-warning"></span> {{ claim.status.title|title }}
-                               </span>
-                            </td>
-                            {% elif claim.status.id == 3 %}
-                            <td>
-                               <span class="label label-info">
-                                   <span class="fa fa-info-circle"></span> {{ claim.status.title|title }}
-                               </span>
-                            </td>
-                            {% elif claim.status.id == 4 %}
-                            <td>
-                               <span class="label label-info">
-                                   <span class="fa fa-info-circle"></span> {{ claim.status.title|title }}
-                               </span>
-                            </td>
-                            {% elif claim.status.id == 5 %}
+                            {% elif claim.status.level >= 100 and claim.status.level < 200 %}
                             <td>
                                <span class="label label-success">
                                    <span class="fa fa-check-square-o"></span> {{ claim.status.title|title }}
+                               </span>
+                            </td>
+                            {% elif claim.status.level >= 200 and claim.status.level < 300 %}
+                            <td>
+                               <span class="label label-warning">
+                                   <span class="fa fa-warning"></span> {{ claim.status.title|title }}
                                </span>
                             </td>
                             {% else %}

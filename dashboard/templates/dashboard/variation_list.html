@@ -101,34 +101,22 @@
                             <td class="text-fade">(None)</td>
                             {% endif %}
 
-                            {% if variation.status.id == 1 %}
+                            {% if variation.status.level >= 0 and variation.status.level < 100 %}
                             <td>
                                <span class="label label-info">
                                    <span class="fa fa-info-circle"></span> {{ variation.status.title|title }}
                                </span>
                             </td>
-                            {% elif variation.status.id == 2 %}
-                            <td>
-                               <span class="label label-warning">
-                                   <span class="fa fa-warning"></span> {{ variation.status.title|title }}
-                               </span>
-                            </td>
-                            {% elif variation.status.id == 3 %}
-                            <td>
-                               <span class="label label-info">
-                                   <span class="fa fa-info-circle"></span> {{ variation.status.title|title }}
-                               </span>
-                            </td>
-                            {% elif variation.status.id == 4 %}
-                            <td>
-                               <span class="label label-info">
-                                   <span class="fa fa-info-circle"></span> {{ variation.status.title|title }}
-                               </span>
-                            </td>
-                            {% elif variation.status.id == 5 %}
+                            {% elif variation.status.level >= 100 and variation.status.level < 200 }
                             <td>
                                <span class="label label-success">
                                    <span class="fa fa-check-square-o"></span> {{ variation.status.title|title }}
+                               </span>
+                            </td>
+                            {% elif variation.status.level >= 200 and variation.status.level < 300 %}
+                            <td>
+                               <span class="label label-warning">
+                                   <span class="fa fa-warning"></span> {{ variation.status.title|title }}
                                </span>
                             </td>
                             {% else %}
