@@ -115,18 +115,27 @@
                                   <li class="active">
                                       <a href="#all-claims" data-toggle="tab">
                                           All
+                                          {% if all_claim_list.count > 0 %}
+                                          <span class="notification notification-info">{{ all_claim_list.count }}</span>
+                                          {% endif %}
                                       <div class="ripple-container"></div></a>
                                   </li>
 
                                   <li class="">
                                       <a href="#submitted-claims" data-toggle="tab">
                                           Submitted
+                                          {% if submitted_claim_list.count > 0 %}
+                                          <span class="notification notification-success">{{ submitted_claim_list.count }}</span>
+                                          {% endif %}
                                       <div class="ripple-container"></div></a>
                                   </li>
 
                                   <li class="">
                                       <a href="#approved-claims" data-toggle="tab">
                                           Approved/Rejected
+                                          {% if approved_claim_list.count > 0 %}
+                                          <span class="notification notification-danger">{{ approved_claim_list.count }}</span>
+                                          {% endif %}
                                       <div class="ripple-container"></div></a>
                                   </li>
                               </ul>
@@ -309,29 +318,44 @@
                                   <li class="active">
                                       <a href="#all-variations" data-toggle="tab">
                                           All
+                                          {% if all_variation_list.count > 0 %}
+                                          <span class="notification notification-info">{{ all_variation_list.count }}</span>
+                                          {% endif %}
                                       <div class="ripple-container"></div></a>
                                   </li>
                                   <li class="">
                                       <a href="#under-prep-variations" data-toggle="tab">
                                           Under Prep.
+                                          {% if under_prep_variation_list.count > 0 %}
+                                          <span class="notification notification-info">{{ under_prep_variation_list.count }}</span>
+                                          {% endif %}
                                       <div class="ripple-container"></div></a>
                                   </li>
 
                                   <li class="">
                                       <a href="#pending-variations" data-toggle="tab">
                                           Pending
+                                          {% if pending_variation_list.count > 0 %}
+                                          <span class="notification notification-warning">{{ pending_variation_list.count }}</span>
+                                          {% endif %}
                                       <div class="ripple-container"></div></a>
                                   </li>
 
                                   <li class="">
                                       <a href="#submitted-variations" data-toggle="tab">
                                           Submitted
+                                          {% if submitted_variation_list.count > 0 %}
+                                          <span class="notification notification-success">{{ submitted_variation_list.count }}</span>
+                                          {% endif %}
                                       <div class="ripple-container"></div></a>
                                   </li>
 
                                   <li class="">
                                       <a href="#approved-variations" data-toggle="tab">
                                           Approved/Rejected
+                                          {% if approved_variation_list.count > 0 %}
+                                          <span class="notification notification-danger">{{ approved_variation_list.count }}</span>
+                                          {% endif %}
                                       <div class="ripple-container"></div></a>
                                   </li>
                               </ul>

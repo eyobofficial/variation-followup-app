@@ -1,3 +1,8 @@
+/************ Tweaks to the deafult styles *********/
+.nav-tabs > li {
+    padding-left: 0.8em;
+}
+
 /*************** Common Styles *************/
 .text-shade, .text-fade {
     color: #999999;
@@ -54,6 +59,44 @@ dl > dd, .dd {
     box-shadow: 0 12px 20px -10px rgba(244, 67, 54, 0.28), 0 4px 20px 0px rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(244, 67, 54, 0.2);
 }
 
+
+/******************** Notification **********************/
+.notification {
+    position: absolute;
+    top: 2px;
+    right: -3px;
+    font-size: 9px;
+    font-weight: bold;
+    color: #FFFFFF;
+    min-width: 20px;
+    padding: 0px 5px;
+    height: 20px;
+    border-radius: 10px;
+    text-align: center;
+    line-height: 19px;
+    vertical-align: middle;
+    display: block;
+}
+
+.notification-info {
+    background: linear-gradient(60deg, #26c6da, #00acc1);
+    box-shadow: 0 12px 20px -10px rgba(0, 188, 212, 0.28), 0 4px 20px 0px rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(0, 188, 212, 0.2);
+}
+
+.notification-success {
+    background: linear-gradient(60deg, #66bb6a, #43a047);
+    box-shadow: 0 12px 20px -10px rgba(76, 175, 80, 0.28), 0 4px 20px 0px rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(76, 175, 80, 0.2);
+}
+
+.notification-warning {
+    background: linear-gradient(60deg, #ffa726, #fb8c00);
+    box-shadow: 0 12px 20px -10px rgba(255, 152, 0, 0.28), 0 4px 20px 0px rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(255, 152, 0, 0.2);
+}
+
+.notification-danger {
+    background: linear-gradient(60deg, #ef5350, #e53935);
+    box-shadow: 0 12px 20px -10px rgba(244, 67, 54, 0.28), 0 4px 20px 0px rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(244, 67, 54, 0.2);
+}
 
 /******************* Alert **************************/
 .alert {
