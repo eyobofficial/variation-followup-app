@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, reverse, get_object_or_404
 from django.views import generic
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
@@ -81,6 +81,9 @@ class ProjectList(UserPassesTestMixin, generic.ListView):
     def test_func(self, *args, **kwargs):
         return self.request.user.is_active
 
+    def get_queryset(self, *args, **kwargs):
+        return Project.objects.filter(contractor=self.request.user.profile.contractor)
+
     def get_context_data(self, *args, **kwargs):
         context = super(ProjectList, self).get_context_data(*args, **kwargs)
         context['page_name'] = 'projects'
@@ -93,10 +96,20 @@ class ProjectDetail(UserPassesTestMixin, generic.DetailView):
     model = Project
 
     def test_func(self, *args, **kwargs):
-        return self.request.user.is_active
+        project = get_object_or_404(Project, pk=self.kwargs['pk'])
+        return self.request.user.is_active and project.contractor == self.request.user.profile.contractor
 
     def get_context_data(self, *args, **kwargs):
         context = super(ProjectDetail, self).get_context_data(*args, **kwargs)
+        context['all_variation_list'] = Variation.objects.filter(project=self.kwargs['pk']).order_by('-updated_at')
+        context['under_prep_variation_list'] = Variation.objects.filter(project=self.kwargs['pk']).filter(status__group=1).order_by('-updated_at')
+        context['pending_variation_list'] = Variation.objects.filter(project=self.kwargs['pk']).filter(status__group=2).order_by('-updated_at')
+        context['submitted_variation_list'] = Variation.objects.filter(project=self.kwargs['pk']).filter(status__group=3).order_by('-updated_at')
+        context['approved_variation_list'] = Variation.objects.filter(project=self.kwargs['pk']).filter(status__group=4).order_by('-updated_at')
+
+        context['all_claim_list'] = Claim.objects.filter(project=self.kwargs['pk']).order_by('-updated_at')
+        context['submitted_claim_list'] = Claim.objects.filter(project=self.kwargs['pk']).filter(status__group=3).order_by('-updated_at')
+        context['approved_claim_list'] = Claim.objects.filter(project=self.kwargs['pk']).filter(status__group=4).order_by('-updated_at')
         context['page_name'] = 'projects'
         return context
 
@@ -105,8 +118,12 @@ class ProjectCreate(UserPassesTestMixin, SuccessMessageMixin, CreateView):
     Create a new project record
     """
     model = Project
-    fields = ('construction_type', 'consultant', 'employer', 'contractor', 'full_name', 'short_name', 'status', 'description', )
+    fields = ('construction_type', 'consultant', 'employer', 'full_name', 'short_name', 'status', 'description', )
     success_message = 'New project created successfully.'
+
+    def form_valid(self, form, *args, **kwargs):
+        form.instance.contractor = self.request.user.profile.contractor
+        return super(ProjectCreate, self).form_valid(form, *args, **kwargs)
 
     def test_func(self, *args, **kwargs):
         return self.request.user.is_active and self.request.user.is_staff
@@ -125,7 +142,8 @@ class ProjectUpdate(UserPassesTestMixin, SuccessMessageMixin, UpdateView):
     success_message = 'Project updated created successfully.'
 
     def test_func(self, *args, **kwargs):
-        return self.request.user.is_active and self.request.user.is_staff
+        project = get_object_or_404(Project, pk=self.kwargs['pk'])
+        return self.request.user.is_active and self.request.user.is_staff and project.contractor == self.request.user.profile.contractor
 
     def get_context_data(self, *args, **kwargs):
         context = super(ProjectUpdate, self).get_context_data(*args, **kwargs)
@@ -141,7 +159,8 @@ class ProjectDelete(UserPassesTestMixin, DeleteView):
     success_message = 'A project is deleted successfully.'
 
     def test_func(self, *args, **kwargs):
-        return self.request.user.is_active and self.request.user.is_staff
+        project = get_object_or_404(Project, pk=self.kwargs['pk'])
+        return self.request.user.is_active and self.request.user.is_staff and project.contractor == self.request.user.profile.contractor
 
     def delete(self, *args, **kwargs):
         messages.success(self.request, self.success_message)
@@ -163,7 +182,7 @@ class VariationList(UserPassesTestMixin, generic.ListView):
         return self.request.user.is_active
 
     def get_queryset(self, *args, **kwargs):
-        return Variation.objects.all().order_by('-updated_at')
+        return Variation.objects.filter(project__contractor=self.request.user.profile.contractor).order_by('-updated_at')
 
     def get_context_data(self, *args, **kwargs):
         context = super(VariationList, self).get_context_data(*args, **kwargs)
@@ -177,11 +196,28 @@ class VariationDetail(UserPassesTestMixin, generic.DetailView):
     model = Variation
 
     def test_func(self, *args, **kwargs):
-        return self.request.user.is_active
+        variation = get_object_or_404(Variation, pk=self.kwargs['pk'])
+        return self.request.user.is_active and variation.project.contractor == self.request.user.profile.contractor
 
     def get_context_data(self, *args, **kwargs):
         context = super(VariationDetail, self).get_context_data(*args, **kwargs)
         context['page_name'] = 'variations'
+        return context
+
+class ProjectVariationDetail(UserPassesTestMixin, generic.DetailView):
+    """
+    Detail for a particular variation record
+    """
+    model = Variation
+    template_name = 'dashboard/project_variation_detail.html'
+
+    def test_func(self, *args, **kwargs):
+        variation = get_object_or_404(Variation, pk=self.kwargs['pk'])
+        return self.request.user.is_active and variation.project.contractor == self.request.user.profile.contractor
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(ProjectVariationDetail, self).get_context_data(*args, **kwargs)
+        context['page_name'] = 'projects'
         return context
 
 class VariationCreate(UserPassesTestMixin, SuccessMessageMixin, CreateView):
@@ -209,7 +245,8 @@ class VariationUpdate(UserPassesTestMixin, SuccessMessageMixin, UpdateView):
     success_message = 'Variation updated successfully.'
 
     def test_func(self, *args, **kwargs):
-        return self.request.user.is_active and self.request.user.is_staff
+        variation = get_object_or_404(Variation, pk=self.kwargs['pk'])
+        return self.request.user.is_active and self.request.user.is_staff and variation.project.contractor == self.request.user.profile.contractor
 
     def get_context_data(self, *args, **kwargs):
         context = super(VariationUpdate, self).get_context_data(*args, **kwargs)
@@ -225,7 +262,8 @@ class VariationDelete(UserPassesTestMixin, DeleteView):
     success_message = 'Variation deleted successfully.'
 
     def test_func(self, *args, **kwargs):
-        return self.request.user.is_active and self.request.user.is_staff
+        variation = get_object_or_404(Variation, pk=self.kwargs['pk'])
+        return self.request.user.is_active and self.request.user.is_staff and variation.project.contractor == self.request.user.profile.contractor
 
     def delete(self, *args, **kwargs):
         messages.success(self.request, self.success_message)
@@ -246,7 +284,7 @@ class ClaimList(UserPassesTestMixin, generic.ListView):
         return self.request.user.is_active
 
     def get_queryset(self, *args, **kwargs):
-        return Claim.objects.all().order_by('-updated_at')
+        return Claim.objects.filter(project__contractor=self.request.user.profile.contractor).order_by('-updated_at')
 
     def get_context_data(self, *args, **kwargs):
         context = super(ClaimList, self).get_context_data(*args, **kwargs)
@@ -260,11 +298,28 @@ class ClaimDetail(UserPassesTestMixin, generic.DetailView):
     model = Claim
 
     def test_func(self, *args, **kwargs):
-        return self.request.user.is_active
+        claim = get_object_or_404(Claim, pk=self.kwargs['pk'])
+        return self.request.user.is_active and claim.project.contractor == self.request.user.profile.contractor
 
     def get_context_data(self, *args, **kwargs):
         context = super(ClaimDetail, self).get_context_data(*args, **kwargs)
         context['page_name'] = 'time claims'
+        return context
+
+class ProjectClaimDetail(UserPassesTestMixin, generic.DetailView):
+    """
+    Detail for a particular time extension claim record of a particular project
+    """
+    model = Claim
+    template_name = 'dashboard/project_claim_detail.html'
+
+    def test_func(self, *args, **kwargs):
+        claim = get_object_or_404(Claim, pk=self.kwargs['pk'])
+        return self.request.user.is_active and claim.project.contractor == self.request.user.profile.contractor
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(ProjectClaimDetail, self).get_context_data(*args, **kwargs)
+        context['page_name'] = 'projects'
         return context
 
 class ClaimCreate(UserPassesTestMixin, SuccessMessageMixin, CreateView):
@@ -283,6 +338,51 @@ class ClaimCreate(UserPassesTestMixin, SuccessMessageMixin, CreateView):
         context['page_name'] = 'time claims'
         return context
 
+class ProjectClaimCreate(UserPassesTestMixin, SuccessMessageMixin, CreateView):
+    """
+    Create a new time extension claim record for current project
+    """
+    model = Claim
+    fields = ('title', 'number', 'description', 'status', 'submitted_amount', 'submitted_date', 'submitted_letter', 'approved_amount', 'approved_date', 'approved_letter', 'remark', )
+    template_name = 'dashboard/project_claim_form.html'
+    success_message = 'Time claim created successfully.'
+
+    def test_func(self, *args, **kwargs):
+        return self.request.user.is_active and self.request.user.is_staff
+
+    def get_success_url(self, *args, **kwargs):
+        return reverse('dashboard:project-claim-detail', kwargs={'pk': str(self.object.id)})
+
+    def form_valid(self, form, *args, **kwargs):
+        form.instance.project = Project.objects.get(pk=self.kwargs['project_pk'])
+        return super(ProjectClaimCreate, self).form_valid(form, *args, **kwargs)
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(ProjectClaimCreate, self).get_context_data(*args, **kwargs)
+        context['project'] = Project.objects.get(pk=self.kwargs['project_pk'])
+        context['page_name'] = 'projects'
+        return context
+
+class ProjectClaimUpdate(UserPassesTestMixin, SuccessMessageMixin, UpdateView):
+    """
+    Create a new time extension claim record for current project
+    """
+    model = Claim
+    fields = ('title', 'number', 'description', 'status', 'submitted_amount', 'submitted_date', 'submitted_letter', 'approved_amount', 'approved_date', 'approved_letter', 'remark', )
+    template_name = 'dashboard/project_claim_form.html'
+    success_message = 'Time claim created successfully.'
+
+    def test_func(self, *args, **kwargs):
+        return self.request.user.is_active and self.request.user.is_staff
+
+    def get_success_url(self, *args, **kwargs):
+        return reverse('dashboard:project-claim-detail', kwargs={'pk': str(self.object.id)})
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(ProjectClaimUpdate, self).get_context_data(*args, **kwargs)
+        context['page_name'] = 'projects'
+        return context
+
 class ClaimUpdate(UserPassesTestMixin, SuccessMessageMixin, UpdateView):
     """
     Update a particular time claim record
@@ -292,7 +392,8 @@ class ClaimUpdate(UserPassesTestMixin, SuccessMessageMixin, UpdateView):
     success_message = 'Time claim updated successfully.'
 
     def test_func(self, *args, **kwargs):
-        return self.request.user.is_active and self.request.user.is_staff
+        claim = get_object_or_404(Claim, pk=self.kwargs['pk'])
+        return self.request.user.is_active and self.request.user.is_staff and claim.project.contractor == self.request.user.profile.contractor
 
     def get_context_data(self, *args, **kwargs):
         context = super(ClaimUpdate, self).get_context_data(*args, **kwargs)
@@ -308,7 +409,8 @@ class ClaimDelete(UserPassesTestMixin, DeleteView):
     success_message = 'Time claim deleted successfully.'
 
     def test_func(self, *args, **kwargs):
-        return self.request.user.is_active and self.request.user.is_staff
+        claim = get_object_or_404(Claim, pk=self.kwargs['pk'])
+        return self.request.user.is_active and self.request.user.is_staff and claim.project.contractor == self.request.user.profile.contractor
 
     def delete(self, *args, **kwargs):
         messages.success(self.request, self.success_message)
@@ -317,4 +419,28 @@ class ClaimDelete(UserPassesTestMixin, DeleteView):
     def get_context_data(self, *args, **kwargs):
         context = super(ClaimDelete, self).get_context_data(*args, **kwargs)
         context['page_name'] = 'time claims'
+        return context
+
+class ProjectClaimDelete(UserPassesTestMixin, DeleteView):
+    """
+    Delete a particular time claim record from the current project
+    """
+    model = Claim
+    template_name = 'dashboard/project_claim_confirm_delete.html'
+    success_message = 'Time claim deleted successfully.'
+
+    def test_func(self, *args, **kwargs):
+        claim = get_object_or_404(Claim, pk=self.kwargs['pk'])
+        return self.request.user.is_active and self.request.user.is_staff and claim.project.contractor == self.request.user.profile.contractor
+    
+    def get_success_url(self, *args, **kwargs):
+        return reverse('dashboard:project-detail', kwargs={'pk': str(self.kwargs['project_pk'])})
+
+    def delete(self, *args, **kwargs):
+        messages.success(self.request, self.success_message)
+        return super(ProjectClaimDelete, self).delete(*args, **kwargs)
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(ProjectClaimDelete, self).get_context_data(*args, **kwargs)
+        context['page_name'] = 'projects'
         return context

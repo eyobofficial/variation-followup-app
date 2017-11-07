@@ -1,0 +1,206 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% block page_name %} {{ claim.project.short_name}} &nbsp;<span class="fa fa-angle-right"></span>&nbsp; {{ claim.title|title }} {% endblock page_name %}
+
+{% block content %}
+{% include 'partials/messages.html' %}
+<div class="row">
+    <div class="col-lg-4 col-md-6 col-sm-6">
+        <div class="card card-stats">
+            <div class="card-header" data-background-color="blue">
+                <i class="material-icons">info_outline</i>
+            </div>
+            <div class="card-content">
+                <p class="category">Status</p>
+                <h3 class="title">{{ claim.status.short_title }}</h3>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-4 col-md-6 col-sm-6">
+        <div class="card card-stats">
+            <div class="card-header" data-background-color="orange">
+                <i class="material-icons">date_range</i>
+            </div>
+            <div class="card-content">
+                <p class="category">Time Claim No.</p>
+                <h3 class="title">{{ claim.number|stringformat:'02d' }}</h3>
+            </div>
+           
+        </div>
+    </div>
+   
+    <div class="col-lg-4 col-md-6 col-sm-6">
+        <div class="card card-stats">
+            <div class="card-header" data-background-color="green">
+                <i class="material-icons">cached</i>
+            </div>
+            <div class="card-content">
+                <p class="category">Last Updated</p>
+                <h3 class="title">{{ claim.updated_at|naturalday:'M d, Y'|title }}</h3>
+            </div>
+        </div>
+    </div>
+</div><!-- /.row -->
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header" data-background-color="purple">
+                <h4 class="title">Time Claim Summary</h4>
+                <p class="category">Description and summary of the time extension claim</p>
+            </div>
+            <div class="card-content">
+                <dl>
+                    <dt>Time Claim Title</dt>
+                    <dd>{{ claim.title|title }}</dd>
+
+                    <dt>Project</dt>
+                    <dd>{{ claim.project.full_name }}</dd>
+
+                    <dt>Time Claim No.</dt>
+                    <dd>{{ claim.number|stringformat:'02d' }}</dd>
+
+                    <dt>Status</dt>
+                    {% if claim.status.level >= 0 and claim.status.level < 100 %}
+                    <dd>
+                       <span class="label label-info">
+                          <span class="fa fa-info-circle"></span> {{ claim.status.title|title }} 
+                       </span>
+                    </dd>
+                    {% elif claim.status.level == 110 %}
+                    <dd>
+                       <span class="label label-success">
+                           <span class="fa fa-check-square-o"></span> {{ claim.status.title|title }}
+                       </span>
+                    </dd>
+                    {% else %}
+                    <dd>
+                       <span class="label label-danger">
+                          <span class="fa fa-warning"></span> {{ claim.status.title|title }} 
+                       </span>
+                    </dd>
+                    {% endif %}
+
+                    <dt>Short Description</dt>
+                    {% if claim.description %}
+                    <dd>{{ claim.description }}</dd>
+                    {% else %}
+                    <dd class="text-fade text-justify">(No Description)</dd>
+                    {% endif %}
+                </dl>
+            </div>
+        </div>
+    </div>
+</div><!-- /.row -->
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header" data-background-color="purple">
+                <h4 class="title">Submitted vs Approved</h3>
+                <p class="category">Are you looking for more components? Please check our Premium Version of Material Dashboard.</p>
+            </div>
+            <div class="card-content">
+                <div class="table-responsive table-upgrade">
+                    <table class="table">
+                        <thead>
+                            <th></th>
+                            <th class="text-center text-primary">Submitted</th>
+                            <th class="text-center text-primary">Approved/Rejected</th>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Amount (Calendar Days)</td>
+
+                                {% if claim.submitted_amount %}
+                                <td class="text-center">{{ claim.submitted_amount|intcomma }}</td>
+                                {% else %}
+                                <td class="text-center"> - </td>
+                                {% endif %}
+
+                                {% if claim.approved_amount %}
+                                <td class="text-center">{{ claim.approved_amount|intcomma }}</td>
+                                {% else %}
+                                <td class="text-center"> - </td>
+                                {% endif %}                               
+                            </tr>
+
+                            <tr>
+                                <td>Dates</td>
+
+                                {% if claim.submitted_date %}
+                                <td class="text-center">{{ claim.submitted_date|naturalday:'M d, Y'|title }}</td>
+                                {% else %}
+                                <td class="text-center"> - </td>
+                                {% endif %}
+                                
+                                {% if claim.approved_date %}
+                                <td class="text-center">{{ claim.approved_date|naturalday:'M d, Y'|title }}</td>
+                                {% else %}
+                                <td class="text-center"> - </td>
+                                {% endif %}                               
+                            </tr>
+
+                            <tr>
+                                <td>Letter Ref. No.</td>
+
+                                {% if claim.submitted_letter %}
+                                <td class="text-center">{{ claim.submitted_letter }}</td>
+                                {% else %}
+                                <td class="text-center"> - </td>
+                                {% endif %}
+                                
+                                {% if claim.approved_letter %}
+                                <td class="text-center">{{ claim.approved_letter }}</td>
+                                {% else %}
+                                <td class="text-center"> - </td>
+                                {% endif %}
+                            </tr>
+                        </tbody>
+                    </table>
+                </div><!-- /.table-responsive -->
+            </div>
+
+            <div class="card-footer">
+                <div class="stats">
+                    <i class="material-icons">update</i> Last updated on {{ claim.updated_at|date:'M d, Y' }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div><!-- /.row -->
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-sm">
+            <div class="card-header" data-background-color="purple">
+                <h4 class="title">Remarks/Notes</h4>
+                <p class="category">Description and summary of the variation works</p>
+            </div>
+            <div class="card-content">
+            {% if claim.remark %}
+                {{ claim.remark }}
+            {% else %}
+                <span class="text-fade text-center">(No Remark/Note)</span>
+            {% endif %}
+            </div>
+        </div>
+    </div>
+</div><!-- /.row -->
+
+{% if user.is_staff %}
+<div class="row">
+    <div class="col-sm-12">
+        <a href="{% url 'dashboard:project-claim-update' claim.id %}" title="Update time claim" class="btn btn-primary">
+           <span class="fa fa-edit"></span>&nbsp; Update 
+        </a>
+
+        <a href="{% url 'dashboard:project-claim-delete' claim.project.id claim.id %}" title="Delete time claim" class="btn btn-danger pull-right">
+           Delete  
+        </a>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

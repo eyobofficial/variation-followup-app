@@ -34,7 +34,7 @@ class ConstructionTypeAdmin(admin.ModelAdmin):
 
 @admin.register(ProjectStatus)
 class ProjectStatusAdmin(admin.ModelAdmin):
-    list_display = ('title', 'level', 'id')
+    list_display = ('title', 'level', 'group', 'id')
     list_filter = ('level',)
 
 @admin.register(Project)
@@ -48,7 +48,7 @@ class ActivityTypeAdmin(admin.ModelAdmin):
 
 @admin.register(VariationStatus)
 class VariationStatusAdmin(admin.ModelAdmin):
-    list_display = ('title', 'level', 'id')
+    list_display = ('title', 'level', 'group', 'id')
     list_filter = ('level',)
 
 @admin.register(Variation)
@@ -58,7 +58,7 @@ class VariationAdmin(admin.ModelAdmin):
 
 @admin.register(ClaimStatus)
 class ClaimStatusAdmin(admin.ModelAdmin):
-    list_display = ('title', 'level', 'id')
+    list_display = ('title', 'level', 'group', 'id')
     list_filter = ('level',)
 
 @admin.register(Claim)

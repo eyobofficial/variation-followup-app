@@ -26,5 +26,9 @@ urlpatterns = [
     url(r'^project/add/$', views.ProjectCreate.as_view(), name='project-create'),
     url(r'^project/(?P<pk>[0-9]+)/update/$', views.ProjectUpdate.as_view(), name='project-update'),
     url(r'^project/(?P<pk>[0-9]+)/delete/$', views.ProjectDelete.as_view(), name='project-delete'),
-
+    url(r'^project/variation/(?P<pk>[0-9]+)$', views.ProjectVariationDetail.as_view(), name='project-variation-detail'),
+    url(r'^project/claim/(?P<pk>[0-9]+)$', views.ProjectClaimDetail.as_view(), name='project-claim-detail'),
+    url(r'^project/(?P<project_pk>[0-9]+)/claim/create/$', views.ProjectClaimCreate.as_view(), name='project-claim-create'),
+    url(r'^project/claim/(?P<pk>[0-9]+)/update$', views.ProjectClaimUpdate.as_view(), name='project-claim-update'),
+    url(r'^project/(?P<project_pk>[0-9]+)/claim/(?P<pk>[0-9]+)/delete/$', views.ProjectClaimDelete.as_view(), name='project-claim-delete'),
 ]

@@ -72,12 +72,12 @@ dl > dd, .dd {
     }
 
     .card-sm .card-content {
-        min-height: 180px;
+        min-height: 200px;
     }
 
 
     .card-md .card-content {
-        min-height: 220px;
+        min-height: 320px;
     }
 
     .card-lg .card-content {

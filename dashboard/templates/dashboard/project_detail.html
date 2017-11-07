@@ -59,7 +59,7 @@
                     <dt>Short Title</dt>
                     <dd>{{ project.short_name }}</dd>
 
-                    <dt>Status</dt>
+                    <dt>Project Status</dt>
                     {% if project.status.level == 10 %}
                     <dd>
                        <span class="label label-info">
@@ -96,6 +96,526 @@
             </div>
         </div>
     </div>
+</div><!-- /.row -->
+
+<div class="row">
+  <div class="col-sm-12">
+      <div class="card card-nav-tabs card-sm">
+          <div class="card-header clearfix" data-background-color="purple">
+              <div class="row">
+                  <div class="col-sm-5">
+                      <h4 class="title">Project Time Claims</h4>
+                      <p class="category">List of all ongoing time extension claims status for this project</p>
+                  </div>
+
+                  <div class="col-sm-7">
+                      <div class="nav-tabs-navigation pull-right">
+                          <div class="nav-tabs-wrapper">
+                              <ul class="nav nav-tabs text-right" data-tabs="tabs">
+                                  <li class="active">
+                                      <a href="#all-claims" data-toggle="tab">
+                                          All
+                                      <div class="ripple-container"></div></a>
+                                  </li>
+
+                                  <li class="">
+                                      <a href="#submitted-claims" data-toggle="tab">
+                                          Submitted
+                                      <div class="ripple-container"></div></a>
+                                  </li>
+
+                                  <li class="">
+                                      <a href="#approved-claims" data-toggle="tab">
+                                          Approved/Rejected
+                                      <div class="ripple-container"></div></a>
+                                  </li>
+                              </ul>
+                          </div>
+                      </div>
+                  </div>
+              </div><!-- /.row -->
+          </div><!-- /.card-header -->
+
+          <div class="card-content">
+              <div class="tab-content">
+                  <div class="tab-pane active" id="all-claims">
+                      <div class="table-responsive">
+                          <table class="table">
+                              <thead class="text-primary">
+                                  <th>Title</th>
+                                  <th>Status</th>
+                                  <th>Last Updated</th>
+                              </thead>
+                              <tbody>
+                              {% for claim in all_claim_list %}
+                                  <tr>
+                                      <td><a href="{% url 'dashboard:project-claim-detail' claim.id %}">{{ claim.title|title }}</a></td>
+
+                                      {% if claim.status.level >= 0 and claim.status.level < 100 %}
+                                      <td>
+                                         <span class="label label-info">
+                                             <span class="fa fa-info-circle"></span> {{ claim.status.title|title }}
+                                         </span>
+                                      </td>
+                                      {% elif claim.status.level >= 100 and claim.status.level < 200 %}
+                                      <td>
+                                         <span class="label label-success">
+                                             <span class="fa fa-check-square-o"></span> {{ claim.status.title|title }}
+                                         </span>
+                                      </td>
+                                      {% elif claim.status.level >= 200 and claim.status.level < 300 %}
+                                      <td>
+                                         <span class="label label-warning">
+                                             <span class="fa fa-warning"></span> {{ claim.status.title|title }}
+                                         </span>
+                                      </td>
+                                      {% else %}
+                                      <td>
+                                         <span class="label label-danger">
+                                             <span class="fa fa-warning"></span> {{ claim.status.title|title }}
+                                         </span>
+                                      </td>
+                                      {% endif %}
+
+                                      <td>{{ claim.updated_at|naturalday:'M d, Y'|title }}</td>
+                                  </tr>
+                              {% endfor %}
+                              </tbody>
+                          </table>
+                      </div><!-- /.table-responsive -->
+                  </div><!-- /.tab-pane #all-variations -->
+
+                  <div class="tab-pane" id="submitted-claims">
+                      <div class="table-responsive">
+                          <table class="table">
+                              <thead class="text-primary">
+                                  <th>Title</th>
+                                  <th>Status</th>
+                                  <th>Last Updated</th>
+                              </thead>
+                              <tbody>
+                              {% for claim in submitted_claim_list %}
+                                  <tr>
+                                      <td><a href="{% url 'dashboard:project-claim-detail' claim.id %}">{{ claim.title|title }}</a></td>
+
+                                      {% if claim.status.level >= 0 and claim.status.level < 100 %}
+                                      <td>
+                                         <span class="label label-info">
+                                             <span class="fa fa-info-circle"></span> {{ claim.status.title|title }}
+                                         </span>
+                                      </td>
+                                      {% elif claim.status.level >= 100 and claim.status.level < 200 %}
+                                      <td>
+                                         <span class="label label-success">
+                                             <span class="fa fa-check-square-o"></span> {{ claim.status.title|title }}
+                                         </span>
+                                      </td>
+                                      {% elif claim.status.level >= 200 and claim.status.level < 300 %}
+                                      <td>
+                                         <span class="label label-warning">
+                                             <span class="fa fa-warning"></span> {{ claim.status.title|title }}
+                                         </span>
+                                      </td>
+                                      {% else %}
+                                      <td>
+                                         <span class="label label-danger">
+                                             <span class="fa fa-warning"></span> {{ claim.status.title|title }}
+                                         </span>
+                                      </td>
+                                      {% endif %}
+
+                                      <td>{{ claim.updated_at|naturalday:'M d, Y'|title }}</td>
+                                  </tr>
+                              {% endfor %}
+                              </tbody>
+                          </table>
+                      </div><!-- /.table-responsive -->
+                  </div><!-- /.tab-pane #submitted-claims -->
+
+                  <div class="tab-pane" id="approved-claims">
+                      <div class="table-responsive">
+                          <table class="table">
+                              <thead class="text-primary">
+                                  <th>Title</th>
+                                  <th>Status</th>
+                                  <th>Last Updated</th>
+                              </thead>
+                              <tbody>
+                              {% for claim in approved_claim_list %}
+                                  <tr>
+                                      <td><a href="{% url 'dashboard:project-claim-detail' claim.id %}">{{ claim.title|title }}</a></td>
+
+                                      {% if claim.status.level >= 0 and claim.status.level < 100 %}
+                                      <td>
+                                         <span class="label label-info">
+                                             <span class="fa fa-info-circle"></span> {{ claim.status.title|title }}
+                                         </span>
+                                      </td>
+                                      {% elif claim.status.level >= 100 and claim.status.level < 200 %}
+                                      <td>
+                                         <span class="label label-success">
+                                             <span class="fa fa-check-square-o"></span> {{ claim.status.title|title }}
+                                         </span>
+                                      </td>
+                                      {% elif claim.status.level >= 200 and claim.status.level < 300 %}
+                                      <td>
+                                         <span class="label label-warning">
+                                             <span class="fa fa-warning"></span> {{ claim.status.title|title }}
+                                         </span>
+                                      </td>
+                                      {% else %}
+                                      <td>
+                                         <span class="label label-danger">
+                                             <span class="fa fa-warning"></span> {{ claim.status.title|title }}
+                                         </span>
+                                      </td>
+                                      {% endif %}
+
+                                      <td>{{ claim.updated_at|naturalday:'M d, Y'|title }}</td>
+                                  </tr>
+                              {% endfor %}
+                              </tbody>
+                          </table>
+                      </div><!-- /.table-responsive -->
+                  </div><!-- /.tab-pane #approved-claims -->
+              </div><!-- /.tab-content -->
+          </div><!-- /.card-content -->
+          
+          {% if user.is_staff %}
+          <div class="card-footer">
+            <a href="{% url 'dashboard:project-claim-create' project.id %}" title="Add new claim" class="btn btn-sm btn-primary pull-right">
+               <span class="fa fa-plus-circle"></span>&nbsp; Add 
+            </a>
+          </div><!-- /.card-footer -->
+          {% endif %}
+      </div><!-- /.card -->
+  </div>
+</div><!-- /.row -->
+
+<div class="row">
+  <div class="col-sm-12">
+      <div class="card card-nav-tabs card-md">
+          <div class="card-header clearfix" data-background-color="purple">
+              <div class="row">
+                  <div class="col-sm-5">
+                      <h4 class="title">Project Variations</h4>
+                      <p class="category">List of all ongoing variation status for this project</p>
+                  </div>
+
+                  <div class="col-sm-7">
+                      <div class="nav-tabs-navigation pull-right">
+                          <div class="nav-tabs-wrapper">
+                              <ul class="nav nav-tabs text-right" data-tabs="tabs">
+                                  <li class="active">
+                                      <a href="#all-variations" data-toggle="tab">
+                                          All
+                                      <div class="ripple-container"></div></a>
+                                  </li>
+                                  <li class="">
+                                      <a href="#under-prep-variations" data-toggle="tab">
+                                          Under Prep.
+                                      <div class="ripple-container"></div></a>
+                                  </li>
+
+                                  <li class="">
+                                      <a href="#pending-variations" data-toggle="tab">
+                                          Pending
+                                      <div class="ripple-container"></div></a>
+                                  </li>
+
+                                  <li class="">
+                                      <a href="#submitted-variations" data-toggle="tab">
+                                          Submitted
+                                      <div class="ripple-container"></div></a>
+                                  </li>
+
+                                  <li class="">
+                                      <a href="#approved-variations" data-toggle="tab">
+                                          Approved/Rejected
+                                      <div class="ripple-container"></div></a>
+                                  </li>
+                              </ul>
+                          </div>
+                      </div>
+                  </div>
+              </div><!-- /.row -->
+          </div><!-- /.card-header -->
+
+          <div class="card-content">
+              <div class="tab-content">
+                  <div class="tab-pane active" id="all-variations">
+                      <div class="table-responsive">
+                          <table class="table">
+                              <thead class="text-primary">
+                                  <th>Title</th>
+                                  <th>Work Order No.</th>
+                                  <th>Status</th>
+                                  <th>Last Updated</th>
+                              </thead>
+                              <tbody>
+                              {% for variation in all_variation_list %}
+                                  <tr>
+                                      <td><a href="{% url 'dashboard:project-variation-detail' variation.id %}">{{ variation.title|title }}</a></td>
+
+                                      {% if variation.work_order %}
+                                      <td>{{ variation.work_order }}</td>
+                                      {% else %}
+                                      <td class="text-fade">(None)</td>
+                                      {% endif %}
+
+                                      {% if variation.status.level >= 0 and variation.status.level < 100 %}
+                                      <td>
+                                         <span class="label label-info">
+                                             <span class="fa fa-info-circle"></span> {{ variation.status.title|title }}
+                                         </span>
+                                      </td>
+                                      {% elif variation.status.level >= 100 and variation.status.level < 200 }
+                                      <td>
+                                         <span class="label label-success">
+                                             <span class="fa fa-check-square-o"></span> {{ variation.status.title|title }}
+                                         </span>
+                                      </td>
+                                      {% elif variation.status.level >= 200 and variation.status.level < 300 %}
+                                      <td>
+                                         <span class="label label-warning">
+                                             <span class="fa fa-warning"></span> {{ variation.status.title|title }}
+                                         </span>
+                                      </td>
+                                      {% else %}
+                                      <td>
+                                         <span class="label label-danger">
+                                             <span class="fa fa-warning"></span> {{ variation.status.title|title }}
+                                         </span>
+                                      </td>
+                                      {% endif %}
+
+                                      <td>{{ variation.updated_at|naturalday:'M d, Y'|title }}</td>
+                                  </tr>
+                              {% endfor %}
+                              </tbody>
+                          </table>
+                      </div><!-- /.table-responsive -->
+                  </div><!-- /.tab-pane #all-variations -->
+
+                  <div class="tab-pane" id="under-prep-variations">
+                      <div class="table-responsive">
+                          <table class="table">
+                              <thead class="text-primary">
+                                  <th>Title</th>
+                                  <th>Work Order No.</th>
+                                  <th>Status</th>
+                                  <th>Last Updated</th>
+                              </thead>
+                              <tbody>
+                              {% for variation in under_prep_variation_list %}
+                                  <tr>
+                                      <td><a href="{% url 'dashboard:project-variation-detail' variation.id %}">{{ variation.title|title }}</a></td>
+
+                                      {% if variation.work_order %}
+                                      <td>{{ variation.work_order }}</td>
+                                      {% else %}
+                                      <td class="text-fade">(None)</td>
+                                      {% endif %}
+
+                                      {% if variation.status.level >= 0 and variation.status.level < 100 %}
+                                      <td>
+                                         <span class="label label-info">
+                                             <span class="fa fa-info-circle"></span> {{ variation.status.title|title }}
+                                         </span>
+                                      </td>
+                                      {% elif variation.status.level >= 100 and variation.status.level < 200 }
+                                      <td>
+                                         <span class="label label-success">
+                                             <span class="fa fa-check-square-o"></span> {{ variation.status.title|title }}
+                                         </span>
+                                      </td>
+                                      {% elif variation.status.level >= 200 and variation.status.level < 300 %}
+                                      <td>
+                                         <span class="label label-warning">
+                                             <span class="fa fa-warning"></span> {{ variation.status.title|title }}
+                                         </span>
+                                      </td>
+                                      {% else %}
+                                      <td>
+                                         <span class="label label-danger">
+                                             <span class="fa fa-warning"></span> {{ variation.status.title|title }}
+                                         </span>
+                                      </td>
+                                      {% endif %}
+
+                                      <td>{{ variation.updated_at|naturalday:'M d, Y'|title }}</td>
+                                  </tr>
+                              {% endfor %}
+                              </tbody>
+                          </table>
+                      </div><!-- /.table-responsive -->
+                  </div><!-- /.tab-pane #under-prep-variations -->
+
+                  <div class="tab-pane" id="pending-variations">
+                      <div class="table-responsive">
+                          <table class="table">
+                              <thead class="text-primary">
+                                  <th>Title</th>
+                                  <th>Work Order No.</th>
+                                  <th>Status</th>
+                                  <th>Last Updated</th>
+                              </thead>
+                              <tbody>
+                              {% for variation in pending_variation_list %}
+                                  <tr>
+                                      <td><a href="{% url 'dashboard:project-variation-detail' variation.id %}">{{ variation.title|title }}</a></td>
+
+                                      {% if variation.work_order %}
+                                      <td>{{ variation.work_order }}</td>
+                                      {% else %}
+                                      <td class="text-fade">(None)</td>
+                                      {% endif %}
+
+                                      {% if variation.status.level >= 0 and variation.status.level < 100 %}
+                                      <td>
+                                         <span class="label label-info">
+                                             <span class="fa fa-info-circle"></span> {{ variation.status.title|title }}
+                                         </span>
+                                      </td>
+                                      {% elif variation.status.level >= 100 and variation.status.level < 200 }
+                                      <td>
+                                         <span class="label label-success">
+                                             <span class="fa fa-check-square-o"></span> {{ variation.status.title|title }}
+                                         </span>
+                                      </td>
+                                      {% elif variation.status.level >= 200 and variation.status.level < 300 %}
+                                      <td>
+                                         <span class="label label-warning">
+                                             <span class="fa fa-warning"></span> {{ variation.status.title|title }}
+                                         </span>
+                                      </td>
+                                      {% else %}
+                                      <td>
+                                         <span class="label label-danger">
+                                             <span class="fa fa-warning"></span> {{ variation.status.title|title }}
+                                         </span>
+                                      </td>
+                                      {% endif %}
+
+                                      <td>{{ variation.updated_at|naturalday:'M d, Y'|title }}</td>
+                                  </tr>
+                              {% endfor %}
+                              </tbody>
+                          </table>
+                      </div><!-- /.table-responsive -->
+                  </div><!-- /.tab-pane #pending-variations -->
+
+                  <div class="tab-pane" id="submitted-variations">
+                      <div class="table-responsive">
+                          <table class="table">
+                              <thead class="text-primary">
+                                  <th>Title</th>
+                                  <th>Work Order No.</th>
+                                  <th>Status</th>
+                                  <th>Last Updated</th>
+                              </thead>
+                              <tbody>
+                              {% for variation in submitted_variation_list %}
+                                  <tr>
+                                      <td><a href="{% url 'dashboard:project-variation-detail' variation.id %}">{{ variation.title|title }}</a></td>
+
+                                      {% if variation.work_order %}
+                                      <td>{{ variation.work_order }}</td>
+                                      {% else %}
+                                      <td class="text-fade">(None)</td>
+                                      {% endif %}
+
+                                      {% if variation.status.level >= 0 and variation.status.level < 100 %}
+                                      <td>
+                                         <span class="label label-info">
+                                             <span class="fa fa-info-circle"></span> {{ variation.status.title|title }}
+                                         </span>
+                                      </td>
+                                      {% elif variation.status.level >= 100 and variation.status.level < 200 }
+                                      <td>
+                                         <span class="label label-success">
+                                             <span class="fa fa-check-square-o"></span> {{ variation.status.title|title }}
+                                         </span>
+                                      </td>
+                                      {% elif variation.status.level >= 200 and variation.status.level < 300 %}
+                                      <td>
+                                         <span class="label label-warning">
+                                             <span class="fa fa-warning"></span> {{ variation.status.title|title }}
+                                         </span>
+                                      </td>
+                                      {% else %}
+                                      <td>
+                                         <span class="label label-danger">
+                                             <span class="fa fa-warning"></span> {{ variation.status.title|title }}
+                                         </span>
+                                      </td>
+                                      {% endif %}
+
+                                      <td>{{ variation.updated_at|naturalday:'M d, Y'|title }}</td>
+                                  </tr>
+                              {% endfor %}
+                              </tbody>
+                          </table>
+                      </div><!-- /.table-responsive -->
+                  </div><!-- /.tab-pane #submitted-variations -->
+
+                  <div class="tab-pane" id="approved-variations">
+                      <div class="table-responsive">
+                          <table class="table">
+                              <thead class="text-primary">
+                                  <th>Title</th>
+                                  <th>Work Order No.</th>
+                                  <th>Status</th>
+                                  <th>Last Updated</th>
+                              </thead>
+                              <tbody>
+                              {% for variation in approved_variation_list %}
+                                  <tr>
+                                      <td><a href="{% url 'dashboard:project-variation-detail' variation.id %}">{{ variation.title|title }}</a></td>
+
+                                      {% if variation.work_order %}
+                                      <td>{{ variation.work_order }}</td>
+                                      {% else %}
+                                      <td class="text-fade">(None)</td>
+                                      {% endif %}
+
+                                      {% if variation.status.level >= 0 and variation.status.level < 100 %}
+                                      <td>
+                                         <span class="label label-info">
+                                             <span class="fa fa-info-circle"></span> {{ variation.status.title|title }}
+                                         </span>
+                                      </td>
+                                      {% elif variation.status.level >= 100 and variation.status.level < 200 }
+                                      <td>
+                                         <span class="label label-success">
+                                             <span class="fa fa-check-square-o"></span> {{ variation.status.title|title }}
+                                         </span>
+                                      </td>
+                                      {% elif variation.status.level >= 200 and variation.status.level < 300 %}
+                                      <td>
+                                         <span class="label label-warning">
+                                             <span class="fa fa-warning"></span> {{ variation.status.title|title }}
+                                         </span>
+                                      </td>
+                                      {% else %}
+                                      <td>
+                                         <span class="label label-danger">
+                                             <span class="fa fa-warning"></span> {{ variation.status.title|title }}
+                                         </span>
+                                      </td>
+                                      {% endif %}
+
+                                      <td>{{ variation.updated_at|naturalday:'M d, Y'|title }}</td>
+                                  </tr>
+                              {% endfor %}
+                              </tbody>
+                          </table>
+                      </div><!-- /.table-responsive -->
+                  </div><!-- /.tab-pane #approved-variations -->
+              </div><!-- /.tab-content -->
+          </div>
+      </div>
+  </div>
 </div><!-- /.row -->
 
 {% if user.is_staff %}

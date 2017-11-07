@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 
-{% block page_name %} {{ claim.title|title }} {% endblock page_name %}
+{% block page_name %}
+    {{ claim.project.short_name}} &nbsp;<span class="fa fa-angle-right"></span>&nbsp; {{ claim.title|title }} &nbsp;<span class="fa fa-angle-right"></span>&nbsp; Delete
+{% endblock page_name %}
 
 {% block content %}
 <div class="row">
@@ -22,7 +24,7 @@
         <form method="POST">
             {% csrf_token %}
             <button type="submit" title="Confirm and Delete" class="btn btn-primary"> Delete </button>
-            <a href="{% url 'dashboard:claim-detail' claim.id %}" title="Delete time claim" class="btn btn-danger pull-right"> Cancel</a>
+            <a href="{% url 'dashboard:project-claim-detail' claim.id %}" title="Delete time claim" class="btn btn-danger pull-right"> Cancel</a>
         </form>
     </div>
 </div>

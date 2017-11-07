@@ -79,6 +79,7 @@ class ProjectStatus(models.Model):
     title = models.CharField(max_length=30)
     short_title = models.CharField(max_length=30)
     level = models.IntegerField()
+    group = models.IntegerField(null=True, blank=True, help_text='To group different status with different level, give them the same group number')
     description = models.TextField(null=True, blank=True, help_text='Short description of the status meaning. (Optional)')
 
     class Meta:
@@ -135,6 +136,7 @@ class VariationStatus(models.Model):
     title = models.CharField(max_length=30)
     short_title = models.CharField(max_length=30)
     level = models.IntegerField()
+    group = models.IntegerField(null=True, blank=True, help_text='To group different status with different level, give them the same group number')
     description = models.TextField(null=True, blank=True, help_text='Short description of the status meaning. (Optional)')
 
     class Meta:
@@ -178,6 +180,7 @@ class ClaimStatus(models.Model):
     title = models.CharField(max_length=30)
     short_title = models.CharField(max_length=30)
     level = models.IntegerField()
+    group = models.IntegerField(null=True, blank=True, help_text='To group different status with different level, give them the same group number')
     description = models.TextField(null=True, blank=True, help_text='Short description of the status meaning. (Optional)')
 
     class Meta:
