@@ -393,7 +393,7 @@
                                              <span class="fa fa-info-circle"></span> {{ variation.status.title|title }}
                                          </span>
                                       </td>
-                                      {% elif variation.status.level >= 100 and variation.status.level < 200 }
+                                      {% elif variation.status.level >= 100 and variation.status.level < 200 %}
                                       <td>
                                          <span class="label label-success">
                                              <span class="fa fa-check-square-o"></span> {{ variation.status.title|title }}
@@ -447,7 +447,7 @@
                                              <span class="fa fa-info-circle"></span> {{ variation.status.title|title }}
                                          </span>
                                       </td>
-                                      {% elif variation.status.level >= 100 and variation.status.level < 200 }
+                                      {% elif variation.status.level >= 100 and variation.status.level < 200 %}
                                       <td>
                                          <span class="label label-success">
                                              <span class="fa fa-check-square-o"></span> {{ variation.status.title|title }}
@@ -501,7 +501,7 @@
                                              <span class="fa fa-info-circle"></span> {{ variation.status.title|title }}
                                          </span>
                                       </td>
-                                      {% elif variation.status.level >= 100 and variation.status.level < 200 }
+                                      {% elif variation.status.level >= 100 and variation.status.level < 200 %}
                                       <td>
                                          <span class="label label-success">
                                              <span class="fa fa-check-square-o"></span> {{ variation.status.title|title }}
@@ -555,7 +555,7 @@
                                              <span class="fa fa-info-circle"></span> {{ variation.status.title|title }}
                                          </span>
                                       </td>
-                                      {% elif variation.status.level >= 100 and variation.status.level < 200 }
+                                      {% elif variation.status.level >= 100 and variation.status.level < 200 %}
                                       <td>
                                          <span class="label label-success">
                                              <span class="fa fa-check-square-o"></span> {{ variation.status.title|title }}
@@ -609,7 +609,7 @@
                                              <span class="fa fa-info-circle"></span> {{ variation.status.title|title }}
                                          </span>
                                       </td>
-                                      {% elif variation.status.level >= 100 and variation.status.level < 200 }
+                                      {% elif variation.status.level >= 100 and variation.status.level < 200 %}
                                       <td>
                                          <span class="label label-success">
                                              <span class="fa fa-check-square-o"></span> {{ variation.status.title|title }}
@@ -637,7 +637,15 @@
                       </div><!-- /.table-responsive -->
                   </div><!-- /.tab-pane #approved-variations -->
               </div><!-- /.tab-content -->
-          </div>
+          </div><!-- /.card-content -->
+
+          {% if user.is_staff %}
+          <div class="card-footer">
+            <a href="{% url 'dashboard:project-variation-create' project.id %}" title="Add new variation" class="btn btn-sm btn-primary pull-right">
+               <span class="fa fa-plus-circle"></span>&nbsp; Add 
+            </a>
+          </div><!-- /.card-footer -->
+          {% endif %}
       </div>
   </div>
 </div><!-- /.row -->

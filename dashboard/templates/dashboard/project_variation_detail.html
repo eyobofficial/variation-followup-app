@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load humanize %}
 
-{% block page_name %} 
+{% block page_name %}
     {{ variation.project.short_name}} &nbsp;<span class="fa fa-angle-right"></span>&nbsp; {{ variation.title|title }} 
 {% endblock page_name %}
 
@@ -245,11 +245,11 @@
 {% if user.is_staff %}
 <div class="row">
     <div class="col-sm-12">
-        <a href="{% url 'dashboard:variation-update' variation.id %}" title="Update Variation" class="btn btn-primary">
+        <a href="{% url 'dashboard:project-variation-update' variation.id %}" title="Update variation" class="btn btn-primary">
            <span class="fa fa-edit"></span>&nbsp; Update 
         </a>
 
-        <a href="{% url 'dashboard:variation-delete' variation.id %}" title="Delete Variation" class="btn btn-danger pull-right">
+        <a href="{% url 'dashboard:project-variation-delete' variation.project.id variation.id %}" title="Delete Variation" class="btn btn-danger pull-right">
            Delete  
         </a>
     </div>

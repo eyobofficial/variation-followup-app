@@ -171,6 +171,175 @@ class ProjectDelete(UserPassesTestMixin, DeleteView):
         context['page_name'] = 'projects'
         return context
 
+class ProjectVariationDetail(UserPassesTestMixin, generic.DetailView):
+    """
+    Detail for a particular variation record
+    """
+    model = Variation
+    template_name = 'dashboard/project_variation_detail.html'
+
+    def test_func(self, *args, **kwargs):
+        variation = get_object_or_404(Variation, pk=self.kwargs['pk'])
+        return self.request.user.is_active and variation.project.contractor == self.request.user.profile.contractor
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(ProjectVariationDetail, self).get_context_data(*args, **kwargs)
+        context['page_name'] = 'projects'
+        return context
+
+class ProjectVariationCreate(UserPassesTestMixin, SuccessMessageMixin, CreateView):
+    """
+    Create a new variation record for current project
+    """
+    model = Variation
+    fields = ('title', 'work_order', 'activity', 'description', 'status', 'recieved_date', 'recieved_letter', 'submitted_amount', 'submitted_date', 'submitted_letter', 'approved_amount', 'approved_date', 'approved_letter', 'remark', )
+    template_name = 'dashboard/project_variation_form.html'
+    success_message = 'New variation created successfully.'
+
+    def test_func(self, *args, **kwargs):
+        return self.request.user.is_active and self.request.user.is_staff
+
+    def get_success_url(self, *args, **kwargs):
+        return reverse('dashboard:project-variation-detail', kwargs={'pk': str(self.object.id)})
+
+    def form_valid(self, form, *args, **kwargs):
+        form.instance.project = Project.objects.get(pk=self.kwargs['project_pk'])
+        return super(ProjectVariationCreate, self).form_valid(form, *args, **kwargs)
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(ProjectVariationCreate, self).get_context_data(*args, **kwargs)
+        context['project'] = Project.objects.get(pk=self.kwargs['project_pk'])
+        context['page_name'] = 'projects'
+        return context
+
+class ProjectVariationUpdate(UserPassesTestMixin, SuccessMessageMixin, UpdateView):
+    """
+    Update a particular variation record for the current project
+    """
+    model = Variation
+    fields = ('title', 'work_order', 'activity', 'description', 'status', 'recieved_date', 'recieved_letter', 'submitted_amount', 'submitted_date', 'submitted_letter', 'approved_amount', 'approved_date', 'approved_letter', 'remark', )
+    template_name = 'dashboard/project_variation_form.html'
+    success_message = 'Variation updated successfully.'
+
+    def test_func(self, *args, **kwargs):
+        return self.request.user.is_active and self.request.user.is_staff
+
+    def get_success_url(self, *args, **kwargs):
+        return reverse('dashboard:project-variation-detail', kwargs={'pk': str(self.object.id)})
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(ProjectVariationUpdate, self).get_context_data(*args, **kwargs)
+        context['page_name'] = 'projects'
+        return context
+
+class ProjectVariationDelete(UserPassesTestMixin, DeleteView):
+    """
+    Delete a particular a variation record from the current project
+    """
+    model = Variation
+    template_name = 'dashboard/project_variation_confirm_delete.html'
+    success_message = 'Variation deleted successfully.'
+
+    def test_func(self, *args, **kwargs):
+        variation = get_object_or_404(Variation, pk=self.kwargs['pk'])
+        return self.request.user.is_active and self.request.user.is_staff and variation.project.contractor == self.request.user.profile.contractor
+    
+    def get_success_url(self, *args, **kwargs):
+        return reverse('dashboard:project-detail', kwargs={'pk': str(self.kwargs['project_pk'])})
+
+    def delete(self, *args, **kwargs):
+        messages.success(self.request, self.success_message)
+        return super(ProjectVariationDelete, self).delete(*args, **kwargs)
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(ProjectVariationDelete, self).get_context_data(*args, **kwargs)
+        context['page_name'] = 'projects'
+        return context
+
+class ProjectClaimDetail(UserPassesTestMixin, generic.DetailView):
+    """
+    Detail for a particular time extension claim record of a particular project
+    """
+    model = Claim
+    template_name = 'dashboard/project_claim_detail.html'
+
+    def test_func(self, *args, **kwargs):
+        claim = get_object_or_404(Claim, pk=self.kwargs['pk'])
+        return self.request.user.is_active and claim.project.contractor == self.request.user.profile.contractor
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(ProjectClaimDetail, self).get_context_data(*args, **kwargs)
+        context['page_name'] = 'projects'
+        return context
+
+class ProjectClaimCreate(UserPassesTestMixin, SuccessMessageMixin, CreateView):
+    """
+    Create a new time extension claim record for current project
+    """
+    model = Claim
+    fields = ('title', 'number', 'description', 'status', 'submitted_amount', 'submitted_date', 'submitted_letter', 'approved_amount', 'approved_date', 'approved_letter', 'remark', )
+    template_name = 'dashboard/project_claim_form.html'
+    success_message = 'Time claim created successfully.'
+
+    def test_func(self, *args, **kwargs):
+        return self.request.user.is_active and self.request.user.is_staff
+
+    def get_success_url(self, *args, **kwargs):
+        return reverse('dashboard:project-claim-detail', kwargs={'pk': str(self.object.id)})
+
+    def form_valid(self, form, *args, **kwargs):
+        form.instance.project = Project.objects.get(pk=self.kwargs['project_pk'])
+        return super(ProjectClaimCreate, self).form_valid(form, *args, **kwargs)
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(ProjectClaimCreate, self).get_context_data(*args, **kwargs)
+        context['project'] = Project.objects.get(pk=self.kwargs['project_pk'])
+        context['page_name'] = 'projects'
+        return context
+
+class ProjectClaimUpdate(UserPassesTestMixin, SuccessMessageMixin, UpdateView):
+    """
+    Create a new time extension claim record for current project
+    """
+    model = Claim
+    fields = ('title', 'number', 'description', 'status', 'submitted_amount', 'submitted_date', 'submitted_letter', 'approved_amount', 'approved_date', 'approved_letter', 'remark', )
+    template_name = 'dashboard/project_claim_form.html'
+    success_message = 'Time claim created successfully.'
+
+    def test_func(self, *args, **kwargs):
+        return self.request.user.is_active and self.request.user.is_staff
+
+    def get_success_url(self, *args, **kwargs):
+        return reverse('dashboard:project-claim-detail', kwargs={'pk': str(self.object.id)})
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(ProjectClaimUpdate, self).get_context_data(*args, **kwargs)
+        context['page_name'] = 'projects'
+        return context
+
+class ProjectClaimDelete(UserPassesTestMixin, DeleteView):
+    """
+    Delete a particular time claim record from the current project
+    """
+    model = Claim
+    template_name = 'dashboard/project_claim_confirm_delete.html'
+    success_message = 'Time claim deleted successfully.'
+
+    def test_func(self, *args, **kwargs):
+        claim = get_object_or_404(Claim, pk=self.kwargs['pk'])
+        return self.request.user.is_active and self.request.user.is_staff and claim.project.contractor == self.request.user.profile.contractor
+    
+    def get_success_url(self, *args, **kwargs):
+        return reverse('dashboard:project-detail', kwargs={'pk': str(self.kwargs['project_pk'])})
+
+    def delete(self, *args, **kwargs):
+        messages.success(self.request, self.success_message)
+        return super(ProjectClaimDelete, self).delete(*args, **kwargs)
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(ProjectClaimDelete, self).get_context_data(*args, **kwargs)
+        context['page_name'] = 'projects'
+        return context
 
 class VariationList(UserPassesTestMixin, generic.ListView):
     """
@@ -202,22 +371,6 @@ class VariationDetail(UserPassesTestMixin, generic.DetailView):
     def get_context_data(self, *args, **kwargs):
         context = super(VariationDetail, self).get_context_data(*args, **kwargs)
         context['page_name'] = 'variations'
-        return context
-
-class ProjectVariationDetail(UserPassesTestMixin, generic.DetailView):
-    """
-    Detail for a particular variation record
-    """
-    model = Variation
-    template_name = 'dashboard/project_variation_detail.html'
-
-    def test_func(self, *args, **kwargs):
-        variation = get_object_or_404(Variation, pk=self.kwargs['pk'])
-        return self.request.user.is_active and variation.project.contractor == self.request.user.profile.contractor
-
-    def get_context_data(self, *args, **kwargs):
-        context = super(ProjectVariationDetail, self).get_context_data(*args, **kwargs)
-        context['page_name'] = 'projects'
         return context
 
 class VariationCreate(UserPassesTestMixin, SuccessMessageMixin, CreateView):
@@ -306,22 +459,6 @@ class ClaimDetail(UserPassesTestMixin, generic.DetailView):
         context['page_name'] = 'time claims'
         return context
 
-class ProjectClaimDetail(UserPassesTestMixin, generic.DetailView):
-    """
-    Detail for a particular time extension claim record of a particular project
-    """
-    model = Claim
-    template_name = 'dashboard/project_claim_detail.html'
-
-    def test_func(self, *args, **kwargs):
-        claim = get_object_or_404(Claim, pk=self.kwargs['pk'])
-        return self.request.user.is_active and claim.project.contractor == self.request.user.profile.contractor
-
-    def get_context_data(self, *args, **kwargs):
-        context = super(ProjectClaimDetail, self).get_context_data(*args, **kwargs)
-        context['page_name'] = 'projects'
-        return context
-
 class ClaimCreate(UserPassesTestMixin, SuccessMessageMixin, CreateView):
     """
     Create a new time extension claim record
@@ -336,51 +473,6 @@ class ClaimCreate(UserPassesTestMixin, SuccessMessageMixin, CreateView):
     def get_context_data(self, *args, **kwargs):
         context = super(ClaimCreate, self).get_context_data(*args, **kwargs)
         context['page_name'] = 'time claims'
-        return context
-
-class ProjectClaimCreate(UserPassesTestMixin, SuccessMessageMixin, CreateView):
-    """
-    Create a new time extension claim record for current project
-    """
-    model = Claim
-    fields = ('title', 'number', 'description', 'status', 'submitted_amount', 'submitted_date', 'submitted_letter', 'approved_amount', 'approved_date', 'approved_letter', 'remark', )
-    template_name = 'dashboard/project_claim_form.html'
-    success_message = 'Time claim created successfully.'
-
-    def test_func(self, *args, **kwargs):
-        return self.request.user.is_active and self.request.user.is_staff
-
-    def get_success_url(self, *args, **kwargs):
-        return reverse('dashboard:project-claim-detail', kwargs={'pk': str(self.object.id)})
-
-    def form_valid(self, form, *args, **kwargs):
-        form.instance.project = Project.objects.get(pk=self.kwargs['project_pk'])
-        return super(ProjectClaimCreate, self).form_valid(form, *args, **kwargs)
-
-    def get_context_data(self, *args, **kwargs):
-        context = super(ProjectClaimCreate, self).get_context_data(*args, **kwargs)
-        context['project'] = Project.objects.get(pk=self.kwargs['project_pk'])
-        context['page_name'] = 'projects'
-        return context
-
-class ProjectClaimUpdate(UserPassesTestMixin, SuccessMessageMixin, UpdateView):
-    """
-    Create a new time extension claim record for current project
-    """
-    model = Claim
-    fields = ('title', 'number', 'description', 'status', 'submitted_amount', 'submitted_date', 'submitted_letter', 'approved_amount', 'approved_date', 'approved_letter', 'remark', )
-    template_name = 'dashboard/project_claim_form.html'
-    success_message = 'Time claim created successfully.'
-
-    def test_func(self, *args, **kwargs):
-        return self.request.user.is_active and self.request.user.is_staff
-
-    def get_success_url(self, *args, **kwargs):
-        return reverse('dashboard:project-claim-detail', kwargs={'pk': str(self.object.id)})
-
-    def get_context_data(self, *args, **kwargs):
-        context = super(ProjectClaimUpdate, self).get_context_data(*args, **kwargs)
-        context['page_name'] = 'projects'
         return context
 
 class ClaimUpdate(UserPassesTestMixin, SuccessMessageMixin, UpdateView):
@@ -419,28 +511,4 @@ class ClaimDelete(UserPassesTestMixin, DeleteView):
     def get_context_data(self, *args, **kwargs):
         context = super(ClaimDelete, self).get_context_data(*args, **kwargs)
         context['page_name'] = 'time claims'
-        return context
-
-class ProjectClaimDelete(UserPassesTestMixin, DeleteView):
-    """
-    Delete a particular time claim record from the current project
-    """
-    model = Claim
-    template_name = 'dashboard/project_claim_confirm_delete.html'
-    success_message = 'Time claim deleted successfully.'
-
-    def test_func(self, *args, **kwargs):
-        claim = get_object_or_404(Claim, pk=self.kwargs['pk'])
-        return self.request.user.is_active and self.request.user.is_staff and claim.project.contractor == self.request.user.profile.contractor
-    
-    def get_success_url(self, *args, **kwargs):
-        return reverse('dashboard:project-detail', kwargs={'pk': str(self.kwargs['project_pk'])})
-
-    def delete(self, *args, **kwargs):
-        messages.success(self.request, self.success_message)
-        return super(ProjectClaimDelete, self).delete(*args, **kwargs)
-
-    def get_context_data(self, *args, **kwargs):
-        context = super(ProjectClaimDelete, self).get_context_data(*args, **kwargs)
-        context['page_name'] = 'projects'
         return context
