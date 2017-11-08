@@ -79,7 +79,7 @@
           <div class="card-header clearfix" data-background-color="purple">
               <div class="row">
                   <div class="col-sm-5">
-                      <h4 class="title">Advance Guaranttee Bonds</h4>
+                      <h4 class="title">Insurances</h4>
                       <p class="category">List of all ongoing advance guaranttee bonds for all projects</p>
                   </div>
 
@@ -87,46 +87,21 @@
                       <div class="nav-tabs-navigation pull-right">
                           <div class="nav-tabs-wrapper">
                               <ul class="nav nav-tabs text-right" data-tabs="tabs">
-                                  <li class="active">
-                                      <a href="#all-variations" data-toggle="tab">
-                                          All
-                                          {% if variation_list.count > 0 %}
-                                          <span class="notification notification-info">{{ all_variation_list.count }}</span>
-                                          {% endif %}
-                                      <div class="ripple-container"></div></a>
-                                  </li>
+
                                   <li class="">
-                                      <a href="#under-prep-variations" data-toggle="tab">
-                                          Under Prep.
-                                          {% if under_prep_variation_list.count > 0 %}
-                                          <span class="notification notification-info">{{ under_prep_variation_list.count }}</span>
+                                      <a href="#active-insurances" data-toggle="tab">
+                                          Active
+                                          {% if insurance_list.count > 0 %}
+                                          <span class="notification notification-info">{{ insurance_list.count }}</span>
                                           {% endif %}
                                       <div class="ripple-container"></div></a>
                                   </li>
 
                                   <li class="">
-                                      <a href="#pending-variations" data-toggle="tab">
-                                          Pending
-                                          {% if pending_variation_list.count > 0 %}
-                                          <span class="notification notification-warning">{{ pending_variation_list.count }}</span>
-                                          {% endif %}
-                                      <div class="ripple-container"></div></a>
-                                  </li>
-
-                                  <li class="">
-                                      <a href="#submitted-variations" data-toggle="tab">
-                                          Submitted
-                                          {% if submitted_variation_list.count > 0 %}
-                                          <span class="notification notification-success">{{ submitted_variation_list.count }}</span>
-                                          {% endif %}
-                                      <div class="ripple-container"></div></a>
-                                  </li>
-
-                                  <li class="">
-                                      <a href="#approved-variations" data-toggle="tab">
-                                          Approved/Rejected
-                                          {% if approved_variation_list.count > 0 %}
-                                          <span class="notification notification-danger">{{ approved_variation_list.count }}</span>
+                                      <a href="#expired-insurances" data-toggle="tab">
+                                          Expired
+                                          {% if expired_insurance_list.count > 0 %}
+                                          <span class="notification notification-danger">{{ expired_insurance_list.count }}</span>
                                           {% endif %}
                                       <div class="ripple-container"></div></a>
                                   </li>
@@ -139,54 +114,51 @@
 
           <div class="card-content">
               <div class="tab-content">
-                  <div class="tab-pane active" id="all-variations">
-                      {% if all_variation_list %}
+                  <div class="tab-pane active" id="active-insurances">
+                      {% if insurance_list %}
                       <div class="table-responsive">
                           <table class="table">
                               <thead class="text-primary">
-                                  <th>Title</th>
-                                  <th>Work Order No.</th>
+                                  <th>Insurance Type</th>
+                                  <th>Project</th>
                                   <th>Status</th>
-                                  <th>Last Updated</th>
+                                  <th>Expiration Date</th>
+                                  <th>Days Left</th>
                               </thead>
                               <tbody>
-                              {% for variation in all_variation_list %}
+                              {% for insurance in insurance_list %}
                                   <tr>
-                                      <td><a href="{% url 'dashboard:project-variation-detail' variation.id %}">{{ variation.title|title }}</a></td>
+                                      <td><a href="#">{{ insurance.insurance_type.title|title }}</a></td>
+                                      <td>{{ insurance.project.short_name }}</td>
 
-                                      {% if variation.work_order %}
-                                      <td>{{ variation.work_order }}</td>
-                                      {% else %}
-                                      <td class="text-fade">(None)</td>
-                                      {% endif %}
-
-                                      {% if variation.status.level >= 0 and variation.status.level < 100 %}
+                                      {% if insurance.status.level >= 0 and insurance.status.level < 100 %}
                                       <td>
                                          <span class="label label-info">
-                                             <span class="fa fa-info-circle"></span> {{ variation.status.title|title }}
+                                             <span class="fa fa-info-circle"></span> {{ insurance.status.title|title }}
                                          </span>
                                       </td>
-                                      {% elif variation.status.level >= 100 and variation.status.level < 200 %}
+                                      {% elif insurance.status.level >= 100 and insurance.status.level < 200 %}
                                       <td>
                                          <span class="label label-success">
-                                             <span class="fa fa-check-square-o"></span> {{ variation.status.title|title }}
+                                             <span class="fa fa-check-square-o"></span> {{ insurance.status.title|title }}
                                          </span>
                                       </td>
-                                      {% elif variation.status.level >= 200 and variation.status.level < 300 %}
+                                      {% elif insurance.status.level >= 200 and insurance.status.level < 300 %}
                                       <td>
                                          <span class="label label-warning">
-                                             <span class="fa fa-warning"></span> {{ variation.status.title|title }}
+                                             <span class="fa fa-warning"></span> {{ insurance.status.title|title }}
                                          </span>
                                       </td>
                                       {% else %}
                                       <td>
                                          <span class="label label-danger">
-                                             <span class="fa fa-warning"></span> {{ variation.status.title|title }}
+                                             <span class="fa fa-warning"></span> {{ insurance.status.title|title }}
                                          </span>
                                       </td>
                                       {% endif %}
 
-                                      <td>{{ variation.updated_at|naturalday:'M d, Y'|title }}</td>
+                                      <td>{{ insurance.end_date|naturalday:'M d, Y'|title }}</td>
+                                      <td>{{ insurance.get_days_left }}</td>
                                   </tr>
                               {% endfor %}
                               </tbody>
@@ -194,59 +166,54 @@
                       </div><!-- /.table-responsive -->
                       {% else %}
                       <div class="banner banner-default push-up-md">
-                          <i class="material-icons">info_outline</i>&nbsp; No Records of Variations
+                          <i class="material-icons">info_outline</i>&nbsp; No Records of Insurance
                       </div>
                       {% endif %}
-                  </div><!-- /.tab-pane #all-variations -->
+                  </div><!-- /.tab-pane #all-insurance (Active Insurance) -->
 
-                  <div class="tab-pane" id="under-prep-variations">
-                      {% if under_prep_variation_list %}
+                  <div class="tab-pane" id="expired-insurances">
+                      {% if expired_insurance_list %}
                       <div class="table-responsive">
                           <table class="table">
                               <thead class="text-primary">
-                                  <th>Title</th>
-                                  <th>Work Order No.</th>
+                                  <th>Insurance Type</th>
+                                  <th>Project</th>
                                   <th>Status</th>
-                                  <th>Last Updated</th>
+                                  <th>Expiration Date</th>
                               </thead>
                               <tbody>
-                              {% for variation in under_prep_variation_list %}
+                              {% for insurance in expired_insurance_list %}
                                   <tr>
-                                      <td><a href="{% url 'dashboard:project-variation-detail' variation.id %}">{{ variation.title|title }}</a></td>
+                                      <td><a href="#">{{ insurance.insurance_type.title|title }}</a></td>
+                                      <td>{{ insurance.project.short_name }}</td>
 
-                                      {% if variation.work_order %}
-                                      <td>{{ variation.work_order }}</td>
-                                      {% else %}
-                                      <td class="text-fade">(None)</td>
-                                      {% endif %}
-
-                                      {% if variation.status.level >= 0 and variation.status.level < 100 %}
+                                      {% if insurance.status.level >= 0 and insurance.status.level < 100 %}
                                       <td>
                                          <span class="label label-info">
-                                             <span class="fa fa-info-circle"></span> {{ variation.status.title|title }}
+                                             <span class="fa fa-info-circle"></span> {{ insurance.status.title|title }}
                                          </span>
                                       </td>
-                                      {% elif variation.status.level >= 100 and variation.status.level < 200 %}
+                                      {% elif insurance.status.level >= 100 and insurance.status.level < 200 %}
                                       <td>
                                          <span class="label label-success">
-                                             <span class="fa fa-check-square-o"></span> {{ variation.status.title|title }}
+                                             <span class="fa fa-check-square-o"></span> {{ insurance.status.title|title }}
                                          </span>
                                       </td>
-                                      {% elif variation.status.level >= 200 and variation.status.level < 300 %}
+                                      {% elif insurance.status.level >= 200 and insurance.status.level < 300 %}
                                       <td>
                                          <span class="label label-warning">
-                                             <span class="fa fa-warning"></span> {{ variation.status.title|title }}
+                                             <span class="fa fa-warning"></span> {{ insurance.status.title|title }}
                                          </span>
                                       </td>
                                       {% else %}
                                       <td>
                                          <span class="label label-danger">
-                                             <span class="fa fa-warning"></span> {{ variation.status.title|title }}
+                                             <span class="fa fa-warning"></span> {{ insurance.status.title|title }}
                                          </span>
                                       </td>
                                       {% endif %}
 
-                                      <td>{{ variation.updated_at|naturalday:'M d, Y'|title }}</td>
+                                      <td>{{ insurance.end_date|naturalday:'M d, Y'|title }}</td>
                                   </tr>
                               {% endfor %}
                               </tbody>
@@ -254,190 +221,10 @@
                       </div><!-- /.table-responsive -->
                       {% else %}
                       <div class="banner banner-default push-up-md">
-                          <i class="material-icons">info_outline</i>&nbsp; No Variation is Currently Under Preparation
+                          <i class="material-icons">info_outline</i>&nbsp; No Records of Insurance
                       </div>
                       {% endif %}
-                  </div><!-- /.tab-pane #under-prep-variations -->
-
-                  <div class="tab-pane" id="pending-variations">
-                      {% if pending_variation_list %}
-                      <div class="table-responsive">
-                          <table class="table">
-                              <thead class="text-primary">
-                                  <th>Title</th>
-                                  <th>Work Order No.</th>
-                                  <th>Status</th>
-                                  <th>Last Updated</th>
-                              </thead>
-                              <tbody>
-                              {% for variation in pending_variation_list %}
-                                  <tr>
-                                      <td><a href="{% url 'dashboard:project-variation-detail' variation.id %}">{{ variation.title|title }}</a></td>
-
-                                      {% if variation.work_order %}
-                                      <td>{{ variation.work_order }}</td>
-                                      {% else %}
-                                      <td class="text-fade">(None)</td>
-                                      {% endif %}
-
-                                      {% if variation.status.level >= 0 and variation.status.level < 100 %}
-                                      <td>
-                                         <span class="label label-info">
-                                             <span class="fa fa-info-circle"></span> {{ variation.status.title|title }}
-                                         </span>
-                                      </td>
-                                      {% elif variation.status.level >= 100 and variation.status.level < 200 %}
-                                      <td>
-                                         <span class="label label-success">
-                                             <span class="fa fa-check-square-o"></span> {{ variation.status.title|title }}
-                                         </span>
-                                      </td>
-                                      {% elif variation.status.level >= 200 and variation.status.level < 300 %}
-                                      <td>
-                                         <span class="label label-warning">
-                                             <span class="fa fa-warning"></span> {{ variation.status.title|title }}
-                                         </span>
-                                      </td>
-                                      {% else %}
-                                      <td>
-                                         <span class="label label-danger">
-                                             <span class="fa fa-warning"></span> {{ variation.status.title|title }}
-                                         </span>
-                                      </td>
-                                      {% endif %}
-
-                                      <td>{{ variation.updated_at|naturalday:'M d, Y'|title }}</td>
-                                  </tr>
-                              {% endfor %}
-                              </tbody>
-                          </table>
-                      </div><!-- /.table-responsive -->
-                      {% else %}
-                      <div class="banner banner-default push-up-md">
-                          <i class="material-icons">info_outline</i>&nbsp; No Variation is Currently Pending
-                      </div>
-                      {% endif %}
-                  </div><!-- /.tab-pane #pending-variations -->
-
-                  <div class="tab-pane" id="submitted-variations">
-                      {% if submitted_variation_list %}
-                      <div class="table-responsive">
-                          <table class="table">
-                              <thead class="text-primary">
-                                  <th>Title</th>
-                                  <th>Work Order No.</th>
-                                  <th>Status</th>
-                                  <th>Last Updated</th>
-                              </thead>
-                              <tbody>
-                              {% for variation in submitted_variation_list %}
-                                  <tr>
-                                      <td><a href="{% url 'dashboard:project-variation-detail' variation.id %}">{{ variation.title|title }}</a></td>
-
-                                      {% if variation.work_order %}
-                                      <td>{{ variation.work_order }}</td>
-                                      {% else %}
-                                      <td class="text-fade">(None)</td>
-                                      {% endif %}
-
-                                      {% if variation.status.level >= 0 and variation.status.level < 100 %}
-                                      <td>
-                                         <span class="label label-info">
-                                             <span class="fa fa-info-circle"></span> {{ variation.status.title|title }}
-                                         </span>
-                                      </td>
-                                      {% elif variation.status.level >= 100 and variation.status.level < 200 %}
-                                      <td>
-                                         <span class="label label-success">
-                                             <span class="fa fa-check-square-o"></span> {{ variation.status.title|title }}
-                                         </span>
-                                      </td>
-                                      {% elif variation.status.level >= 200 and variation.status.level < 300 %}
-                                      <td>
-                                         <span class="label label-warning">
-                                             <span class="fa fa-warning"></span> {{ variation.status.title|title }}
-                                         </span>
-                                      </td>
-                                      {% else %}
-                                      <td>
-                                         <span class="label label-danger">
-                                             <span class="fa fa-warning"></span> {{ variation.status.title|title }}
-                                         </span>
-                                      </td>
-                                      {% endif %}
-
-                                      <td>{{ variation.updated_at|naturalday:'M d, Y'|title }}</td>
-                                  </tr>
-                              {% endfor %}
-                              </tbody>
-                          </table>
-                      </div><!-- /.table-responsive -->
-                      {% else %}
-                      <div class="banner banner-default push-up-md">
-                          <i class="material-icons">info_outline</i>&nbsp; No record of Submitted Variations
-                      </div>
-                      {% endif %}
-                  </div><!-- /.tab-pane #submitted-variations -->
-
-                  <div class="tab-pane" id="approved-variations">
-                      {% if approved_variation_list %}
-                      <div class="table-responsive">
-                          <table class="table">
-                              <thead class="text-primary">
-                                  <th>Title</th>
-                                  <th>Work Order No.</th>
-                                  <th>Status</th>
-                                  <th>Last Updated</th>
-                              </thead>
-                              <tbody>
-                              {% for variation in approved_variation_list %}
-                                  <tr>
-                                      <td><a href="{% url 'dashboard:project-variation-detail' variation.id %}">{{ variation.title|title }}</a></td>
-
-                                      {% if variation.work_order %}
-                                      <td>{{ variation.work_order }}</td>
-                                      {% else %}
-                                      <td class="text-fade">(None)</td>
-                                      {% endif %}
-
-                                      {% if variation.status.level >= 0 and variation.status.level < 100 %}
-                                      <td>
-                                         <span class="label label-info">
-                                             <span class="fa fa-info-circle"></span> {{ variation.status.title|title }}
-                                         </span>
-                                      </td>
-                                      {% elif variation.status.level >= 100 and variation.status.level < 200 %}
-                                      <td>
-                                         <span class="label label-success">
-                                             <span class="fa fa-check-square-o"></span> {{ variation.status.title|title }}
-                                         </span>
-                                      </td>
-                                      {% elif variation.status.level >= 200 and variation.status.level < 300 %}
-                                      <td>
-                                         <span class="label label-warning">
-                                             <span class="fa fa-warning"></span> {{ variation.status.title|title }}
-                                         </span>
-                                      </td>
-                                      {% else %}
-                                      <td>
-                                         <span class="label label-danger">
-                                             <span class="fa fa-warning"></span> {{ variation.status.title|title }}
-                                         </span>
-                                      </td>
-                                      {% endif %}
-
-                                      <td>{{ variation.updated_at|naturalday:'M d, Y'|title }}</td>
-                                  </tr>
-                              {% endfor %}
-                              </tbody>
-                          </table>
-                      </div><!-- /.table-responsive -->
-                      {% else %}
-                      <div class="banner banner-default push-up-md">
-                          <i class="material-icons">info_outline</i>&nbsp; No record of Approved/Rejected Variations
-                      </div>
-                      {% endif %}
-                  </div><!-- /.tab-pane #approved-variations -->
+                  </div><!-- /.tab-pane #expired-insurances -->
               </div><!-- /.tab-content -->
           </div><!-- /.card-content -->
 

@@ -92,7 +92,7 @@
                                       <a href="#all-claims" data-toggle="tab">
                                           All
                                           {% if claim_list.count > 0 %}
-                                          <span class="notification notification-info">{{ all_claim_list.count }}</span>
+                                          <span class="notification notification-info">{{ claim_list.count }}</span>
                                           {% endif %}
                                       <div class="ripple-container"></div></a>
                                   </li>
@@ -124,19 +124,20 @@
           <div class="card-content">
               <div class="tab-content">
                   <div class="tab-pane active" id="all-claims">
-                     {% if all_claim_list %}
+                     {% if claim_list %}
                       <div class="table-responsive">
                           <table class="table">
                               <thead class="text-primary">
                                   <th>Title</th>
+                                  <th>Project</th>
                                   <th>Status</th>
                                   <th>Last Updated</th>
                               </thead>
                               <tbody>
-                              {% for claim in all_claim_list %}
+                              {% for claim in claim_list %}
                                   <tr>
-                                      <td><a href="{% url 'dashboard:project-claim-detail' claim.id %}">{{ claim.title|title }}</a></td>
-
+                                      <td><a href="{% url 'dashboard:claim-detail' claim.id %}">{{ claim.title|title }}</a></td>
+                                      <td>{{ claim.project.short_name }}</td>
                                       {% if claim.status.level >= 0 and claim.status.level < 100 %}
                                       <td>
                                          <span class="label label-info">
@@ -182,14 +183,15 @@
                           <table class="table">
                               <thead class="text-primary">
                                   <th>Title</th>
+                                  <th>Project</th>
                                   <th>Status</th>
                                   <th>Last Updated</th>
                               </thead>
                               <tbody>
                               {% for claim in submitted_claim_list %}
                                   <tr>
-                                      <td><a href="{% url 'dashboard:project-claim-detail' claim.id %}">{{ claim.title|title }}</a></td>
-
+                                      <td><a href="{% url 'dashboard:claim-detail' claim.id %}">{{ claim.title|title }}</a></td>
+                                      <td>{{ claim.project.short_name }}</td>
                                       {% if claim.status.level >= 0 and claim.status.level < 100 %}
                                       <td>
                                          <span class="label label-info">
@@ -235,14 +237,15 @@
                           <table class="table">
                               <thead class="text-primary">
                                   <th>Title</th>
+                                  <th>Project</th>
                                   <th>Status</th>
                                   <th>Last Updated</th>
                               </thead>
                               <tbody>
                               {% for claim in approved_claim_list %}
                                   <tr>
-                                      <td><a href="{% url 'dashboard:project-claim-detail' claim.id %}">{{ claim.title|title }}</a></td>
-
+                                      <td><a href="{% url 'dashboard:claim-detail' claim.id %}">{{ claim.title|title }}</a></td>
+                                      <td>{{ claim.project.short_name }}</td>
                                       {% if claim.status.level >= 0 and claim.status.level < 100 %}
                                       <td>
                                          <span class="label label-info">

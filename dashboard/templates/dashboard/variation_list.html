@@ -91,7 +91,7 @@
                                       <a href="#all-variations" data-toggle="tab">
                                           All
                                           {% if variation_list.count > 0 %}
-                                          <span class="notification notification-info">{{ all_variation_list.count }}</span>
+                                          <span class="notification notification-info">{{ variation_list.count }}</span>
                                           {% endif %}
                                       <div class="ripple-container"></div></a>
                                   </li>
@@ -140,19 +140,22 @@
           <div class="card-content">
               <div class="tab-content">
                   <div class="tab-pane active" id="all-variations">
-                      {% if all_variation_list %}
+                      {% if variation_list %}
                       <div class="table-responsive">
                           <table class="table">
                               <thead class="text-primary">
                                   <th>Title</th>
+                                  <th>Project</th>
                                   <th>Work Order No.</th>
                                   <th>Status</th>
                                   <th>Last Updated</th>
                               </thead>
                               <tbody>
-                              {% for variation in all_variation_list %}
+                              {% for variation in variation_list %}
                                   <tr>
-                                      <td><a href="{% url 'dashboard:project-variation-detail' variation.id %}">{{ variation.title|title }}</a></td>
+                                      <td><a href="{% url 'dashboard:variation-detail' variation.id %}">{{ variation.title|title }}</a></td>
+
+                                      <td>{{ variation.project.short_name }}</td>
 
                                       {% if variation.work_order %}
                                       <td>{{ variation.work_order }}</td>
@@ -205,6 +208,7 @@
                           <table class="table">
                               <thead class="text-primary">
                                   <th>Title</th>
+                                  <th>Project</th>
                                   <th>Work Order No.</th>
                                   <th>Status</th>
                                   <th>Last Updated</th>
@@ -212,7 +216,9 @@
                               <tbody>
                               {% for variation in under_prep_variation_list %}
                                   <tr>
-                                      <td><a href="{% url 'dashboard:project-variation-detail' variation.id %}">{{ variation.title|title }}</a></td>
+                                      <td><a href="{% url 'dashboard:variation-detail' variation.id %}">{{ variation.title|title }}</a></td>
+
+                                      <td>{{ variation.project.short_name }}</td>
 
                                       {% if variation.work_order %}
                                       <td>{{ variation.work_order }}</td>
@@ -265,6 +271,7 @@
                           <table class="table">
                               <thead class="text-primary">
                                   <th>Title</th>
+                                  <th>Project</th>
                                   <th>Work Order No.</th>
                                   <th>Status</th>
                                   <th>Last Updated</th>
@@ -272,7 +279,9 @@
                               <tbody>
                               {% for variation in pending_variation_list %}
                                   <tr>
-                                      <td><a href="{% url 'dashboard:project-variation-detail' variation.id %}">{{ variation.title|title }}</a></td>
+                                      <td><a href="{% url 'dashboard:variation-detail' variation.id %}">{{ variation.title|title }}</a></td>
+
+                                      <td>{{ variation.project.short_name }}</td>
 
                                       {% if variation.work_order %}
                                       <td>{{ variation.work_order }}</td>
@@ -325,6 +334,7 @@
                           <table class="table">
                               <thead class="text-primary">
                                   <th>Title</th>
+                                  <th>Project</th>
                                   <th>Work Order No.</th>
                                   <th>Status</th>
                                   <th>Last Updated</th>
@@ -332,7 +342,9 @@
                               <tbody>
                               {% for variation in submitted_variation_list %}
                                   <tr>
-                                      <td><a href="{% url 'dashboard:project-variation-detail' variation.id %}">{{ variation.title|title }}</a></td>
+                                      <td><a href="{% url 'dashboard:variation-detail' variation.id %}">{{ variation.title|title }}</a></td>
+
+                                      <td>{{ variation.project.short_name }}</td>
 
                                       {% if variation.work_order %}
                                       <td>{{ variation.work_order }}</td>
@@ -385,6 +397,7 @@
                           <table class="table">
                               <thead class="text-primary">
                                   <th>Title</th>
+                                  <th>Project</th>
                                   <th>Work Order No.</th>
                                   <th>Status</th>
                                   <th>Last Updated</th>
@@ -392,7 +405,9 @@
                               <tbody>
                               {% for variation in approved_variation_list %}
                                   <tr>
-                                      <td><a href="{% url 'dashboard:project-variation-detail' variation.id %}">{{ variation.title|title }}</a></td>
+                                      <td><a href="{% url 'dashboard:variation-detail' variation.id %}">{{ variation.title|title }}</a></td>
+
+                                      <td>{{ variation.project.short_name }}</td>
 
                                       {% if variation.work_order %}
                                       <td>{{ variation.work_order }}</td>

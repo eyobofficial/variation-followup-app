@@ -85,5 +85,5 @@ class BankAdmin(admin.ModelAdmin):
 
 @admin.register(Insurance)
 class InsuranceAdmin(admin.ModelAdmin):
-    list_display = ('project', 'insurance_type', 'bank', 'start_date', 'period', 'status',)
+    list_display = ('project', 'insurance_type', 'bank', 'start_date', 'period', 'end_date', 'status',)
     list_filter = ('project', 'insurance_type', 'bank', 'status',)

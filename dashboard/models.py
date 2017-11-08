@@ -4,6 +4,8 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
+import datetime
+
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     contractor = models.ForeignKey('Contractor', null=True, on_delete=models.SET_NULL)
@@ -258,8 +260,26 @@ class Insurance(models.Model):
     amount = models.DecimalField(max_digits=16, decimal_places=2, null=True, blank=True, help_text='Insurance amount in ETB')
     start_date = models.DateField(null=True, blank=True, help_text='Starting date of this insurance. (Use yyyy-mm-dd format)')
     period = models.IntegerField(null=True, blank=True, help_text='Number of calendar days covered by the insurance')
+    end_date = models.DateField('Expiration date', null=True, blank=True, help_text='Expiration date of this insurance. (Use yyyy-mm-dd format)')
     status = models.ForeignKey(InsuranceStatus, on_delete=models.CASCADE)
     description = models.TextField('Note (optional)', null=True, blank=True, help_text='Optional notes or remarks regarding the insruance')
+    
+    def save(self, *args, **kwargs):
+        self.end_date = self.start_date + datetime.timedelta(self.period)
+        super(Insurance, self).save(*args, **kwargs)
+
+    def update_status(self, *args, **kwargs):
+        if (self.start_date + datetime.timedelta(self.period)) <= datetime.date.today() and self.status.level == 10:
+            self.status = InsuranceStatus.objects.filter(level=310)[0]
+            self.save()
+        if (self.start_date + datetime.timedelta(self.period)) > datetime.date.today() and self.status.level == 310:
+            self.status = InsuranceStatus.objects.filter(level=10)[0]
+            self.save()
+
+    def get_days_left(self, *args, **kwargs):
+        if self.end_date > datetime.date.today():
+            d = self.end_date - datetime.date.today()
+            return d.days
 
     def __str__(self):
         return '{} ({})'.format(self.project, self.insurance_type)

@@ -33,6 +33,11 @@ from .forms import (SignupForm,)
 def check_committee(user):
     return user.profile.is_committee
 
+# Update Insurance Status
+def update_ins_status():
+    for i in Insurance.objects.all():
+        i.update_status()
+
 # Signup view
 def signup(request):
     """
@@ -68,7 +73,7 @@ def signup(request):
         form = form_class()
     return render(request, template_name, {
             'form': form,
-        })   
+        })
 
 @login_required
 def index(request):
@@ -534,12 +539,14 @@ class InsuranceList(UserPassesTestMixin, generic.ListView):
         return self.request.user.is_active
 
     def get_queryset(self, *args, **kwargs):
-        return Insurance.objects.filter(project__contractor=self.request.user.profile.contractor).order_by('-updated_at')
+        return Insurance.objects.filter(project__contractor=self.request.user.profile.contractor).filter(status__level=10).order_by('end_date')
 
     def get_context_data(self, *args, **kwargs):
         context = super(InsuranceList, self).get_context_data(*args, **kwargs)
-        context['active_insurance_list'] = Insurance.objects.filter(project__contractor=self.request.user.profile.contractor).order_by('-updated_at')
-        context['expired_insurance_list'] = Insurance.objects.filter(project__contractor=self.request.user.profile.contractor).filter(status__group=3).order_by('-updated_at')
-        context['closed_insurance_list'] = Insurance.objects.filter(project__contractor=self.request.user.profile.contractor).filter(status__group=4).order_by('-updated_at')
+        context['expired_insurance_list'] = Insurance.objects.filter(project__contractor=self.request.user.profile.contractor).filter(status__level=310)
         context['page_name'] = 'insurances'
+
+        # Run update status code
+        update_ins_status()
+        
         return context
