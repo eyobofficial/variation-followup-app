@@ -69,6 +69,13 @@
 	                    </a>
 	                </li>
 
+	                <li {% if page_name == 'insurances' %} class="active" {% endif %}>
+	                    <a href="{% url 'dashboard:insurance-list' %}">
+	                        <i class="material-icons">dashboard</i>
+	                        <p>Insurance</p>
+	                    </a>
+	                </li>
+
 	                <li {% if page_name == 'payments' %} class="active" {% endif %}>
 	                    <a href="#">
 	                        <i class="material-icons">dashboard</i>

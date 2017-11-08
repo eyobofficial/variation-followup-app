@@ -11,7 +11,11 @@ from .models import (Profile,
                      VariationStatus,
                      Variation,
                      ClaimStatus,
-                     Claim,)
+                     Claim, 
+                     InsuranceType, 
+                     InsuranceStatus,
+                     Bank,
+                     Insurance,)
 
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
@@ -35,7 +39,7 @@ class ConstructionTypeAdmin(admin.ModelAdmin):
 @admin.register(ProjectStatus)
 class ProjectStatusAdmin(admin.ModelAdmin):
     list_display = ('title', 'level', 'group', 'id')
-    list_filter = ('level',)
+    list_filter = ('level', 'group',)
 
 @admin.register(Project)
 class ProjectAdmin(admin.ModelAdmin):
@@ -49,7 +53,7 @@ class ActivityTypeAdmin(admin.ModelAdmin):
 @admin.register(VariationStatus)
 class VariationStatusAdmin(admin.ModelAdmin):
     list_display = ('title', 'level', 'group', 'id')
-    list_filter = ('level',)
+    list_filter = ('level', 'group',)
 
 @admin.register(Variation)
 class VariationAdmin(admin.ModelAdmin):
@@ -59,9 +63,27 @@ class VariationAdmin(admin.ModelAdmin):
 @admin.register(ClaimStatus)
 class ClaimStatusAdmin(admin.ModelAdmin):
     list_display = ('title', 'level', 'group', 'id')
-    list_filter = ('level',)
+    list_filter = ('level', 'group',)
 
 @admin.register(Claim)
 class ClaimAdmin(admin.ModelAdmin):
     list_display = ('title', 'number', 'project', 'status', 'created_at', 'updated_at', 'id')
     list_filter = ('project', 'status', 'submitted_date', 'approved_date',)
+
+@admin.register(InsuranceType)
+class InsuranceTypeAdmin(admin.ModelAdmin):
+    list_display = ('title', 'id')
+
+@admin.register(InsuranceStatus)
+class InsuranceStatusAdmin(admin.ModelAdmin):
+    list_display = ('title', 'level', 'group', 'id',)
+    list_filter = ('level', 'group',)
+
+@admin.register(Bank)
+class BankAdmin(admin.ModelAdmin):
+    list_display = ('short_name', 'id')
+
+@admin.register(Insurance)
+class InsuranceAdmin(admin.ModelAdmin):
+    list_display = ('project', 'insurance_type', 'bank', 'start_date', 'period', 'status',)
+    list_filter = ('project', 'insurance_type', 'bank', 'status',)

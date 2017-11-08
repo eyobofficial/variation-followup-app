@@ -214,3 +214,57 @@ class Claim(models.Model):
     def get_absolute_url(self):
         return reverse('dashboard:claim-detail', kwargs={'pk': str(self.pk)})
 
+class InsuranceType(models.Model):
+    """
+    Represents an insurance bond type (Example: Advance bond guranttee, Performance bond guranttee)
+    """
+    title = models.CharField(max_length=100, help_text='Type of Insurance Bong Guranttee. Example: Advance bond guranttee, Performance bond guranttee etc..')
+    description = models.TextField(null=True, blank=True)
+
+    def __str__(self):
+        return self.title
+
+class InsuranceStatus(models.Model):
+    """
+    Represents status of an insurance
+    """
+    title = models.CharField(max_length=30)
+    short_title = models.CharField(max_length=30)
+    level = models.IntegerField()
+    group = models.IntegerField(null=True, blank=True, help_text='To group different status with different level, give them the same group number')
+    description = models.TextField(null=True, blank=True, help_text='Short description of the status meaning. (Optional)')
+
+    class Meta:
+        verbose_name_plural = 'Insurance Status'
+
+    def __str__(self):
+        return self.title
+
+class Bank(models.Model):
+    """
+    Represents a Bank or another type of Insurance Provider firm
+    """
+    full_name = models.CharField(max_length=100, help_text='Full official name of the bank or insurance provider firm')
+    short_name = models.CharField(max_length=100, help_text='Short (unofficial) commonly used name of the bank or insurance provider firm')
+    description = models.TextField('Short description (optional)', null=True, blank=True, help_text='Short optional description about the firm')
+
+    def __str__(self):
+        return self.short_name
+
+class Insurance(models.Model):
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    insurance_type = models.ForeignKey(InsuranceType, on_delete=models.CASCADE)
+    bank = models.ForeignKey(Bank, on_delete=models.CASCADE)
+    amount = models.DecimalField(max_digits=16, decimal_places=2, null=True, blank=True, help_text='Insurance amount in ETB')
+    start_date = models.DateField(null=True, blank=True, help_text='Starting date of this insurance. (Use yyyy-mm-dd format)')
+    period = models.IntegerField(null=True, blank=True, help_text='Number of calendar days covered by the insurance')
+    status = models.ForeignKey(InsuranceStatus, on_delete=models.CASCADE)
+    description = models.TextField('Note (optional)', null=True, blank=True, help_text='Optional notes or remarks regarding the insruance')
+
+    def __str__(self):
+        return '{} ({})'.format(self.project, self.insurance_type)
+
+    def get_absolute_url(self):
+        return reverse('dashboard:insurance-detail', kwargs={'pk': str(self.pk)})
+
+

@@ -73,61 +73,226 @@
     </div>
 </div><!-- /.row -->
 
+<!-- TIME CLAIMS -->
 <div class="row">
-    <div class="col-md-12">
-        <div class="card">
-            <div class="card-header" data-background-color="purple">
-                <h4 class="title">All Time Claims</h4>
-                <p class="category">List of all time extension claims for all projects</p>
-            </div>
-            <div class="card-content table-responsive">
-                <table class="table">
-                    <thead class="text-primary">
-                        <th>Title</th>
-                        <th>Project</th>
-                        <th>Status</th>
-                        <th>Last Updated</th>
-                    </thead>
-                    <tbody>
-                    {% for claim in claim_list %}
-                        <tr>
-                            <td><a href="{% url 'dashboard:claim-detail' claim.id %}">{{ claim.title|title }}</a></td>
-                            <td>{{ claim.project.short_name }}</td>
+  <div class="col-sm-12">
+      <div class="card card-nav-tabs card-md">
+          <div class="card-header clearfix" data-background-color="purple">
+              <div class="row">
+                  <div class="col-sm-5">
+                      <h4 class="title">Time Claims</h4>
+                      <p class="category">List of all ongoing time extension claims status for all projects</p>
+                  </div>
 
-                            {% if claim.status.level >= 0 and claim.status.level < 100 %}
-                            <td>
-                               <span class="label label-info">
-                                   <span class="fa fa-info-circle"></span> {{ claim.status.title|title }}
-                               </span>
-                            </td>
-                            {% elif claim.status.level >= 100 and claim.status.level < 200 %}
-                            <td>
-                               <span class="label label-success">
-                                   <span class="fa fa-check-square-o"></span> {{ claim.status.title|title }}
-                               </span>
-                            </td>
-                            {% elif claim.status.level >= 200 and claim.status.level < 300 %}
-                            <td>
-                               <span class="label label-warning">
-                                   <span class="fa fa-warning"></span> {{ claim.status.title|title }}
-                               </span>
-                            </td>
-                            {% else %}
-                            <td>
-                               <span class="label label-danger">
-                                   <span class="fa fa-warning"></span> {{ claim.status.title|title }}
-                               </span>
-                            </td>
-                            {% endif %}
+                  <div class="col-sm-7">
+                      <div class="nav-tabs-navigation pull-right">
+                          <div class="nav-tabs-wrapper">
+                              <ul class="nav nav-tabs text-right" data-tabs="tabs">
+                                  <li class="active">
+                                      <a href="#all-claims" data-toggle="tab">
+                                          All
+                                          {% if claim_list.count > 0 %}
+                                          <span class="notification notification-info">{{ all_claim_list.count }}</span>
+                                          {% endif %}
+                                      <div class="ripple-container"></div></a>
+                                  </li>
 
-                            <td>{{ claim.updated_at|naturalday:'M d, Y'|title }}</td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
+                                  <li class="">
+                                      <a href="#submitted-claims" data-toggle="tab">
+                                          Submitted
+                                          {% if submitted_claim_list.count > 0 %}
+                                          <span class="notification notification-success">{{ submitted_claim_list.count }}</span>
+                                          {% endif %}
+                                      <div class="ripple-container"></div></a>
+                                  </li>
+
+                                  <li class="">
+                                      <a href="#approved-claims" data-toggle="tab">
+                                          Approved/Rejected
+                                          {% if approved_claim_list.count > 0 %}
+                                          <span class="notification notification-danger">{{ approved_claim_list.count }}</span>
+                                          {% endif %}
+                                      <div class="ripple-container"></div></a>
+                                  </li>
+                              </ul>
+                          </div>
+                      </div>
+                  </div>
+              </div><!-- /.row -->
+          </div><!-- /.card-header -->
+
+          <div class="card-content">
+              <div class="tab-content">
+                  <div class="tab-pane active" id="all-claims">
+                     {% if all_claim_list %}
+                      <div class="table-responsive">
+                          <table class="table">
+                              <thead class="text-primary">
+                                  <th>Title</th>
+                                  <th>Status</th>
+                                  <th>Last Updated</th>
+                              </thead>
+                              <tbody>
+                              {% for claim in all_claim_list %}
+                                  <tr>
+                                      <td><a href="{% url 'dashboard:project-claim-detail' claim.id %}">{{ claim.title|title }}</a></td>
+
+                                      {% if claim.status.level >= 0 and claim.status.level < 100 %}
+                                      <td>
+                                         <span class="label label-info">
+                                             <span class="fa fa-info-circle"></span> {{ claim.status.title|title }}
+                                         </span>
+                                      </td>
+                                      {% elif claim.status.level >= 100 and claim.status.level < 200 %}
+                                      <td>
+                                         <span class="label label-success">
+                                             <span class="fa fa-check-square-o"></span> {{ claim.status.title|title }}
+                                         </span>
+                                      </td>
+                                      {% elif claim.status.level >= 200 and claim.status.level < 300 %}
+                                      <td>
+                                         <span class="label label-warning">
+                                             <span class="fa fa-warning"></span> {{ claim.status.title|title }}
+                                         </span>
+                                      </td>
+                                      {% else %}
+                                      <td>
+                                         <span class="label label-danger">
+                                             <span class="fa fa-warning"></span> {{ claim.status.title|title }}
+                                         </span>
+                                      </td>
+                                      {% endif %}
+
+                                      <td>{{ claim.updated_at|naturalday:'M d, Y'|title }}</td>
+                                  </tr>
+                              {% endfor %}
+                              </tbody>
+                          </table>
+                      </div><!-- /.table-responsive -->
+                     {% else %}
+                     <div class="banner banner-default">
+                         <i class="material-icons">info_outline</i>&nbsp; No Records of Time Claims
+                     </div>
+                     {% endif %}
+                  </div><!-- /.tab-pane #all-variations -->
+
+                  <div class="tab-pane" id="submitted-claims">
+                      {% if submitted_claim_list %}
+                      <div class="table-responsive">
+                          <table class="table">
+                              <thead class="text-primary">
+                                  <th>Title</th>
+                                  <th>Status</th>
+                                  <th>Last Updated</th>
+                              </thead>
+                              <tbody>
+                              {% for claim in submitted_claim_list %}
+                                  <tr>
+                                      <td><a href="{% url 'dashboard:project-claim-detail' claim.id %}">{{ claim.title|title }}</a></td>
+
+                                      {% if claim.status.level >= 0 and claim.status.level < 100 %}
+                                      <td>
+                                         <span class="label label-info">
+                                             <span class="fa fa-info-circle"></span> {{ claim.status.title|title }}
+                                         </span>
+                                      </td>
+                                      {% elif claim.status.level >= 100 and claim.status.level < 200 %}
+                                      <td>
+                                         <span class="label label-success">
+                                             <span class="fa fa-check-square-o"></span> {{ claim.status.title|title }}
+                                         </span>
+                                      </td>
+                                      {% elif claim.status.level >= 200 and claim.status.level < 300 %}
+                                      <td>
+                                         <span class="label label-warning">
+                                             <span class="fa fa-warning"></span> {{ claim.status.title|title }}
+                                         </span>
+                                      </td>
+                                      {% else %}
+                                      <td>
+                                         <span class="label label-danger">
+                                             <span class="fa fa-warning"></span> {{ claim.status.title|title }}
+                                         </span>
+                                      </td>
+                                      {% endif %}
+
+                                      <td>{{ claim.updated_at|naturalday:'M d, Y'|title }}</td>
+                                  </tr>
+                              {% endfor %}
+                              </tbody>
+                          </table>
+                      </div><!-- /.table-responsive -->
+                      {% else %}
+                      <div class="banner banner-default">
+                          <i class="material-icons">info_outline</i>&nbsp; No Records of Submitted Time Claims
+                      </div>
+                      {% endif %}
+                  </div><!-- /.tab-pane #submitted-claims -->
+
+                  <div class="tab-pane" id="approved-claims">
+                      {% if approved_claim_list %}
+                      <div class="table-responsive">
+                          <table class="table">
+                              <thead class="text-primary">
+                                  <th>Title</th>
+                                  <th>Status</th>
+                                  <th>Last Updated</th>
+                              </thead>
+                              <tbody>
+                              {% for claim in approved_claim_list %}
+                                  <tr>
+                                      <td><a href="{% url 'dashboard:project-claim-detail' claim.id %}">{{ claim.title|title }}</a></td>
+
+                                      {% if claim.status.level >= 0 and claim.status.level < 100 %}
+                                      <td>
+                                         <span class="label label-info">
+                                             <span class="fa fa-info-circle"></span> {{ claim.status.title|title }}
+                                         </span>
+                                      </td>
+                                      {% elif claim.status.level >= 100 and claim.status.level < 200 %}
+                                      <td>
+                                         <span class="label label-success">
+                                             <span class="fa fa-check-square-o"></span> {{ claim.status.title|title }}
+                                         </span>
+                                      </td>
+                                      {% elif claim.status.level >= 200 and claim.status.level < 300 %}
+                                      <td>
+                                         <span class="label label-warning">
+                                             <span class="fa fa-warning"></span> {{ claim.status.title|title }}
+                                         </span>
+                                      </td>
+                                      {% else %}
+                                      <td>
+                                         <span class="label label-danger">
+                                             <span class="fa fa-warning"></span> {{ claim.status.title|title }}
+                                         </span>
+                                      </td>
+                                      {% endif %}
+
+                                      <td>{{ claim.updated_at|naturalday:'M d, Y'|title }}</td>
+                                  </tr>
+                              {% endfor %}
+                              </tbody>
+                          </table>
+                      </div><!-- /.table-responsive -->
+                      {% else %}
+                      <div class="banner banner-default">
+                          <i class="material-icons">info_outline</i>&nbsp; No Records of Approved/Rejected Time Claims
+                      </div>
+                      {% endif %}
+                  </div><!-- /.tab-pane #approved-claims -->
+              </div><!-- /.tab-content -->
+          </div><!-- /.card-content -->
+          
+          {% if user.is_staff %}
+          <div class="card-footer">
+            <a href="{% url 'dashboard:claim-create' %}" title="Add new claim" class="btn btn-sm btn-primary pull-right">
+               <span class="fa fa-plus-circle"></span>&nbsp; Add 
+            </a>
+          </div><!-- /.card-footer -->
+          {% endif %}
+      </div><!-- /.card -->
+  </div>
 </div><!-- /.row -->
 
 {% if user.is_staff %}

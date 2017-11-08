@@ -20,7 +20,11 @@ from .models import (Consultant,
                      VariationStatus,
                      Variation,
                      ClaimStatus,
-                     Claim)
+                     Claim, 
+                     InsuranceType, 
+                     InsuranceStatus, 
+                     Bank, 
+                     Insurance, )
 
 # Import forms
 from .forms import (SignupForm,)
@@ -355,6 +359,10 @@ class VariationList(UserPassesTestMixin, generic.ListView):
 
     def get_context_data(self, *args, **kwargs):
         context = super(VariationList, self).get_context_data(*args, **kwargs)
+        context['under_prep_variation_list'] = Variation.objects.filter(project__contractor=self.request.user.profile.contractor).filter(status__group=1).order_by('-updated_at')
+        context['pending_variation_list'] = Variation.objects.filter(project__contractor=self.request.user.profile.contractor).filter(status__group=2).order_by('-updated_at')
+        context['submitted_variation_list'] = Variation.objects.filter(project__contractor=self.request.user.profile.contractor).filter(status__group=3).order_by('-updated_at')
+        context['approved_variation_list'] = Variation.objects.filter(project__contractor=self.request.user.profile.contractor).filter(status__group=4).order_by('-updated_at')
         context['page_name'] = 'variations'
         return context
 
@@ -441,6 +449,9 @@ class ClaimList(UserPassesTestMixin, generic.ListView):
 
     def get_context_data(self, *args, **kwargs):
         context = super(ClaimList, self).get_context_data(*args, **kwargs)
+        context['all_claim_list'] = Claim.objects.filter(project__contractor=self.request.user.profile.contractor).order_by('-updated_at')
+        context['submitted_claim_list'] = Claim.objects.filter(project__contractor=self.request.user.profile.contractor).filter(status__group=3).order_by('-updated_at')
+        context['approved_claim_list'] = Claim.objects.filter(project__contractor=self.request.user.profile.contractor).filter(status__group=4).order_by('-updated_at')
         context['page_name'] = 'time claims'
         return context
 
@@ -511,4 +522,24 @@ class ClaimDelete(UserPassesTestMixin, DeleteView):
     def get_context_data(self, *args, **kwargs):
         context = super(ClaimDelete, self).get_context_data(*args, **kwargs)
         context['page_name'] = 'time claims'
+        return context
+
+class InsuranceList(UserPassesTestMixin, generic.ListView):
+    """
+    Lists all time claims for all project
+    """
+    model = Insurance
+
+    def test_func(self, *args, **kwargs):
+        return self.request.user.is_active
+
+    def get_queryset(self, *args, **kwargs):
+        return Insurance.objects.filter(project__contractor=self.request.user.profile.contractor).order_by('-updated_at')
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(InsuranceList, self).get_context_data(*args, **kwargs)
+        context['active_insurance_list'] = Insurance.objects.filter(project__contractor=self.request.user.profile.contractor).order_by('-updated_at')
+        context['expired_insurance_list'] = Insurance.objects.filter(project__contractor=self.request.user.profile.contractor).filter(status__group=3).order_by('-updated_at')
+        context['closed_insurance_list'] = Insurance.objects.filter(project__contractor=self.request.user.profile.contractor).filter(status__group=4).order_by('-updated_at')
+        context['page_name'] = 'insurances'
         return context

@@ -108,6 +108,19 @@ dl > dd, .dd {
     top: 5px !important;
 }
 
+/**************** Banner *************************/
+.banner {
+    font-size: 1.6em;
+    font-weight: 300;
+    line-height: 1.4em;
+    text-align: center;
+    margin-top: 2.4em;
+}
+
+.banner-default {
+    color: #ccc !important;
+}
+
 /*************** Panel Sizing Styles ***************/
 @media only screen and (min-width: 480px) {
     .card-xs .card-content {

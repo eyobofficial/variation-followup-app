@@ -20,6 +20,10 @@ urlpatterns = [
     url(r'^claim/(?P<pk>[0-9]+)/update/$', views.ClaimUpdate.as_view(), name='claim-update'),
     url(r'^claim/(?P<pk>[0-9]+)/delete/$', views.ClaimDelete.as_view(), name='claim-delete'),
 
+    # Insurance URLS
+    url(r'^insurances/$', views.InsuranceList.as_view(), name='insurance-list'),
+    # url(r'^insurance/(?P<pk>[0-9]+)$', views.InsuranceDetail.as_view(), name='insurance-detail'),
+
     # Project URLs
     url(r'^projects/$', views.ProjectList.as_view(), name='project-list'),
     url(r'^project/(?P<pk>[0-9]+)$', views.ProjectDetail.as_view(), name='project-detail'),
