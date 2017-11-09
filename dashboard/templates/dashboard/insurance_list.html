@@ -128,7 +128,7 @@
                               <tbody>
                               {% for insurance in insurance_list %}
                                   <tr>
-                                      <td><a href="#">{{ insurance.insurance_type.title|title }}</a></td>
+                                      <td><a href="{% url 'dashboard:insurance-detail' insurance.id %}">{{ insurance.insurance_type.title|title }}</a></td>
                                       <td>{{ insurance.project.short_name }}</td>
 
                                       {% if insurance.status.level >= 0 and insurance.status.level < 100 %}
@@ -184,7 +184,7 @@
                               <tbody>
                               {% for insurance in expired_insurance_list %}
                                   <tr>
-                                      <td><a href="#">{{ insurance.insurance_type.title|title }}</a></td>
+                                      <td><a href="{% url 'dashboard:insurance-detail' insurance.id %}">{{ insurance.insurance_type.title|title }}</a></td>
                                       <td>{{ insurance.project.short_name }}</td>
 
                                       {% if insurance.status.level >= 0 and insurance.status.level < 100 %}

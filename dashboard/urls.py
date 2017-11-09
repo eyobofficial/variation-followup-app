@@ -22,7 +22,7 @@ urlpatterns = [
 
     # Insurance URLS
     url(r'^insurances/$', views.InsuranceList.as_view(), name='insurance-list'),
-    # url(r'^insurance/(?P<pk>[0-9]+)$', views.InsuranceDetail.as_view(), name='insurance-detail'),
+    url(r'^insurance/(?P<pk>[0-9]+)$', views.InsuranceDetail.as_view(), name='insurance-detail'),
 
     # Project URLs
     url(r'^projects/$', views.ProjectList.as_view(), name='project-list'),

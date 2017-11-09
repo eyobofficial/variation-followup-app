@@ -262,6 +262,7 @@ class Insurance(models.Model):
     period = models.IntegerField(null=True, blank=True, help_text='Number of calendar days covered by the insurance')
     end_date = models.DateField('Expiration date', null=True, blank=True, help_text='Expiration date of this insurance. (Use yyyy-mm-dd format)')
     status = models.ForeignKey(InsuranceStatus, on_delete=models.CASCADE)
+    issue_number = models.IntegerField('Number of revision', null=True, blank=True, help_text='If unsure, please leave it blank')
     description = models.TextField('Note (optional)', null=True, blank=True, help_text='Optional notes or remarks regarding the insruance')
     
     def save(self, *args, **kwargs):

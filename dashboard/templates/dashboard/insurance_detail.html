@@ -1,0 +1,151 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% block page_name %} {{ insurance.insurance_type.title|title }} ({{ insurance.project.short_name }}) {% endblock page_name %}
+
+{% block content %}
+{% include 'partials/messages.html' %}
+<div class="row">
+    <div class="col-lg-4 col-md-6 col-sm-6">
+        <div class="card card-stats">
+            <div class="card-header" data-background-color="blue">
+                <i class="material-icons">info_outline</i>
+            </div>
+            <div class="card-content">
+                <p class="category">Status</p>
+                <h3 class="title">{{ insurance.status.short_title }}</h3>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-4 col-md-6 col-sm-6">
+        <div class="card card-stats">
+            <div class="card-header" data-background-color="orange">
+                <i class="material-icons">date_range</i>
+            </div>
+            <div class="card-content">
+                <p class="category">Expiration Date</p>
+                <h3 class="title">{{ insurance.end_date|naturalday:'M d, Y'|title }}</h3>
+            </div>
+           
+        </div>
+    </div>
+   
+    <div class="col-lg-4 col-md-6 col-sm-6">
+        <div class="card card-stats">
+            <div class="card-header" data-background-color="green">
+                <i class="material-icons">alarm</i>
+            </div>
+            <div class="card-content">
+                <p class="category">Remaining days</p>
+                <h3 class="title">{{ insurance.get_days_left|stringformat:'02d' }}</h3>
+            </div>
+        </div>
+    </div>
+</div><!-- /.row -->
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header" data-background-color="purple">
+                <h4 class="title">Insurance Summary</h4>
+                <p class="category">Description and summary of the insurance</p>
+            </div>
+            <div class="card-content">
+                <dl>
+                    <dt>Insurance Type</dt>
+                    <dd>{{ insurance.insurance_type.title|title }}</dd>
+
+                    <dt>Project</dt>
+                    <dd>{{ insurance.project.full_name }}</dd>
+
+                    <dt>Status</dt>
+                    {% if insurance.status.level >= 0 and insurance.status.level < 100 %}
+                    <dd>
+                       <span class="label label-info">
+                          <span class="fa fa-info-circle"></span> {{ insurance.status.title|title }} 
+                       </span>
+                    </dd>
+                    {% elif insurance.status.level >= 100 and insurance.status.level < 200 %}
+                    <dd>
+                       <span class="label label-success">
+                           <span class="fa fa-check-square-o"></span> {{ insurance.status.title|title }}
+                       </span>
+                    </dd>
+                    {% elif insurance.status.level >= 200 and insurance.status.level < 300 %}
+                    <dd>
+                       <span class="label label-warning">
+                           <span class="fa fa-warning"></span> {{ insurance.status.title|title }}
+                       </span>
+                    </dd>
+                    {% else %}
+                    <dd>
+                       <span class="label label-danger">
+                          <span class="fa fa-warning"></span> {{ insurance.status.title|title }} 
+                       </span>
+                    </dd>
+                    {% endif %}
+
+                    <dt>Insurance Provider</dt>
+                    <dd>{{ insurance.bank.full_name }}</dd>
+
+                    <dt>Amount</dt>
+                    {% if insurance.amount %}
+                    <dd>ETB {{ insurance.amount|intcomma }}</dd>
+                    {% else %}
+                    <dd class="text-fade">(Not Available)</dd>
+                    {% endif %}
+
+                    <dt>Starting Date</dt>
+                    <dd>{{ insurance.start_date|naturalday:'M d, Y'|title }}</dd>
+
+                    <dt>Insurance Period</dt>
+                    <dd>{{ insurance.period|stringformat:'02d' }} Calendar days</dd>
+
+                    <dt>Expiration Date</dt>
+                    <dd>{{ insurance.start_date|naturalday:'M d, Y'|title }} ({{ insurance.get_days_left }} days left)</dd>
+
+                    <dt>Revision No.</dt>
+                    {% if insurance.issued_number %}
+                    <dd>{{ insurance.issued_number|stringformat:'02d' }}</dd>
+                    {% else %}
+                    <dd class="text-fade">(Not Available)</dd>
+                    {% endif %}
+                </dl>
+            </div>
+        </div>
+    </div>
+</div><!-- /.row -->
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-sm">
+            <div class="card-header" data-background-color="purple">
+                <h4 class="title">Remarks/Notes</h4>
+                <p class="category">Special remarks and notes regarding the current insurance</p>
+            </div>
+            <div class="card-content">
+            {% if insurance.description %}
+                {{ insurance.description }}
+            {% else %}
+                <span class="text-fade text-center">(Not Available)</span>
+            {% endif %}
+            </div>
+        </div>
+    </div>
+</div><!-- /.row -->
+
+{% if user.is_staff %}
+<div class="row">
+    <div class="col-sm-12">
+        <a href="#" title="Update time claim" class="btn btn-primary">
+           <span class="fa fa-edit"></span>&nbsp; Update 
+        </a>
+
+        <a href="#" title="Delete time claim" class="btn btn-danger pull-right">
+           Delete  
+        </a>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

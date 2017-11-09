@@ -545,8 +545,21 @@ class InsuranceList(UserPassesTestMixin, generic.ListView):
         context = super(InsuranceList, self).get_context_data(*args, **kwargs)
         context['expired_insurance_list'] = Insurance.objects.filter(project__contractor=self.request.user.profile.contractor).filter(status__level=310)
         context['page_name'] = 'insurances'
-
         # Run update status code
-        update_ins_status()
-        
+        update_ins_status()        
+        return context
+
+class InsuranceDetail(UserPassesTestMixin, generic.DetailView):
+    """
+    Detail for a particular insurance record
+    """
+    model = Insurance
+
+    def test_func(self, *args, **kwargs):
+        insurance = get_object_or_404(Insurance, pk=self.kwargs['pk'])
+        return self.request.user.is_active and insurance.project.contractor == self.request.user.profile.contractor
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(InsuranceDetail, self).get_context_data(*args, **kwargs)
+        context['page_name'] = 'insurances'
         return context
