@@ -286,14 +286,6 @@
                   </div><!-- /.tab-pane #approved-claims -->
               </div><!-- /.tab-content -->
           </div><!-- /.card-content -->
-          
-          {% if user.is_staff %}
-          <div class="card-footer">
-            <a href="{% url 'dashboard:claim-create' %}" title="Add new claim" class="btn btn-sm btn-primary pull-right">
-               <span class="fa fa-plus-circle"></span>&nbsp; Add 
-            </a>
-          </div><!-- /.card-footer -->
-          {% endif %}
       </div><!-- /.card -->
   </div>
 </div><!-- /.row -->

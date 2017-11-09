@@ -95,8 +95,233 @@
                     {% endif %}
                 </dl>
             </div>
-        </div>
+        </div><!-- /.card -->
     </div>
+</div><!-- /.row -->
+
+<!-- INSURANCE SUMMARY -->
+<div class="row">
+  <div class="col-sm-12">
+      <div class="card card-nav-tabs card-md">
+          <div class="card-header clearfix" data-background-color="purple">
+              <div class="row">
+                  <div class="col-sm-5">
+                      <h4 class="title">Project Insurances</h4>
+                      <p class="category">List of all ongoing advance guaranttee bonds for this project</p>
+                  </div>
+
+                  <div class="col-sm-7">
+                      <div class="nav-tabs-navigation pull-right">
+                          <div class="nav-tabs-wrapper">
+                              <ul class="nav nav-tabs text-right" data-tabs="tabs">
+
+                                  <li class="">
+                                      <a href="#active-insurances" data-toggle="tab">
+                                          Active
+                                          {% if insurance_list.count > 0 %}
+                                          <span class="notification notification-info">{{ insurance_list.count }}</span>
+                                          {% endif %}
+                                      <div class="ripple-container"></div></a>
+                                  </li>
+
+                                  <li class="">
+                                      <a href="#expired-insurances" data-toggle="tab">
+                                          Expired
+                                          {% if expired_insurance_list.count > 0 %}
+                                          <span class="notification notification-danger">{{ expired_insurance_list.count }}</span>
+                                          {% endif %}
+                                      <div class="ripple-container"></div></a>
+                                  </li>
+
+                                  <li class="">
+                                      <a href="#closed-insurances" data-toggle="tab">
+                                          Closed
+                                          {% if closed_insurance_list.count > 0 %}
+                                          <span class="notification notification-success">{{ closed_insurance_list.count }}</span>
+                                          {% endif %}
+                                      <div class="ripple-container"></div></a>
+                                  </li>
+                              </ul>
+                          </div>
+                      </div>
+                  </div>
+              </div><!-- /.row -->
+          </div><!-- /.card-header -->
+
+          <div class="card-content">
+              <div class="tab-content">
+                  <div class="tab-pane active" id="active-insurances">
+                      {% if insurance_list %}
+                      <div class="table-responsive">
+                          <table class="table">
+                              <thead class="text-primary">
+                                  <th>Insurance Type</th>
+                                  <th>Status</th>
+                                  <th>Expiration Date</th>
+                                  <th>Days Left</th>
+                              </thead>
+                              <tbody>
+                              {% for insurance in insurance_list %}
+                                  <tr>
+                                      <td><a href="{% url 'dashboard:project-insurance-detail' insurance.id %}">{{ insurance.insurance_type.title|title }}</a></td>
+
+                                      {% if insurance.status.level >= 0 and insurance.status.level < 100 %}
+                                      <td>
+                                         <span class="label label-info">
+                                             <span class="fa fa-info-circle"></span> {{ insurance.status.title|title }}
+                                         </span>
+                                      </td>
+                                      {% elif insurance.status.level >= 100 and insurance.status.level < 200 %}
+                                      <td>
+                                         <span class="label label-success">
+                                             <span class="fa fa-check-square-o"></span> {{ insurance.status.title|title }}
+                                         </span>
+                                      </td>
+                                      {% elif insurance.status.level >= 200 and insurance.status.level < 300 %}
+                                      <td>
+                                         <span class="label label-warning">
+                                             <span class="fa fa-warning"></span> {{ insurance.status.title|title }}
+                                         </span>
+                                      </td>
+                                      {% else %}
+                                      <td>
+                                         <span class="label label-danger">
+                                             <span class="fa fa-warning"></span> {{ insurance.status.title|title }}
+                                         </span>
+                                      </td>
+                                      {% endif %}
+
+                                      <td>{{ insurance.end_date|naturalday:'M d, Y'|title }}</td>
+                                      <td>{{ insurance.get_days_left }}</td>
+                                  </tr>
+                              {% endfor %}
+                              </tbody>
+                          </table>
+                      </div><!-- /.table-responsive -->
+                      {% else %}
+                      <div class="banner banner-default push-up-md">
+                          <i class="material-icons">info_outline</i>&nbsp; No Record of Active Insurance
+                      </div>
+                      {% endif %}
+                  </div><!-- /.tab-pane #all-insurance (Active Insurance) -->
+
+                  <div class="tab-pane" id="expired-insurances">
+                      {% if expired_insurance_list %}
+                      <div class="table-responsive">
+                          <table class="table">
+                              <thead class="text-primary">
+                                  <th>Insurance Type</th>
+                                  <th>Status</th>
+                                  <th>Expiration Date</th>
+                              </thead>
+                              <tbody>
+                              {% for insurance in expired_insurance_list %}
+                                  <tr>
+                                      <td><a href="{% url 'dashboard:project-insurance-detail' insurance.id %}">{{ insurance.insurance_type.title|title }}</a></td>
+
+                                      {% if insurance.status.level >= 0 and insurance.status.level < 100 %}
+                                      <td>
+                                         <span class="label label-info">
+                                             <span class="fa fa-info-circle"></span> {{ insurance.status.title|title }}
+                                         </span>
+                                      </td>
+                                      {% elif insurance.status.level >= 100 and insurance.status.level < 200 %}
+                                      <td>
+                                         <span class="label label-success">
+                                             <span class="fa fa-check-square-o"></span> {{ insurance.status.title|title }}
+                                         </span>
+                                      </td>
+                                      {% elif insurance.status.level >= 200 and insurance.status.level < 300 %}
+                                      <td>
+                                         <span class="label label-warning">
+                                             <span class="fa fa-warning"></span> {{ insurance.status.title|title }}
+                                         </span>
+                                      </td>
+                                      {% else %}
+                                      <td>
+                                         <span class="label label-danger">
+                                             <span class="fa fa-warning"></span> {{ insurance.status.title|title }}
+                                         </span>
+                                      </td>
+                                      {% endif %}
+
+                                      <td>{{ insurance.end_date|naturalday:'M d, Y'|title }}</td>
+                                  </tr>
+                              {% endfor %}
+                              </tbody>
+                          </table>
+                      </div><!-- /.table-responsive -->
+                      {% else %}
+                      <div class="banner banner-default push-up-md">
+                          <i class="material-icons">info_outline</i>&nbsp; No Record Expired Insurance
+                      </div>
+                      {% endif %}
+                  </div><!-- /.tab-pane #expired-insurances -->
+
+                  <div class="tab-pane" id="expired-insurances">
+                      {% if closed_insurance_list %}
+                      <div class="table-responsive">
+                          <table class="table">
+                              <thead class="text-primary">
+                                  <th>Insurance Type</th>
+                                  <th>Status</th>
+                                  <th>Expiration Date</th>
+                              </thead>
+                              <tbody>
+                              {% for insurance in closed_insurance_list %}
+                                  <tr>
+                                      <td><a href="{% url 'dashboard:project-insurance-detail' insurance.id %}">{{ insurance.insurance_type.title|title }}</a></td>
+
+                                      {% if insurance.status.level >= 0 and insurance.status.level < 100 %}
+                                      <td>
+                                         <span class="label label-info">
+                                             <span class="fa fa-info-circle"></span> {{ insurance.status.title|title }}
+                                         </span>
+                                      </td>
+                                      {% elif insurance.status.level >= 100 and insurance.status.level < 200 %}
+                                      <td>
+                                         <span class="label label-success">
+                                             <span class="fa fa-check-square-o"></span> {{ insurance.status.title|title }}
+                                         </span>
+                                      </td>
+                                      {% elif insurance.status.level >= 200 and insurance.status.level < 300 %}
+                                      <td>
+                                         <span class="label label-warning">
+                                             <span class="fa fa-warning"></span> {{ insurance.status.title|title }}
+                                         </span>
+                                      </td>
+                                      {% else %}
+                                      <td>
+                                         <span class="label label-danger">
+                                             <span class="fa fa-warning"></span> {{ insurance.status.title|title }}
+                                         </span>
+                                      </td>
+                                      {% endif %}
+
+                                      <td>{{ insurance.end_date|naturalday:'M d, Y'|title }}</td>
+                                  </tr>
+                              {% endfor %}
+                              </tbody>
+                          </table>
+                      </div><!-- /.table-responsive -->
+                      {% else %}
+                      <div class="banner banner-default push-up-md">
+                          <i class="material-icons">info_outline</i>&nbsp; No Record of closed insurances
+                      </div>
+                      {% endif %}
+                  </div><!-- /.tab-pane #closed-insurances -->
+              </div><!-- /.tab-content -->
+          </div><!-- /.card-content -->
+
+          {% if user.is_staff %}
+          <div class="card-footer">
+            <a href="{% url 'dashboard:project-insurance-create' project.id %}" title="Add new insurance" class="btn btn-sm btn-primary pull-right">
+               <span class="fa fa-plus-circle"></span>&nbsp; Add 
+            </a>
+          </div><!-- /.card-footer -->
+          {% endif %}
+      </div>
+  </div>
 </div><!-- /.row -->
 
 <!-- PROJECT TIME CLAIMS -->
@@ -321,6 +546,7 @@
   </div>
 </div><!-- /.row -->
 
+<!-- PROJECT VARIATIONS -->
 <div class="row">
   <div class="col-sm-12">
       <div class="card card-nav-tabs card-md">
@@ -704,7 +930,7 @@
 <div class="row">
     <div class="col-sm-12">
         <a href="{% url 'dashboard:project-update' project.id %}" title="Update project" class="btn btn-primary">
-           <span class="fa fa-edit"></span>&nbsp; Update 
+           <span class="fa fa-edit"></span>&nbsp; Update Project
         </a>
 
         <a href="{% url 'dashboard:project-delete' project.id %}" title="Delete project" class="btn btn-danger pull-right">

@@ -258,16 +258,19 @@ class Insurance(models.Model):
     insurance_type = models.ForeignKey(InsuranceType, on_delete=models.CASCADE)
     bank = models.ForeignKey(Bank, on_delete=models.CASCADE)
     amount = models.DecimalField(max_digits=16, decimal_places=2, null=True, blank=True, help_text='Insurance amount in ETB')
-    start_date = models.DateField(null=True, blank=True, help_text='Starting date of this insurance. (Use yyyy-mm-dd format)')
-    period = models.IntegerField(null=True, blank=True, help_text='Number of calendar days covered by the insurance')
+    start_date = models.DateField(help_text='Starting date of this insurance. (Use yyyy-mm-dd format)')
+    period = models.IntegerField(help_text='Number of calendar days covered by the insurance')
     end_date = models.DateField('Expiration date', null=True, blank=True, help_text='Expiration date of this insurance. (Use yyyy-mm-dd format)')
     status = models.ForeignKey(InsuranceStatus, on_delete=models.CASCADE)
     issue_number = models.IntegerField('Number of revision', null=True, blank=True, help_text='If unsure, please leave it blank')
     description = models.TextField('Note (optional)', null=True, blank=True, help_text='Optional notes or remarks regarding the insruance')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     
     def save(self, *args, **kwargs):
         self.end_date = self.start_date + datetime.timedelta(self.period)
         super(Insurance, self).save(*args, **kwargs)
+        self.update_status()
 
     def update_status(self, *args, **kwargs):
         if (self.start_date + datetime.timedelta(self.period)) <= datetime.date.today() and self.status.level == 10:

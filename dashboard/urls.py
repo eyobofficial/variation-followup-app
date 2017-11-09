@@ -23,6 +23,9 @@ urlpatterns = [
     # Insurance URLS
     url(r'^insurances/$', views.InsuranceList.as_view(), name='insurance-list'),
     url(r'^insurance/(?P<pk>[0-9]+)$', views.InsuranceDetail.as_view(), name='insurance-detail'),
+    url(r'^insurance/add/$', views.InsuranceCreate.as_view(), name='insurance-create'),
+    url(r'^insurance/(?P<pk>[0-9]+)/update/$', views.InsuranceUpdate.as_view(), name='insurance-update'),
+    url(r'^insurance/(?P<pk>[0-9]+)/delete/$', views.InsuranceDelete.as_view(), name='insurance-delete'),
 
     # Project URLs
     url(r'^projects/$', views.ProjectList.as_view(), name='project-list'),
@@ -42,4 +45,10 @@ urlpatterns = [
     url(r'^project/(?P<project_pk>[0-9]+)/claim/create/$', views.ProjectClaimCreate.as_view(), name='project-claim-create'),
     url(r'^project/claim/(?P<pk>[0-9]+)/update$', views.ProjectClaimUpdate.as_view(), name='project-claim-update'),
     url(r'^project/(?P<project_pk>[0-9]+)/claim/(?P<pk>[0-9]+)/delete/$', views.ProjectClaimDelete.as_view(), name='project-claim-delete'),
+
+    # Project Insurance URLs
+    url(r'^project/insurance/(?P<pk>[0-9]+)$', views.ProjectInsuranceDetail.as_view(), name='project-insurance-detail'),
+    url(r'^project/(?P<project_pk>[0-9]+)/insurance/create/$', views.ProjectInsuranceCreate.as_view(), name='project-insurance-create'),
+    url(r'^project/insurance/(?P<pk>[0-9]+)/update$', views.ProjectInsuranceUpdate.as_view(), name='project-insurance-update'),
+    url(r'^project/(?P<project_pk>[0-9]+)/insurance/(?P<pk>[0-9]+)/delete/$', views.ProjectInsuranceDelete.as_view(), name='project-insurance-delete'),
 ]

@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block page_name %}
+    {{ insurance.project.short_name}} &nbsp;<span class="fa fa-angle-right"></span>&nbsp; {{ insurance.insurance_type.title|title }} &nbsp;<span class="fa fa-angle-right"></span>&nbsp; Delete
+{% endblock page_name %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-sm">
+            <div class="card-header" data-background-color="purple">
+                <h4 class="title"><span class="fa fa-warning"></span> Delete Insurance</h4>
+                <p class="category">Deleting an insurance record is irreversable</p>
+            </div>
+            <div class="card-content">
+              <p class="text-center margin-up-md"><span class=" text-danger fa fa-warning"></span> You are about to delete this insurance record. Please confirm to proceed with this action.</p>
+            </div>
+        </div>
+    </div>
+</div><!-- /.row -->
+
+<div class="row">
+    <div class="col-sm-12">
+        <form method="POST">
+            {% csrf_token %}
+            <button type="submit" title="Confirm and Delete" class="btn btn-primary"> Delete </button>
+            <a href="{% url 'dashboard:project-insurance-detail' insurance.id %}" title="Delete insurance" class="btn btn-danger pull-right"> Cancel</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

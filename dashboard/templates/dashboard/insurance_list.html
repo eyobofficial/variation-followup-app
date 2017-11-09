@@ -227,14 +227,6 @@
                   </div><!-- /.tab-pane #expired-insurances -->
               </div><!-- /.tab-content -->
           </div><!-- /.card-content -->
-
-          {% if user.is_staff %}
-          <div class="card-footer">
-            <a href="{% url 'dashboard:variation-create' %}" title="Add new variation" class="btn btn-sm btn-primary pull-right">
-               <span class="fa fa-plus-circle"></span>&nbsp; Add 
-            </a>
-          </div><!-- /.card-footer -->
-          {% endif %}
       </div>
   </div>
 </div><!-- /.row -->
@@ -242,7 +234,7 @@
 {% if user.is_staff %}
 <div class="row">
     <div class="col-sm-12">
-        <a href="{% url 'dashboard:variation-create' %}" title="Add New Variation" class="btn btn-primary pull-right">
+        <a href="{% url 'dashboard:insurance-create' %}" title="Add New Insurance" class="btn btn-primary pull-right">
            <span class="fa fa-plus-circle"></span>&nbsp; Add 
         </a>
     </div>
