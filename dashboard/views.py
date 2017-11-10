@@ -86,15 +86,19 @@ class ProjectList(UserPassesTestMixin, generic.ListView):
     List all projects for a particular contractor
     """
     model = Project
+    context_object_name = 'active_project_list'
 
     def test_func(self, *args, **kwargs):
         return self.request.user.is_active
 
     def get_queryset(self, *args, **kwargs):
-        return Project.objects.filter(contractor=self.request.user.profile.contractor)
+        return Project.objects.filter(contractor=self.request.user.profile.contractor).filter(status__level=10)
 
     def get_context_data(self, *args, **kwargs):
         context = super(ProjectList, self).get_context_data(*args, **kwargs)
+        context['defect_project_list'] = Project.objects.filter(contractor=self.request.user.profile.contractor).filter(status__level=210)
+        context['closed_project_list'] = Project.objects.filter(contractor=self.request.user.profile.contractor).filter(status__level=110)
+        context['danger_project_list'] = Project.objects.filter(contractor=self.request.user.profile.contractor).filter(status__group=4)
         context['page_name'] = 'projects'
         return context
 
@@ -131,7 +135,7 @@ class ProjectCreate(UserPassesTestMixin, SuccessMessageMixin, CreateView):
     Create a new project record
     """
     model = Project
-    fields = ('construction_type', 'consultant', 'employer', 'full_name', 'short_name', 'status', 'description', 'contract_amount', 'signing_date', 'site_handover', 'moblization_period', 'commencement_date', 'period',)
+    fields = ('construction_type', 'consultant', 'employer', 'full_name', 'short_name', 'status', 'description', 'contract_amount', 'signing_date', 'site_handover', 'commencement_date', 'period',)
     success_message = 'New project created successfully.'
 
     def form_valid(self, form, *args, **kwargs):

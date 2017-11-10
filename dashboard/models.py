@@ -106,7 +106,6 @@ class Project(models.Model):
     contract_amount = models.DecimalField(max_digits=16, decimal_places=2, null=True, blank=True, help_text='Project contract amount in ETB')
     signing_date = models.DateField('Agreement Signing Date', null=True, blank=True, help_text='User yyyy-mm-dd format')
     site_handover = models.DateField('Site Handover Date', null=True, blank=True, help_text='User yyyy-mm-dd format')
-    mobilzation_period = models.IntegerField(null=True, blank=True)
     commencement_date = models.DateField('Commenecment Date', null=True, blank=True, help_text='User yyyy-mm-dd format')
     period = models.IntegerField('Contract Period', null=True, blank=True, help_text='Project life time in calendar days')
     completion_date = models.DateTimeField('Intended Completion Date', null=True, blank=True, help_text='User yyyy-mm-dd format')
