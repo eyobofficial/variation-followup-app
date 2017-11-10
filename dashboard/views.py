@@ -131,7 +131,7 @@ class ProjectCreate(UserPassesTestMixin, SuccessMessageMixin, CreateView):
     Create a new project record
     """
     model = Project
-    fields = ('construction_type', 'consultant', 'employer', 'full_name', 'short_name', 'status', 'description', )
+    fields = ('construction_type', 'consultant', 'employer', 'full_name', 'short_name', 'status', 'description', 'contract_amount', 'signing_date', 'site_handover', 'moblization_period', 'commencement_date', 'period',)
     success_message = 'New project created successfully.'
 
     def form_valid(self, form, *args, **kwargs):
@@ -151,7 +151,7 @@ class ProjectUpdate(UserPassesTestMixin, SuccessMessageMixin, UpdateView):
     Update a particular project record
     """
     model = Project
-    fields = ('construction_type', 'consultant', 'employer', 'full_name', 'short_name', 'status', 'description', )
+    fields = ('construction_type', 'consultant', 'employer', 'full_name', 'short_name', 'status', 'description', 'contract_amount', 'signing_date', 'site_handover', 'moblization_period', 'commencement_date', 'period',)
     success_message = 'Project updated created successfully.'
 
     def test_func(self, *args, **kwargs):

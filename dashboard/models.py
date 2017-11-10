@@ -103,13 +103,20 @@ class Project(models.Model):
     short_name = models.CharField('Short Unofficial Project Title', max_length=100, help_text='Short common name of the construction project')
     project_code = models.CharField('Project Code (Optional)', max_length=30, null=True, blank=True)
     description = models.TextField('Short Project Description', null=True, blank=True, help_text='Short description of the construction project. (Optional)')
-    signing_date = models.DateTimeField('Agreement Signing Date', null=True, blank=True, help_text='User yyyy-mm-dd format')
-    site_handover = models.DateTimeField('Site Handover Date', null=True, blank=True, help_text='User yyyy-mm-dd format')
+    contract_amount = models.DecimalField(max_digits=16, decimal_places=2, null=True, blank=True, help_text='Project contract amount in ETB')
+    signing_date = models.DateField('Agreement Signing Date', null=True, blank=True, help_text='User yyyy-mm-dd format')
+    site_handover = models.DateField('Site Handover Date', null=True, blank=True, help_text='User yyyy-mm-dd format')
     mobilzation_period = models.IntegerField(null=True, blank=True)
-    commencement_date = models.DateTimeField('Commenecment Date', null=True, blank=True, help_text='User yyyy-mm-dd format')
+    commencement_date = models.DateField('Commenecment Date', null=True, blank=True, help_text='User yyyy-mm-dd format')
+    period = models.IntegerField('Contract Period', null=True, blank=True, help_text='Project life time in calendar days')
     completion_date = models.DateTimeField('Intended Completion Date', null=True, blank=True, help_text='User yyyy-mm-dd format')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def save(self, *args, **kwargs):
+        if self.commencement_date and self.period:
+            self.completion_date = self.commencement_date + datetime.timedelta(self.period)
+        super(Project, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.short_name 
