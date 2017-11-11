@@ -196,6 +196,10 @@
         <a href="{% url 'dashboard:claim-update' claim.id %}" title="Update time claim" class="btn btn-primary">
            <span class="fa fa-edit"></span>&nbsp; Update 
         </a>
+        &nbsp;&nbsp;
+        <a href="{% url 'dashboard:claim-list' %}" title="Back to time claim list" class="btn btn-primary">
+           <span class="fa fa-angle-left"></span>&nbsp; Back 
+        </a>
 
         <a href="{% url 'dashboard:claim-delete' claim.id %}" title="Delete time claim" class="btn btn-danger pull-right">
            Delete  

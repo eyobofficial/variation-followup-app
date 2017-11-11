@@ -248,6 +248,10 @@
         <a href="{% url 'dashboard:project-variation-update' variation.id %}" title="Update variation" class="btn btn-primary">
            <span class="fa fa-edit"></span>&nbsp; Update 
         </a>
+        &nbsp;&nbsp;
+        <a href="{% url 'dashboard:project-detail' variation.project.id %}" title="Back to project" class="btn btn-primary">
+           <span class="fa fa-angle-left"></span>&nbsp; Back to Project
+        </a>
 
         <a href="{% url 'dashboard:project-variation-delete' variation.project.id variation.id %}" title="Delete Variation" class="btn btn-danger pull-right">
            Delete  

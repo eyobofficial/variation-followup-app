@@ -246,6 +246,10 @@
         <a href="{% url 'dashboard:variation-update' variation.id %}" title="Update Variation" class="btn btn-primary">
            <span class="fa fa-edit"></span>&nbsp; Update 
         </a>
+        &nbsp;&nbsp;
+        <a href="{% url 'dashboard:variation-list' %}" title="Back to variation list" class="btn btn-primary">
+           <span class="fa fa-angle-left"></span>&nbsp; Back 
+        </a>
 
         <a href="{% url 'dashboard:variation-delete' variation.id %}" title="Delete Variation" class="btn btn-danger pull-right">
            Delete  

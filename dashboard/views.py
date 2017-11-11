@@ -29,6 +29,9 @@ from .models import (Consultant,
 # Import forms
 from .forms import (SignupForm,)
 
+# Import Python modules
+import datetime
+
 # Check if user is committee
 def check_committee(user):
     return user.profile.is_committee
@@ -114,6 +117,17 @@ class ProjectDetail(UserPassesTestMixin, generic.DetailView):
 
     def get_context_data(self, *args, **kwargs):
         context = super(ProjectDetail, self).get_context_data(*args, **kwargs)
+
+        # Calculate Project Completion date with time extensions
+        approved_time_extensions = sum(list(Claim.objects.filter(project=self.kwargs['pk']).filter(status__level=110).values_list('approved_amount', flat=True)))       
+        actual_completion_date = self.object.completion_date + datetime.timedelta(approved_time_extensions)
+
+        if datetime.date.today() <= actual_completion_date:
+            context['days_left'] = actual_completion_date - datetime.date.today()
+        else:
+            context['days_passed'] = datetime.date.today() - actual_completion_date
+
+        context['actual_completion_date'] = actual_completion_date
         context['all_variation_list'] = Variation.objects.filter(project=self.kwargs['pk']).order_by('-updated_at')
         context['under_prep_variation_list'] = Variation.objects.filter(project=self.kwargs['pk']).filter(status__group=1).order_by('-updated_at')
         context['pending_variation_list'] = Variation.objects.filter(project=self.kwargs['pk']).filter(status__group=2).order_by('-updated_at')
@@ -156,7 +170,7 @@ class ProjectUpdate(UserPassesTestMixin, SuccessMessageMixin, UpdateView):
     """
     model = Project
     fields = ('construction_type', 'consultant', 'employer', 'full_name', 'short_name', 'status', 'description', 'contract_amount', 'signing_date', 'site_handover', 'commencement_date', 'period',)
-    success_message = 'Project updated created successfully.'
+    success_message = 'Project updated successfully.'
 
     def test_func(self, *args, **kwargs):
         project = get_object_or_404(Project, pk=self.kwargs['pk'])
@@ -242,7 +256,7 @@ class ProjectInsuranceUpdate(UserPassesTestMixin, SuccessMessageMixin, UpdateVie
         return self.request.user.is_active and self.request.user.is_staff
 
     def get_success_url(self, *args, **kwargs):
-        return reverse('dashboard:project-insurance-detail', kwargs={'pk': str(self.object.id)})
+        return reverse('dashboard:project-detail', kwargs={'pk': str(self.object.project.id)})
 
     def get_context_data(self, *args, **kwargs):
         context = super(ProjectInsuranceUpdate, self).get_context_data(*args, **kwargs)
@@ -327,7 +341,7 @@ class ProjectVariationUpdate(UserPassesTestMixin, SuccessMessageMixin, UpdateVie
         return self.request.user.is_active and self.request.user.is_staff
 
     def get_success_url(self, *args, **kwargs):
-        return reverse('dashboard:project-variation-detail', kwargs={'pk': str(self.object.id)})
+        return reverse('dashboard:project-detail', kwargs={'pk': str(self.object.project.id)})
 
     def get_context_data(self, *args, **kwargs):
         context = super(ProjectVariationUpdate, self).get_context_data(*args, **kwargs)
@@ -412,7 +426,7 @@ class ProjectClaimUpdate(UserPassesTestMixin, SuccessMessageMixin, UpdateView):
         return self.request.user.is_active and self.request.user.is_staff
 
     def get_success_url(self, *args, **kwargs):
-        return reverse('dashboard:project-claim-detail', kwargs={'pk': str(self.object.id)})
+        return reverse('dashboard:project-detail', kwargs={'pk': str(self.object.project.id)})
 
     def get_context_data(self, *args, **kwargs):
         context = super(ProjectClaimUpdate, self).get_context_data(*args, **kwargs)

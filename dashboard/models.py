@@ -108,7 +108,7 @@ class Project(models.Model):
     site_handover = models.DateField('Site Handover Date', null=True, blank=True, help_text='User yyyy-mm-dd format')
     commencement_date = models.DateField('Commenecment Date', null=True, blank=True, help_text='User yyyy-mm-dd format')
     period = models.IntegerField('Contract Period', null=True, blank=True, help_text='Project life time in calendar days')
-    completion_date = models.DateTimeField('Intended Completion Date', null=True, blank=True, help_text='User yyyy-mm-dd format')
+    completion_date = models.DateField('Intended Completion Date', null=True, blank=True, help_text='User yyyy-mm-dd format')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

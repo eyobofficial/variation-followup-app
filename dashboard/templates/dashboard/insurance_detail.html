@@ -145,6 +145,10 @@
         <a href="{% url 'dashboard:insurance-update' insurance.id %}" title="Update insurance" class="btn btn-primary">
            <span class="fa fa-edit"></span>&nbsp; Update 
         </a>
+        &nbsp;&nbsp;
+        <a href="{% url 'dashboard:insurance-list' %}" title="Back to insurance list" class="btn btn-primary">
+           <span class="fa fa-angle-left"></span>&nbsp; Back 
+        </a>
 
         <a href="{% url 'dashboard:insurance-delete' insurance.id %}" title="Delete insurance" class="btn btn-danger pull-right">
            Delete  

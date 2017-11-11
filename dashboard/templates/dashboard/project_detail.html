@@ -2,7 +2,10 @@
 {% load static %}
 {% load humanize %}
 
-{% block page_name %} {{ project.full_name }} {% endblock page_name %}
+{% block page_name %} 
+<span class="hidden-md hidden-lg">{{ project.short_name }}</span>
+<span class="hidden-sm hidden-xs">{{ project.full_name }}</span>
+{% endblock page_name %}
 
 {% block content %}
 {% include 'partials/messages.html' %}
@@ -47,7 +50,7 @@
             </div>
             <div class="card-content">
                 <p class="category">Completion Date</p>
-                <h3 class="title">Oct 23, 19</h3>
+                <h3 class="title">{{ actual_completion_date|naturalday:'M d, y'|title }}</h3>
             </div>
             <div class="card-footer">
                 <div class="stats">
@@ -62,15 +65,28 @@
             <div class="card-header" data-background-color="blue">
                 <i class="fa fa-twitter"></i>
             </div>
+
+            {% if days_left.days >= 0 %}
             <div class="card-content">
                 <p class="category">Countdown</p>
-                <h3 class="title">102</h3>
+                <h3 class="title">{{ days_left.days|stringformat:'02d' }}</h3>
             </div>
             <div class="card-footer">
                 <div class="stats">
                     <i class="material-icons">update</i> Remaining calendar days
                 </div>
             </div>
+            {% else %}
+            <div class="card-content">
+                <p class="category">Time Slipped</p>
+                <h3 class="title">{{ days_passed.days|stringformat:'02d' }}</h3>
+            </div>
+            <div class="card-footer">
+                <div class="stats">
+                    <i class="material-icons text-danger">warning</i> Slippage in calendar days
+                </div>
+            </div>
+            {% endif %}
         </div>
     </div>
 </div><!-- /.row -->
@@ -183,23 +199,23 @@
            </div>
        </div><!-- /.card -->
    </div><!-- /.col-sm-6 -->
-
-
-    <div class="col-sm-12">
-      <div class="card card-sm">
-          <div class="card-header" data-background-color="purple">
-              <h4 class="title">Short Description</h4>
-              <p class="category">Description and summary of the construction project</p>
-          </div>
-          <div class="card-content">
-             {% if project.description %}
-             <p>{{ project.description }}</p>
-             {% else %}
-             <p class="text-fade">(Not Available)</p>
-             {% endif %}
-          </div>
-      </div><!-- /.card -->
-    </div>
+  
+  <!-- SHORT DESCRIPTION -->
+  <div class="col-sm-12">
+    <div class="card card-sm">
+        <div class="card-header" data-background-color="purple">
+            <h4 class="title">Short Description</h4>
+            <p class="category">Description and summary of the construction project</p>
+        </div>
+        <div class="card-content">
+           {% if project.description %}
+           <p>{{ project.description }}</p>
+           {% else %}
+           <p class="text-fade">(Not Available)</p>
+           {% endif %}
+        </div>
+    </div><!-- /.card -->
+  </div>
 </div><!-- /.row -->
 
 <!-- INSURANCE SUMMARY -->
