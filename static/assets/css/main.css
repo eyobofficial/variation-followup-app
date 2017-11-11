@@ -4,8 +4,20 @@
 }
 
 /*************** Common Styles *************/
+.text-italic {
+    font-style: italic;
+}
+
+.text-bold {
+    font-weight: bold;
+}
+
 .text-shade, .text-fade {
     color: #999999;
+}
+
+.text-sm {
+    font-size: 12px !important;
 }
 
 
