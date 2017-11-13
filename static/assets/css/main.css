@@ -149,7 +149,7 @@ dl > dd, .dd {
     }
 
     .card-lg .card-content {
-        min-height: 410px;
+        min-height: 420px;
     }
 
     .card-xlg .card-content {
@@ -300,6 +300,18 @@ dl > dd, .dd {
     .signup-form {
         margin-top: 8%;
     }
+}
 
+/************** Overwrite themes form stylings ***********/
+fieldset {
+    margin: 3.2em 0 !important;
+}
 
+legend {
+    font-weight: 300;
+    text-transform: uppercase;
+}
+
+legend + div.form-group {
+    margin-top: 0 !important;
 }

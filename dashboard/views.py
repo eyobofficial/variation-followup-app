@@ -27,7 +27,7 @@ from .models import (Consultant,
                      Insurance, )
 
 # Import forms
-from .forms import (SignupForm,)
+from .forms import (SignupForm, ProjectForm,)
 
 # Import Python modules
 import datetime
@@ -148,8 +148,9 @@ class ProjectCreate(UserPassesTestMixin, SuccessMessageMixin, CreateView):
     """
     Create a new project record
     """
+    form_class = ProjectForm
     model = Project
-    fields = ('construction_type', 'consultant', 'employer', 'full_name', 'short_name', 'status', 'description', 'contract_amount', 'signing_date', 'site_handover', 'commencement_date', 'period',)
+    # fields = ('construction_type', 'consultant', 'employer', 'full_name', 'short_name', 'status', 'description', 'contract_amount', 'signing_date', 'site_handover', 'commencement_date', 'period',)
     success_message = 'New project created successfully.'
 
     def form_valid(self, form, *args, **kwargs):
