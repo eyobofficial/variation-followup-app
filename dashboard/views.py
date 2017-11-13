@@ -126,11 +126,15 @@ class ProjectDetail(UserPassesTestMixin, generic.DetailView):
         # Calculate Project Completion date with time extensions
         approved_time_extensions = sum(list(Claim.objects.filter(project=self.kwargs['pk']).filter(status__level=110).values_list('approved_amount', flat=True)))       
         actual_completion_date = self.object.completion_date + datetime.timedelta(approved_time_extensions)
+        context['countdown'] = actual_completion_date - datetime.date.today()
+        # if datetime.date.today() <= actual_completion_date:
+        #     context['days_left'] = actual_completion_date - datetime.date.today()
+        # else:
+        #     context['days_passed'] = datetime.date.today() - actual_completion_date
 
-        if datetime.date.today() <= actual_completion_date:
-            context['days_left'] = actual_completion_date - datetime.date.today()
-        else:
-            context['days_passed'] = datetime.date.today() - actual_completion_date
+        # Calculate variation percentage
+        approved_variation_amounts = sum(list(Variation.objects.filter(project=self.kwargs['pk']).filter(status__level=110).values_list('approved_amount', flat=True)))
+        context['variation_percentage'] = round((approved_variation_amounts/self.object.contract_amount) * 100, 2)
 
         context['actual_completion_date'] = actual_completion_date
         context['all_variation_list'] = Variation.objects.filter(project=self.kwargs['pk']).order_by('-updated_at')

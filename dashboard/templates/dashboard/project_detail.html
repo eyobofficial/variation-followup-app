@@ -13,12 +13,12 @@
 <div class="row">
     <div class="col-lg-3 col-md-6 col-sm-6">
         <div class="card card-stats">
-            <div class="card-header" data-background-color="orange">
-                <i class="material-icons">content_copy</i>
+            <div class="card-header" data-background-color="blue">
+                <i class="material-icons">info_outline</i>
             </div>
             <div class="card-content">
-                <p class="category">Used Space</p>
-                <h3 class="title">49/50<small>GB</small></h3>
+                <p class="category">Project Status</p>
+                <h3 class="title">{{ project.status.short_title|title }}</h3>
             </div>
             <div class="card-footer">
                 <div class="stats">
@@ -29,12 +29,12 @@
     </div>
     <div class="col-lg-3 col-md-6 col-sm-6">
         <div class="card card-stats">
-            <div class="card-header" data-background-color="green">
-                <i class="material-icons">store</i>
+            <div class="card-header" data-background-color="orange">
+                <i class="material-icons">assessment</i>
             </div>
             <div class="card-content">
                 <p class="category">Variations</p>
-                <h3 class="title">08.35%</h3>
+                <h3 class="title">{{ variation_percentage }}%</h3>
             </div>
             <div class="card-footer">
                 <div class="stats">
@@ -45,8 +45,8 @@
     </div>
     <div class="col-lg-3 col-md-6 col-sm-6">
         <div class="card card-stats">
-            <div class="card-header" data-background-color="red">
-                <i class="material-icons">info_outline</i>
+            <div class="card-header" data-background-color="green">
+                <i class="material-icons">date_range</i>
             </div>
             <div class="card-content">
                 <p class="category">Completion Date</p>
@@ -62,28 +62,25 @@
 
     <div class="col-lg-3 col-md-6 col-sm-6">
         <div class="card card-stats">
-            <div class="card-header" data-background-color="blue">
-                <i class="fa fa-twitter"></i>
+            <div class="card-header" data-background-color="red">
+                <i class="material-icons">alarm</i>
             </div>
 
-            {% if days_left.days >= 0 %}
             <div class="card-content">
                 <p class="category">Countdown</p>
-                <h3 class="title">{{ days_left.days|stringformat:'02d' }}</h3>
+                <h3 class="title {% if countdown.days < 0 %} text-danger {% endif %}">{{ countdown.days|stringformat:'02d' }}</h3>
             </div>
+           
+            {% if countdown.days >= 0 %}
             <div class="card-footer">
                 <div class="stats">
                     <i class="material-icons">update</i> Remaining calendar days
                 </div>
             </div>
             {% else %}
-            <div class="card-content">
-                <p class="category">Time Slipped</p>
-                <h3 class="title">{{ days_passed.days|stringformat:'02d' }}</h3>
-            </div>
             <div class="card-footer">
                 <div class="stats">
-                    <i class="material-icons text-danger">warning</i> Slippage in calendar days
+                    <i class="fa fa-warning text-danger"></i>&nbsp; Slippage in calendar days
                 </div>
             </div>
             {% endif %}
