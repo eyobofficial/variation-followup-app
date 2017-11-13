@@ -9,7 +9,11 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
 # Import models
-from .models import (Profile, Contractor, Project)
+from .models import (Profile, 
+                     Contractor, 
+                     Project, 
+                     Variation, 
+                     Claim,)
 
 class SignupForm(UserCreationForm):
     first_name = forms.CharField(max_length=100)
@@ -46,3 +50,183 @@ class ProjectForm(forms.ModelForm):
                     ),
                 )
         super(ProjectForm, self).__init__(*args, **kwargs)
+
+class VariationForm(forms.ModelForm):
+    class Meta:
+        model = Variation
+        fields =  ('project', 
+                   'activity', 
+                   'title', 
+                   'work_order', 
+                   'status', 
+                   'description', 
+                   'received_date', 
+                   'received_letter',
+                   'submitted_date', 
+                   'submitted_letter', 
+                   'submitted_amount', 
+                   'approved_date', 
+                   'approved_letter', 
+                   'approved_amount', 
+                   'remark',)
+
+    def __init__(self, *args, **kwargs):
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.layout = Layout(
+                    Fieldset(
+                        'Variation Summary',
+                        'project',
+                        'activity',
+                        'title',
+                        'work_order',
+                        'description',
+                        'received_date',
+                        'received_letter',
+                        'status',
+                        'remark',
+                    ),
+                    Fieldset(
+                        'Submittal Summary',
+                        'submitted_amount',
+                        'submitted_date',
+                        'submitted_letter',                        
+                    ),
+                    Fieldset(
+                        'Approval Summary',
+                        'approved_amount',
+                        'approved_date',
+                        'approved_letter',                        
+                    ),
+                )
+        super(VariationForm, self).__init__(*args, **kwargs)
+
+class ClaimForm(forms.ModelForm):
+    class Meta:
+        model = Claim
+        fields =  ('project',
+                   'title', 
+                   'description',
+                   'status', 
+                   'remark',
+                   'submitted_date', 
+                   'submitted_letter', 
+                   'submitted_amount', 
+                   'approved_date', 
+                   'approved_letter', 
+                   'approved_amount',)
+
+    def __init__(self, *args, **kwargs):
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.layout = Layout(
+                    Fieldset(
+                        'Time Claim Summary',
+                        'project',
+                        'title',
+                        'description',
+                        'status',
+                        'remark',
+                    ),
+                    Fieldset(
+                        'Submittal Summary',
+                        'submitted_amount',
+                        'submitted_date',
+                        'submitted_letter',                        
+                    ),
+                    Fieldset(
+                        'Approval Summary',
+                        'approved_amount',
+                        'approved_date',
+                        'approved_letter',                        
+                    ),
+                )
+        super(ClaimForm, self).__init__(*args, **kwargs)
+
+class ProjectVariationForm(forms.ModelForm):
+    class Meta:
+        model = Variation
+        fields =  ('activity', 
+                   'title', 
+                   'work_order', 
+                   'status', 
+                   'description', 
+                   'received_date', 
+                   'received_letter',
+                   'submitted_date', 
+                   'submitted_letter', 
+                   'submitted_amount', 
+                   'approved_date', 
+                   'approved_letter', 
+                   'approved_amount', 
+                   'remark',)
+
+    def __init__(self, *args, **kwargs):
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.layout = Layout(
+                    Fieldset(
+                        'Variation Summary',
+                        'activity',
+                        'title',
+                        'work_order',
+                        'description',
+                        'received_date',
+                        'received_letter',
+                        'status',
+                        'remark',
+                    ),
+                    Fieldset(
+                        'Submittal Summary',
+                        'submitted_amount',
+                        'submitted_date',
+                        'submitted_letter',                        
+                    ),
+                    Fieldset(
+                        'Approval Summary',
+                        'approved_amount',
+                        'approved_date',
+                        'approved_letter',                        
+                    ),
+                )
+        super(ProjectVariationForm, self).__init__(*args, **kwargs)
+
+class ProjectClaimForm(forms.ModelForm):
+            class Meta:
+                model = Claim
+                fields =  ('title', 
+                           'description',
+                           'status', 
+                           'remark',
+                           'submitted_date', 
+                           'submitted_letter', 
+                           'submitted_amount', 
+                           'approved_date', 
+                           'approved_letter', 
+                           'approved_amount',)
+
+            def __init__(self, *args, **kwargs):
+                self.helper = FormHelper()
+                self.helper.form_tag = False
+                self.helper.layout = Layout(
+                            Fieldset(
+                                'Time Claim Summary',
+                                'title',
+                                'description',
+                                'status',
+                                'remark',
+                            ),
+                            Fieldset(
+                                'Submittal Summary',
+                                'submitted_amount',
+                                'submitted_date',
+                                'submitted_letter',                        
+                            ),
+                            Fieldset(
+                                'Approval Summary',
+                                'approved_amount',
+                                'approved_date',
+                                'approved_letter',                        
+                            ),
+                        )
+                super(ProjectClaimForm, self).__init__(*args, **kwargs)

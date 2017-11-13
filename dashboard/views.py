@@ -27,7 +27,12 @@ from .models import (Consultant,
                      Insurance, )
 
 # Import forms
-from .forms import (SignupForm, ProjectForm,)
+from .forms import (SignupForm, 
+                    ProjectForm,
+                    ProjectVariationForm,
+                    ProjectClaimForm, 
+                    VariationForm,
+                    ClaimForm,)
 
 # Import Python modules
 import datetime
@@ -150,7 +155,6 @@ class ProjectCreate(UserPassesTestMixin, SuccessMessageMixin, CreateView):
     """
     form_class = ProjectForm
     model = Project
-    # fields = ('construction_type', 'consultant', 'employer', 'full_name', 'short_name', 'status', 'description', 'contract_amount', 'signing_date', 'site_handover', 'commencement_date', 'period',)
     success_message = 'New project created successfully.'
 
     def form_valid(self, form, *args, **kwargs):
@@ -169,8 +173,8 @@ class ProjectUpdate(UserPassesTestMixin, SuccessMessageMixin, UpdateView):
     """
     Update a particular project record
     """
+    form_class = ProjectForm
     model = Project
-    fields = ('construction_type', 'consultant', 'employer', 'full_name', 'short_name', 'status', 'description', 'contract_amount', 'signing_date', 'site_handover', 'commencement_date', 'period',)
     success_message = 'Project updated successfully.'
 
     def test_func(self, *args, **kwargs):
@@ -308,8 +312,8 @@ class ProjectVariationCreate(UserPassesTestMixin, SuccessMessageMixin, CreateVie
     """
     Create a new variation record for current project
     """
+    form_class = ProjectVariationForm
     model = Variation
-    fields = ('title', 'work_order', 'activity', 'description', 'status', 'recieved_date', 'recieved_letter', 'submitted_amount', 'submitted_date', 'submitted_letter', 'approved_amount', 'approved_date', 'approved_letter', 'remark', )
     template_name = 'dashboard/project_variation_form.html'
     success_message = 'New variation created successfully.'
 
@@ -333,8 +337,8 @@ class ProjectVariationUpdate(UserPassesTestMixin, SuccessMessageMixin, UpdateVie
     """
     Update a particular variation record for the current project
     """
+    form_class = ProjectVariationForm
     model = Variation
-    fields = ('title', 'work_order', 'activity', 'description', 'status', 'recieved_date', 'recieved_letter', 'submitted_amount', 'submitted_date', 'submitted_letter', 'approved_amount', 'approved_date', 'approved_letter', 'remark', )
     template_name = 'dashboard/project_variation_form.html'
     success_message = 'Variation updated successfully.'
 
@@ -393,8 +397,8 @@ class ProjectClaimCreate(UserPassesTestMixin, SuccessMessageMixin, CreateView):
     """
     Create a new time extension claim record for current project
     """
+    form_class = ProjectClaimForm
     model = Claim
-    fields = ('title', 'number', 'description', 'status', 'submitted_amount', 'submitted_date', 'submitted_letter', 'approved_amount', 'approved_date', 'approved_letter', 'remark', )
     template_name = 'dashboard/project_claim_form.html'
     success_message = 'Time claim created successfully.'
 
@@ -418,8 +422,8 @@ class ProjectClaimUpdate(UserPassesTestMixin, SuccessMessageMixin, UpdateView):
     """
     Create a new time extension claim record for current project
     """
+    form_class = ProjectClaimForm
     model = Claim
-    fields = ('title', 'number', 'description', 'status', 'submitted_amount', 'submitted_date', 'submitted_letter', 'approved_amount', 'approved_date', 'approved_letter', 'remark', )
     template_name = 'dashboard/project_claim_form.html'
     success_message = 'Time claim created successfully.'
 
@@ -498,8 +502,9 @@ class VariationCreate(UserPassesTestMixin, SuccessMessageMixin, CreateView):
     """
     Create a new variation record
     """
+    form_class = VariationForm
     model = Variation
-    fields = ('project', 'title', 'work_order', 'activity', 'description', 'status', 'recieved_date', 'recieved_letter', 'submitted_amount', 'submitted_date', 'submitted_letter', 'approved_amount', 'approved_date', 'approved_letter', 'remark', )
+    # fields = ('project', 'title', 'work_order', 'activity', 'description', 'status', 'recieved_date', 'recieved_letter', 'submitted_amount', 'submitted_date', 'submitted_letter', 'approved_amount', 'approved_date', 'approved_letter', 'remark', )
     success_message = 'Variation created successfully.'
 
     def test_func(self, *args, **kwargs):
@@ -514,8 +519,9 @@ class VariationUpdate(UserPassesTestMixin, SuccessMessageMixin, UpdateView):
     """
     Update a particular variation record
     """
+    form_class = VariationForm
     model = Variation
-    fields = ('title', 'work_order', 'activity', 'description', 'status', 'recieved_date', 'recieved_letter', 'submitted_amount', 'submitted_date', 'submitted_letter', 'approved_amount', 'approved_date', 'approved_letter', 'remark', )
+    # fields = ('title', 'work_order', 'activity', 'description', 'status', 'recieved_date', 'recieved_letter', 'submitted_amount', 'submitted_date', 'submitted_letter', 'approved_amount', 'approved_date', 'approved_letter', 'remark', )
     success_message = 'Variation updated successfully.'
 
     def test_func(self, *args, **kwargs):
@@ -587,8 +593,8 @@ class ClaimCreate(UserPassesTestMixin, SuccessMessageMixin, CreateView):
     """
     Create a new time extension claim record
     """
+    form_class  = ClaimForm
     model = Claim
-    fields = ('project', 'title', 'number', 'description', 'status', 'submitted_amount', 'submitted_date', 'submitted_letter', 'approved_amount', 'approved_date', 'approved_letter', 'remark', )
     success_message = 'Time claim created successfully.'
 
     def test_func(self, *args, **kwargs):
@@ -603,8 +609,8 @@ class ClaimUpdate(UserPassesTestMixin, SuccessMessageMixin, UpdateView):
     """
     Update a particular time claim record
     """
+    form_class  = ClaimForm
     model = Claim
-    fields = ('title', 'number', 'description', 'status', 'submitted_amount', 'submitted_date', 'submitted_letter', 'approved_amount', 'approved_date', 'approved_letter', 'remark', )
     success_message = 'Time claim updated successfully.'
 
     def test_func(self, *args, **kwargs):

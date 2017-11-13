@@ -57,8 +57,8 @@ class VariationStatusAdmin(admin.ModelAdmin):
 
 @admin.register(Variation)
 class VariationAdmin(admin.ModelAdmin):
-    list_display = ('title', 'project', 'work_order', 'status', 'activity', 'recieved_date', 'created_at', 'updated_at', 'id')
-    list_filter = ('project', 'status', 'work_order', 'recieved_date', 'submitted_date', 'approved_date', 'activity',)
+    list_display = ('title', 'project', 'work_order', 'status', 'activity', 'received_date', 'created_at', 'updated_at', 'id')
+    list_filter = ('project', 'status', 'work_order', 'received_date', 'submitted_date', 'approved_date', 'activity',)
 
 @admin.register(ClaimStatus)
 class ClaimStatusAdmin(admin.ModelAdmin):
@@ -67,7 +67,7 @@ class ClaimStatusAdmin(admin.ModelAdmin):
 
 @admin.register(Claim)
 class ClaimAdmin(admin.ModelAdmin):
-    list_display = ('title', 'number', 'project', 'status', 'created_at', 'updated_at', 'id')
+    list_display = ('title', 'project', 'status', 'created_at', 'updated_at', 'id')
     list_filter = ('project', 'status', 'submitted_date', 'approved_date',)
 
 @admin.register(InsuranceType)
