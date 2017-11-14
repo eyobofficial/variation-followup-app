@@ -48,10 +48,17 @@
 
 	    	<div class="sidebar-wrapper">
 	            <ul class="nav">
-	                <li {% if page_name == 'dashboard' %} class="active" {% endif %}>
-	                    <a href="{% url 'dashboard:index' %}">
+	                <li {% if page_name == 'projects' %} class="active" {% endif %}>
+	                    <a href="{% url 'dashboard:project-list' %}">
 	                        <i class="material-icons">dashboard</i>
-	                        <p>Dashboard</p>
+	                        <p>Projects</p>
+	                    </a>
+	                </li>
+
+	                <li {% if page_name == 'insurances' %} class="active" {% endif %}>
+	                    <a href="{% url 'dashboard:insurance-list' %}">
+	                        <i class="material-icons">account_balance</i>
+	                        <p>Insurance</p>
 	                    </a>
 	                </li>
 
@@ -69,24 +76,10 @@
 	                    </a>
 	                </li>
 
-	                <li {% if page_name == 'insurances' %} class="active" {% endif %}>
-	                    <a href="{% url 'dashboard:insurance-list' %}">
-	                        <i class="material-icons">dashboard</i>
-	                        <p>Insurance</p>
-	                    </a>
-	                </li>
-
 	                <li {% if page_name == 'payments' %} class="active" {% endif %}>
-	                    <a href="#">
-	                        <i class="material-icons">dashboard</i>
+	                    <a href="{% url 'dashboard:payment-index' %}">
+	                        <i class="material-icons">monetization_on</i>
 	                        <p>Payments</p>
-	                    </a>
-	                </li>
-
-	                <li {% if page_name == 'projects' %} class="active" {% endif %}>
-	                    <a href="{% url 'dashboard:project-list' %}">
-	                        <i class="material-icons">dashboard</i>
-	                        <p>Projects</p>
 	                    </a>
 	                </li>
 

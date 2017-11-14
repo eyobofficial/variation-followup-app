@@ -739,6 +739,12 @@ class InsuranceDelete(UserPassesTestMixin, DeleteView):
         return context
 
 @login_required
+def payments(request):
+    return render(request, 'dashboard/payment_coming_soon.html', {
+            'page_name': 'payments',
+        })
+
+@login_required
 def profile_update(request):
     account_form_class = UserAccountForm
     profile_form_class = UserProfileForm

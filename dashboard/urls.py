@@ -4,28 +4,7 @@ from . import views
 app_name = 'dashboard'
 
 urlpatterns = [
-    url(r'^$', views.index, name='index'),
-
-    # Variation URLS
-    url(r'^variations/$', views.VariationList.as_view(), name='variation-list'),
-    url(r'^variation/(?P<pk>[0-9]+)$', views.VariationDetail.as_view(), name='variation-detail'),   
-    url(r'^variation/add/$', views.VariationCreate.as_view(), name='variation-create'),
-    url(r'^variation/(?P<pk>[0-9]+)/update/$', views.VariationUpdate.as_view(), name='variation-update'),
-    url(r'^variation/(?P<pk>[0-9]+)/delete/$', views.VariationDelete.as_view(), name='variation-delete'),
-
-    # Time Claim URLS
-    url(r'^claims/$', views.ClaimList.as_view(), name='claim-list'),
-    url(r'^claim/(?P<pk>[0-9]+)$', views.ClaimDetail.as_view(), name='claim-detail'),
-    url(r'^claim/add/$', views.ClaimCreate.as_view(), name='claim-create'),
-    url(r'^claim/(?P<pk>[0-9]+)/update/$', views.ClaimUpdate.as_view(), name='claim-update'),
-    url(r'^claim/(?P<pk>[0-9]+)/delete/$', views.ClaimDelete.as_view(), name='claim-delete'),
-
-    # Insurance URLS
-    url(r'^insurances/$', views.InsuranceList.as_view(), name='insurance-list'),
-    url(r'^insurance/(?P<pk>[0-9]+)$', views.InsuranceDetail.as_view(), name='insurance-detail'),
-    url(r'^insurance/add/$', views.InsuranceCreate.as_view(), name='insurance-create'),
-    url(r'^insurance/(?P<pk>[0-9]+)/update/$', views.InsuranceUpdate.as_view(), name='insurance-update'),
-    url(r'^insurance/(?P<pk>[0-9]+)/delete/$', views.InsuranceDelete.as_view(), name='insurance-delete'),
+    url(r'^$', views.ProjectList.as_view(), name='index'),
 
     # Project URLs
     url(r'^projects/$', views.ProjectList.as_view(), name='project-list'),
@@ -51,6 +30,30 @@ urlpatterns = [
     url(r'^project/(?P<project_pk>[0-9]+)/insurance/create/$', views.ProjectInsuranceCreate.as_view(), name='project-insurance-create'),
     url(r'^project/insurance/(?P<pk>[0-9]+)/update$', views.ProjectInsuranceUpdate.as_view(), name='project-insurance-update'),
     url(r'^project/(?P<project_pk>[0-9]+)/insurance/(?P<pk>[0-9]+)/delete/$', views.ProjectInsuranceDelete.as_view(), name='project-insurance-delete'),
+
+    # Insurance URLS
+    url(r'^insurances/$', views.InsuranceList.as_view(), name='insurance-list'),
+    url(r'^insurance/(?P<pk>[0-9]+)$', views.InsuranceDetail.as_view(), name='insurance-detail'),
+    url(r'^insurance/add/$', views.InsuranceCreate.as_view(), name='insurance-create'),
+    url(r'^insurance/(?P<pk>[0-9]+)/update/$', views.InsuranceUpdate.as_view(), name='insurance-update'),
+    url(r'^insurance/(?P<pk>[0-9]+)/delete/$', views.InsuranceDelete.as_view(), name='insurance-delete'),
+
+    # Variation URLS
+    url(r'^variations/$', views.VariationList.as_view(), name='variation-list'),
+    url(r'^variation/(?P<pk>[0-9]+)$', views.VariationDetail.as_view(), name='variation-detail'),   
+    url(r'^variation/add/$', views.VariationCreate.as_view(), name='variation-create'),
+    url(r'^variation/(?P<pk>[0-9]+)/update/$', views.VariationUpdate.as_view(), name='variation-update'),
+    url(r'^variation/(?P<pk>[0-9]+)/delete/$', views.VariationDelete.as_view(), name='variation-delete'),
+
+    # Time Claim URLS
+    url(r'^claims/$', views.ClaimList.as_view(), name='claim-list'),
+    url(r'^claim/(?P<pk>[0-9]+)$', views.ClaimDetail.as_view(), name='claim-detail'),
+    url(r'^claim/add/$', views.ClaimCreate.as_view(), name='claim-create'),
+    url(r'^claim/(?P<pk>[0-9]+)/update/$', views.ClaimUpdate.as_view(), name='claim-update'),
+    url(r'^claim/(?P<pk>[0-9]+)/delete/$', views.ClaimDelete.as_view(), name='claim-delete'),
+
+    # Payment URLs
+    url(r'^payments/$', views.payments, name='payment-index'),
 
     # User Account URLs
     url(r'^account/update/$', views.profile_update, name='profile-update'),
