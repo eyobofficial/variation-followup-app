@@ -51,4 +51,7 @@ urlpatterns = [
     url(r'^project/(?P<project_pk>[0-9]+)/insurance/create/$', views.ProjectInsuranceCreate.as_view(), name='project-insurance-create'),
     url(r'^project/insurance/(?P<pk>[0-9]+)/update$', views.ProjectInsuranceUpdate.as_view(), name='project-insurance-update'),
     url(r'^project/(?P<project_pk>[0-9]+)/insurance/(?P<pk>[0-9]+)/delete/$', views.ProjectInsuranceDelete.as_view(), name='project-insurance-delete'),
+
+    # User Account URLs
+    url(r'^account/update/$', views.profile_update, name='profile-update'),
 ]

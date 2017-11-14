@@ -27,7 +27,9 @@ from .models import (Consultant,
                      Insurance, )
 
 # Import forms
-from .forms import (SignupForm, 
+from .forms import (SignupForm,
+                    UserAccountForm,
+                    UserProfileForm, 
                     ProjectForm,
                     ProjectVariationForm,
                     ProjectClaimForm, 
@@ -735,4 +737,28 @@ class InsuranceDelete(UserPassesTestMixin, DeleteView):
         context = super(InsuranceDelete, self).get_context_data(*args, **kwargs)
         context['page_name'] = 'insurances'
         return context
+
+@login_required
+def profile_update(request):
+    account_form_class = UserAccountForm
+    profile_form_class = UserProfileForm
+    template_name = 'dashboard/profile_update.html'
+
+    if request.method == 'POST':
+        account_form = account_form_class(request.POST, instance=request.user)
+        profile_form = profile_form_class(request.POST, instance=request.user.profile)
+
+        if account_form.is_valid() and profile_form.is_valid():
+            account_form.save()
+            profile_form.save()
+            messages.success(request, 'You have successfully updated your profile.')
+            return redirect('dashboard:profile-update')
+    else:
+        account_form = account_form_class(instance=request.user)
+        profile_form = profile_form_class(instance=request.user.profile)
+    return render(request, template_name, {
+            'page_name': 'user profile',
+            'account_form': account_form,
+            'profile_form': profile_form,
+        })
 

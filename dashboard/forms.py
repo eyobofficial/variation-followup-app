@@ -21,6 +21,16 @@ class SignupForm(UserCreationForm):
     email = forms.CharField(max_length=100)
     contractor = forms.ModelChoiceField(queryset=Contractor.objects.filter(is_active=True))
 
+class UserAccountForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name', 'email',]
+
+class UserProfileForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ('title', 'bio')
+
 class ProjectForm(forms.ModelForm):
     class Meta:
         model = Project

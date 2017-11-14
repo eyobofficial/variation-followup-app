@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block page_name %}
+User Profile &nbsp;<span class="fa fa-angle-right"></span>&nbsp; Update
+{% endblock page_name %}
+
+{% block content %}
+{% include 'partials/messages.html' %}
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header" data-background-color="purple">
+                <h4 class="title">Edit Profile</h4>
+                <p class="category">Complete your profile</p>
+            </div>
+            <div class="card-content">
+                <form method="POST">
+                {% csrf_token %}
+                {{ account_form|crispy }}
+                {{ profile_form|crispy }}
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary pull-right">Update Profile</button>
+                </div>                 
+                <div class="clearfix"></div>
+                </form>
+            </div><!-- /.card-content -->
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card card-profile">
+            <div class="card-avatar">
+                <a href="#">
+                    <img class="img" src="{% static 'assets/img/faces/default-avatar.png' %}"/>
+                </a>
+            </div>
+
+            <div class="content">
+                <h6 class="category text-gray">{{ user.profile.title }}</h6>
+                <h4 class="card-title">{{ user.get_full_name|title }}</h4>
+                <p class="card-content">
+                    {{ user.profile.bio }}
+                </p>
+                <a href="mailto:{{ user.email }}" class="btn btn-primary btn-round">Email</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
