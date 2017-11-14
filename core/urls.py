@@ -22,6 +22,7 @@ from django.contrib.auth import views as auth_views
 from django.contrib import admin
 
 from dashboard import views as dashboard_views
+from pages import views as pages_views
 
 urlpatterns = [
     # Login to account URL mapper
@@ -37,7 +38,7 @@ urlpatterns = [
     url(r'^dashboard/', include('dashboard.urls')),
 
     # Pages app mapper
-    url(r'^pages/', include('pages.urls')),
+    url(r'^$', pages_views.index, name='landing-page'),
 
     # Admin site mapper
     url(r'^admin/', admin.site.urls),

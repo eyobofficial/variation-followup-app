@@ -32,21 +32,23 @@
   <body>
     <!-- navbar-->
     <header class="header">
-      <nav class="navbar navbar-expand-lg fixed-top"><a href="index.html" class="navbar-brand">Orit Construction</a>
+      <nav class="navbar navbar-expand-lg fixed-top"><a href="{% url 'landing-page' %}" class="navbar-brand">Orit Construction</a>
         <button type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler navbar-toggler-right"><span></span><span></span><span></span></button>
         <div id="navbarSupportedContent" class="collapse navbar-collapse">
           <ul class="navbar-nav ml-auto align-items-start align-items-lg-center">
             <li class="nav-item"><a href="#about-us" class="nav-link link-scroll">About Us</a></li>
             <li class="nav-item"><a href="#features" class="nav-link link-scroll">Features</a></li>
-            <li class="nav-item"><a href="#testimonials" class="nav-link link-scroll">Testimonials</a></li>
-            <li class="nav-item"><a href="text.html" class="nav-link">Text Page</a></li>
+            <li class="nav-item"><a href="#contact-us" class="nav-link">Contact Us</a></li>
           </ul>
           <div class="navbar-text">   
             <!-- Button trigger modal--><a href="#" data-toggle="modal" data-target="#exampleModal" class="btn btn-primary navbar-btn btn-shadow btn-gradient">Sign Up</a>
+            &nbsp;
+            <a href="#">Login</a>
           </div>
         </div>
       </nav>
     </header>
+
     <!-- Modal-->
     <div id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade">
       <div role="document" class="modal-dialog">
@@ -76,12 +78,13 @@
           </div>
         </div>
       </div>
-    </div>
+    </div><!-- /.modal -->
+
     <section id="hero" class="hero hero-home bg-gray">
       <div class="container">
         <div class="row d-flex">
           <div class="col-lg-6 text order-2 order-lg-1">
-            <h1>Landy &mdash; Bootstrap&nbsp;4 landing page</h1>
+            <h1>Easily Administer Your Construction Projects</h1>
             <p class="hero-text">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour</p>
             <div class="CTA"><a href="#features" class="btn btn-primary btn-shadow btn-gradient link-scroll">Discover More</a><a href="#" class="btn btn-outline-primary">Sign Up Now</a></div>
           </div>
@@ -256,7 +259,7 @@
     <footer class="main-footer">
       <div class="container">
         <div class="row">
-          <div class="col-lg-3 col-md-6"><a href="#" class="brand">Landy</a>
+          <div class="col-lg-3 col-md-6" id="contact-us"><a href="#" class="brand">Landy</a>
             <ul class="contact-info list-unstyled">
               <li><a href="mailto:sales@landy.com">Sales@Landy.com</a></li>
               <li><a href="tel:123456789">+00 123 456 789</a></li>
@@ -304,7 +307,7 @@
               <p>&copy; 2017 Landy.com. All rights reserved.                        </p>
             </div>
             <div class="col-md-5 text-right">
-              <p>Template By <a href="#">Bootstrapious</a></p>
+              <p>Developed by <a href="#">Eyob Tariku</a></p>
             </div>
           </div>
         </div>
