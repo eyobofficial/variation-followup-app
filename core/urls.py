@@ -36,6 +36,9 @@ urlpatterns = [
     # Dashboard app mapper
     url(r'^dashboard/', include('dashboard.urls')),
 
+    # Pages app mapper
+    url(r'^pages/', include('pages.urls')),
+
     # Admin site mapper
     url(r'^admin/', admin.site.urls),
 ]
