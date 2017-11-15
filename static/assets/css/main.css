@@ -16,6 +16,10 @@
     color: #999999;
 }
 
+a.text-fade {
+    color: #999999 !important;
+}
+
 .text-sm {
     font-size: 12px !important;
 }
@@ -293,8 +297,8 @@ dl > dd, .dd {
         padding-right: 4em;
     }
 
-    .login-form {
-        margin-top: 25%;
+    #login-form-container {
+        margin-top: 3%;
     }
 
     .signup-form {
@@ -314,4 +318,9 @@ legend {
 
 legend + div.form-group {
     margin-top: 0 !important;
+}
+
+/**************** Login and Sigup forms ********************/
+#login-form-container h1.brand {
+    color: #999;
 }

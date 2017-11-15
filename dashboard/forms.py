@@ -21,6 +21,10 @@ class SignupForm(UserCreationForm):
     email = forms.CharField(max_length=100)
     contractor = forms.ModelChoiceField(queryset=Contractor.objects.filter(is_active=True))
 
+    def __init__(self, *args, **kwargs):
+      super(SignupForm, self).__init__(*args, **kwargs)
+      self.fields['password1'].help_text = ''
+
 class UserAccountForm(forms.ModelForm):
     class Meta:
         model = User
