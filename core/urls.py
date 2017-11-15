@@ -29,7 +29,7 @@ urlpatterns = [
     url(r'^login/$', auth_views.LoginView.as_view(), name='login'),
 
     # Logout URL mapper
-    url(r'^logout/$', auth_views.logout_then_login, name='logout'),
+    url(r'^logout/$', auth_views.LogoutView.as_view(next_page='landing-page'), name='logout'),
 
     # User Registration URL mapper
     url(r'^signup/$', dashboard_views.signup, name='signup'),
