@@ -47,10 +47,24 @@ class Consultant(models.Model):
     def get_absolute_url(self):
         return reverse('dashboard:consultant-detail', kwargs={'pk': str(self.pk)})
 
+class Package(models.Model):
+    title = models.CharField('Package title', max_length=100)
+    level = models.IntegerField('Package level')
+    group = models.IntegerField()
+    duration = models.IntegerField('Package duration in days', null=True, blank=True)
+    max_projects = models.IntegerField('Max number of projects allowed', null=True, blank=True)
+    max_users = models.IntegerField('Max number of users allowed', null=True, blank=True)
+    price = models.DecimalField('Package price', decimal_places=2, max_digits=2, default=0.0)
+    description = models.TextField(null=True, blank=True)
+
+    def __str__(self):
+        return self.title 
+
 class Contractor(models.Model):
     """
     Represents a Contractor Firm
     """
+    package = models.ForeignKey(Package, on_delete=models.CASCADE)
     full_name = models.CharField(max_length=100, help_text='Official full name of the Contractor firm')
     short_name = models.CharField(max_length=100, help_text='Short common name of the Contractor firm')
     description = models.TextField(null=True, blank=True, help_text='Short description of the Contractor firm. (Optional)')

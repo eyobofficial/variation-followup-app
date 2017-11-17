@@ -15,7 +15,8 @@ from .models import (Profile,
                      InsuranceType, 
                      InsuranceStatus,
                      Bank,
-                     Insurance,)
+                     Insurance, 
+                     Package,)
 
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
@@ -26,6 +27,11 @@ class ProfileAdmin(admin.ModelAdmin):
 class ConsultantAdmin(admin.ModelAdmin):
     list_display = ('short_name', 'created_at', 'updated_at', 'id',)
     list_filter = ('created_at', 'updated_at',)
+
+@admin.register(Package)
+class PackageAdmin(admin.ModelAdmin):
+    list_display = ('title', 'level', 'group', 'price', 'id')
+    list_filter = ('group',)
 
 @admin.register(Contractor)
 class ContractorAdmin(admin.ModelAdmin):

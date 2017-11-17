@@ -73,8 +73,11 @@ def signup(request):
             user.first_name = first_name
             user.last_name = last_name
             user.email = email
-            user.is_active = False
             user.profile.contractor = form.cleaned_data['contractor']
+
+            if user.profile.contractor.package.group != 1:
+                user.is_active = False
+                
             user.save()
             messages.success(request, 'You have successfully created a new account.')
             messages.warning(request, 'Your account must be activated before you can start using it. Please contact the admin to quickly activate your account.')
