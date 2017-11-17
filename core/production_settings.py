@@ -25,7 +25,7 @@ SECRET_KEY = '0r_t)h0r_#3kl6*9-2rbi*!lsw-q8=&%jmp#b5qjvksyf0)2yt'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'oritconstruction.pythonanywhere.com',]
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'oritconstruction.pythonanywhere.com', 'www.oritconstruction.pythonanywhere.com',]
 
 
 # Application definition
