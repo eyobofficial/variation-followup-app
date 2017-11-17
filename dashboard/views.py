@@ -80,7 +80,10 @@ def signup(request):
                 
             user.save()
             messages.success(request, 'You have successfully created a new account.')
-            messages.warning(request, 'Your account must be activated before you can start using it. Please contact the admin to quickly activate your account.')
+
+            if user.is_active is False:
+                messages.warning(request, 'Your account must be activated before you can start using it. Please contact the admin to quickly activate your account.')
+                
             return redirect('dashboard:index')
     else:
         form = form_class()

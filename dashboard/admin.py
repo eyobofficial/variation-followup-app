@@ -18,6 +18,10 @@ from .models import (Profile,
                      Insurance, 
                      Package,)
 
+# Customize admin site header and title
+admin.site.site_header = 'Orit Construction Admin'
+admin.site.site_title = 'Orit Construction Admin'
+
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
     list_display = ('user', 'contractor',)
