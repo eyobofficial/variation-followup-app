@@ -115,6 +115,9 @@ class ProjectList(UserPassesTestMixin, generic.ListView):
         context['defect_project_list'] = Project.objects.filter(contractor=self.request.user.profile.contractor).filter(status__level=210)
         context['closed_project_list'] = Project.objects.filter(contractor=self.request.user.profile.contractor).filter(status__level=110)
         context['danger_project_list'] = Project.objects.filter(contractor=self.request.user.profile.contractor).filter(status__group=4)
+
+        context['pending_variation_list'] = Variation.objects.filter(project__contractor=self.request.user.profile.contractor).filter(status__group=2).order_by('-updated_at')
+        context['expired_insurance_list'] = Insurance.objects.filter(project__contractor=self.request.user.profile.contractor).filter(status__level=310)
         context['page_name'] = 'projects'
         return context
 
