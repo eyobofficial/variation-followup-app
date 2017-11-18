@@ -63,11 +63,11 @@
                 <i class="material-icons">date_range</i>
             </div>
             <div class="card-content">
-                <p class="category">Recieved Date</p>
-                {% if received_date %}
+                <p class="category">Received Date</p>
+                {% if variation.received_date %}
                 <h3 class="title">{{ variation.received_date|naturalday:'M d, y'|title }}</h3>
                 {% else %}
-                <h3 class="title text-fade">(None</h3>
+                <h3 class="title text-fade">(None)</h3>
                 {% endif %}
             </div>
            

@@ -29,7 +29,7 @@
             </div>
             <div class="card-content">
                 <p class="category">Approved/Rejected Date</p>
-                <h3 class="title">{{ variation.recieved_date|naturalday:'M d, y'|title }}</h3>
+                <h3 class="title">{{ variation.received_date|naturalday:'M d, y'|title }}</h3>
             </div>
            
         </div>
@@ -43,7 +43,7 @@
             </div>
             <div class="card-content">
                 <p class="category">Submitted Date</p>
-                <h3 class="title">{{ variation.recieved_date|naturalday:'M d, y'|title }}</h3>
+                <h3 class="title">{{ variation.received_date|naturalday:'M d, y'|title }}</h3>
             </div>
            
         </div>
@@ -57,8 +57,8 @@
                 <i class="material-icons">date_range</i>
             </div>
             <div class="card-content">
-                <p class="category">Recieved Date</p>
-                <h3 class="title">{{ variation.recieved_date|naturalday:'M d, y'|title }}</h3>
+                <p class="category">Received Date</p>
+                <h3 class="title">{{ variation.received_date|naturalday:'M d, y'|title }}</h3>
             </div>
            
         </div>
@@ -98,12 +98,12 @@
                     <dt>Project</dt>
                     <dd>{{ variation.project.full_name }}</dd>
 
-                    <dt>Recieved Date</dt>
-                    <dd>{{ variation.recieved_date|naturalday:'M d, Y'|title }}</dd>
+                    <dt>received Date</dt>
+                    <dd>{{ variation.received_date|naturalday:'M d, Y'|title }}</dd>
 
-                    <dt>Recieved Letter Ref. No.</dt>
-                    {% if variation.recieved_letter %}
-                    <dd>{{ variation.recieved_letter }}</dd>
+                    <dt>received Letter Ref. No.</dt>
+                    {% if variation.received_letter %}
+                    <dd>{{ variation.received_letter }}</dd>
                     {% else %}
                     <dd class="text-fade">(None)</dd>
                     {% endif %}

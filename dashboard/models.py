@@ -48,6 +48,9 @@ class Consultant(models.Model):
         return reverse('dashboard:consultant-detail', kwargs={'pk': str(self.pk)})
 
 class Package(models.Model):
+    """
+    Represents a Package available for subscription
+    """
     title = models.CharField('Package title', max_length=100)
     level = models.IntegerField('Package level')
     group = models.IntegerField()
@@ -77,6 +80,26 @@ class Contractor(models.Model):
 
     def get_absolute_url(self):
         return reverse('dashboard:contractor-detail', kwargs={'pk': str(self.pk)})
+
+class Subscription(models.Model):
+    """
+    Represents a Constractor subscription
+    """
+    contractor = models.OneToOneField(Contractor, on_delete=models.CASCADE)
+    package = models.ForeignKey(Package, null=True, on_delete=models.SET_NULL)
+    start_date = models.DateField('Start date for subscription')
+    end_date = models.DateField('Expriation date for subscription')
+    is_active = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def save(self, *args, **kwargs):
+        if self.package in None:
+            self.package = Package.objects.get(level=0)
+        super(Subscription, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return '{} Subscription'.format(self.contractor)
 
 class ConstructionType(models.Model):
     """

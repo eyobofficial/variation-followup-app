@@ -24,8 +24,12 @@
                 <i class="material-icons">date_range</i>
             </div>
             <div class="card-content">
-                <p class="category">Time Claim No.</p>
-                <h3 class="title">{{ claim.number|stringformat:'02d' }}</h3>
+                <p class="category">Submitted Amount</p>
+                {% if claim.submitted_amount %}
+                <h3 class="title">{{ claim.submitted_amount }}</h3>
+                {% else %}
+                <h3 class="title text-fade">(None)</h3>
+                {% endif %}
             </div>
            
         </div>
@@ -34,12 +38,17 @@
     <div class="col-lg-4 col-md-6 col-sm-6">
         <div class="card card-stats">
             <div class="card-header" data-background-color="green">
-                <i class="material-icons">cached</i>
+                <i class="material-icons">date_range</i>
             </div>
             <div class="card-content">
-                <p class="category">Last Updated</p>
-                <h3 class="title">{{ claim.updated_at|naturalday:'M d, Y'|title }}</h3>
+                <p class="category">Approved Amount</p>
+                {% if claim.approved_amount %}
+                <h3 class="title">{{ claim.approved_amount }}</h3>
+                {% else %}
+                <h3 class="title text-fade">(None)</h3>
+                {% endif %}
             </div>
+           
         </div>
     </div>
 </div><!-- /.row -->
