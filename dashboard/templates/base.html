@@ -155,8 +155,20 @@
 	                <nav class="pull-left">
 	                    <ul>
 	                        <li>
-	                            <a href="#">
-	                                Home
+	                            <a target="_blank" href="{% url 'landing-page' %}" title="Home">
+	                                Home <sup><span class="fa fa-external-link"></span></sup>
+	                            </a>
+	                        </li>
+
+	                        <li>
+	                            <a target="_blank" href="{% url 'landing-page' %}#about-us" title="About Us">
+	                                About <sup><span class="fa fa-external-link"></span></sup>
+	                            </a>
+	                        </li>
+
+	                        <li>
+	                            <a target="_blank" href="{% url 'landing-page' %}#contact-us" title="Contact Us">
+	                                Contact <sup><span class="fa fa-external-link"></span></sup>
 	                            </a>
 	                        </li>
 

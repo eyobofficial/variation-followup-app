@@ -3,7 +3,7 @@
 
 {% block page_name %} 
 {% if insurance %}
-{{ insurance.project.short_name}} &nbsp;<span class="fa fa-angle-right"></span>&nbsp; {{ insurance.insurance_type.title|title }} ({{ insurance.project.short_name }})
+{{ insurance.project.short_name}} &nbsp;<span class="fa fa-angle-right"></span>&nbsp; {{ insurance.insurance_type.title|title }} 
 {% else %}
 {{ project.short_name}} &nbsp;<span class="fa fa-angle-right"></span>&nbsp; Add New Insurance
 {% endif %}
@@ -41,11 +41,11 @@
         </button>
         
         {% if insurance %}
-        <a href="{% url 'dashboard:insurance-detail' insurance.id %}" title="Discard Chages" class="btn btn-danger pull-right">
+        <a href="{% url 'dashboard:project-detail' insurance.project.id %}" title="Discard Chages" class="btn btn-danger pull-right">
             Cancel
         </a>
         {% else %}
-        <a href="{% url 'dashboard:insurance-list' %}" title="Discard Chages" class="btn btn-danger pull-right">
+        <a href="{% url 'dashboard:project-detail' project.id %}" title="Discard Chages" class="btn btn-danger pull-right">
             Cancel
         </a>
         {% endif %}

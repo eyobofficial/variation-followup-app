@@ -75,7 +75,7 @@ def signup(request):
             user.email = email
             user.profile.contractor = form.cleaned_data['contractor']
 
-            if user.profile.contractor.package.level != 0:
+            if user.profile.contractor.package.group != 1:
                 user.is_active = False
                 
             user.save()
@@ -116,8 +116,8 @@ class ProjectList(UserPassesTestMixin, generic.ListView):
         context['closed_project_list'] = Project.objects.filter(contractor=self.request.user.profile.contractor).filter(status__level=110)
         context['danger_project_list'] = Project.objects.filter(contractor=self.request.user.profile.contractor).filter(status__group=4)
 
-        context['pending_variation_list'] = Variation.objects.filter(project__contractor=self.request.user.profile.contractor).filter(status__group=2).order_by('-updated_at').count()
-        context['expired_insurance_list'] = Insurance.objects.filter(project__contractor=self.request.user.profile.contractor).filter(status__level=310).count()
+        context['pending_variation_list'] = Variation.objects.filter(project__contractor=self.request.user.profile.contractor).filter(status__group=2).order_by('-updated_at')
+        context['expired_insurance_list'] = Insurance.objects.filter(project__contractor=self.request.user.profile.contractor).filter(status__level=310)
         context['page_name'] = 'projects'
         return context
 
@@ -248,7 +248,8 @@ class ProjectInsuranceCreate(UserPassesTestMixin, SuccessMessageMixin, CreateVie
     success_message = 'New insurance created successfully.'
 
     def test_func(self, *args, **kwargs):
-        return self.request.user.is_active and self.request.user.is_staff
+        project = get_object_or_404(Project, pk=self.kwargs['project_pk'])
+        return self.request.user.is_active and self.request.user.is_staff and project.contractor == self.request.user.profile.contractor
 
     def get_success_url(self, *args, **kwargs):
         return reverse('dashboard:project-insurance-detail', kwargs={'pk': str(self.object.id)})
@@ -273,7 +274,8 @@ class ProjectInsuranceUpdate(UserPassesTestMixin, SuccessMessageMixin, UpdateVie
     success_message = 'Insurance updated successfully.'
 
     def test_func(self, *args, **kwargs):
-        return self.request.user.is_active and self.request.user.is_staff
+        insurance = get_object_or_404(Insurance, pk=self.kwargs['pk'])
+        return self.request.user.is_active and self.request.user.is_staff and insurance.project.contractor == self.request.user.profile.contractor
 
     def get_success_url(self, *args, **kwargs):
         return reverse('dashboard:project-detail', kwargs={'pk': str(self.object.project.id)})
@@ -333,7 +335,8 @@ class ProjectVariationCreate(UserPassesTestMixin, SuccessMessageMixin, CreateVie
     success_message = 'New variation created successfully.'
 
     def test_func(self, *args, **kwargs):
-        return self.request.user.is_active and self.request.user.is_staff
+        project = get_object_or_404(Project, pk=self.kwargs['project_pk'])
+        return self.request.user.is_active and self.request.user.is_staff and project.contractor == self.request.user.profile.contractor
 
     def get_success_url(self, *args, **kwargs):
         return reverse('dashboard:project-variation-detail', kwargs={'pk': str(self.object.id)})
@@ -358,7 +361,8 @@ class ProjectVariationUpdate(UserPassesTestMixin, SuccessMessageMixin, UpdateVie
     success_message = 'Variation updated successfully.'
 
     def test_func(self, *args, **kwargs):
-        return self.request.user.is_active and self.request.user.is_staff
+        variation = get_object_or_404(Variation, pk=self.kwargs['pk'])
+        return self.request.user.is_active and variation.project.contractor == self.request.user.profile.contractor
 
     def get_success_url(self, *args, **kwargs):
         return reverse('dashboard:project-detail', kwargs={'pk': str(self.object.project.id)})
@@ -418,7 +422,8 @@ class ProjectClaimCreate(UserPassesTestMixin, SuccessMessageMixin, CreateView):
     success_message = 'Time claim created successfully.'
 
     def test_func(self, *args, **kwargs):
-        return self.request.user.is_active and self.request.user.is_staff
+        project = get_object_or_404(Project, pk=self.kwargs['project_pk'])
+        return self.request.user.is_active and self.request.user.is_staff and project.contractor == self.request.user.profile.contractor
 
     def get_success_url(self, *args, **kwargs):
         return reverse('dashboard:project-claim-detail', kwargs={'pk': str(self.object.id)})
@@ -443,7 +448,8 @@ class ProjectClaimUpdate(UserPassesTestMixin, SuccessMessageMixin, UpdateView):
     success_message = 'Time claim created successfully.'
 
     def test_func(self, *args, **kwargs):
-        return self.request.user.is_active and self.request.user.is_staff
+        claim = get_object_or_404(Claim, pk=self.kwargs['pk'])
+        return self.request.user.is_active and self.request.user.is_staff and claim.project.contractor == self.request.user.profile.contractor
 
     def get_success_url(self, *args, **kwargs):
         return reverse('dashboard:project-detail', kwargs={'pk': str(self.object.project.id)})
@@ -520,10 +526,15 @@ class VariationCreate(UserPassesTestMixin, SuccessMessageMixin, CreateView):
     form_class = VariationForm
     model = Variation
     # fields = ('project', 'title', 'work_order', 'activity', 'description', 'status', 'recieved_date', 'recieved_letter', 'submitted_amount', 'submitted_date', 'submitted_letter', 'approved_amount', 'approved_date', 'approved_letter', 'remark', )
-    success_message = 'Variation created successfully.'
+    success_message = 'Variation created successfully.'   
 
     def test_func(self, *args, **kwargs):
         return self.request.user.is_active and self.request.user.is_staff
+
+    def get_form_kwargs(self, *args, **kwargs):
+        kwargs = super(VariationCreate, self).get_form_kwargs(*args, **kwargs)
+        kwargs.update({'user': self.request.user})
+        return kwargs
 
     def get_context_data(self, *args, **kwargs):
         context = super(VariationCreate, self).get_context_data(*args, **kwargs)
@@ -542,6 +553,11 @@ class VariationUpdate(UserPassesTestMixin, SuccessMessageMixin, UpdateView):
     def test_func(self, *args, **kwargs):
         variation = get_object_or_404(Variation, pk=self.kwargs['pk'])
         return self.request.user.is_active and self.request.user.is_staff and variation.project.contractor == self.request.user.profile.contractor
+   
+    def get_form_kwargs(self, *args, **kwargs):
+        kwargs = super(VariationUpdate, self).get_form_kwargs(*args, **kwargs)
+        kwargs.update({'user': self.request.user})
+        return kwargs
 
     def get_context_data(self, *args, **kwargs):
         context = super(VariationUpdate, self).get_context_data(*args, **kwargs)
@@ -613,7 +629,13 @@ class ClaimCreate(UserPassesTestMixin, SuccessMessageMixin, CreateView):
     success_message = 'Time claim created successfully.'
 
     def test_func(self, *args, **kwargs):
-        return self.request.user.is_active and self.request.user.is_staff
+        project = Project.objects.get(pk=self.kwargs['project_pk'])
+        return self.request.user.is_active and self.request.user.is_staff and project.contractor == self.request.user.profile.contractor
+
+    def get_form_kwargs(self, *args, **kwargs):
+        kwargs = super(ClaimCreate, self).get_form_kwargs(*args, **kwargs)
+        kwargs.update({'user': self.request.user})
+        return kwargs
 
     def get_context_data(self, *args, **kwargs):
         context = super(ClaimCreate, self).get_context_data(*args, **kwargs)
@@ -631,6 +653,11 @@ class ClaimUpdate(UserPassesTestMixin, SuccessMessageMixin, UpdateView):
     def test_func(self, *args, **kwargs):
         claim = get_object_or_404(Claim, pk=self.kwargs['pk'])
         return self.request.user.is_active and self.request.user.is_staff and claim.project.contractor == self.request.user.profile.contractor
+    
+    def get_form_kwargs(self, *args, **kwargs):
+        kwargs = super(ClaimUpdate, self).get_form_kwargs(*args, **kwargs)
+        kwargs.update({'user': self.request.user})
+        return kwargs
 
     def get_context_data(self, *args, **kwargs):
         context = super(ClaimUpdate, self).get_context_data(*args, **kwargs)

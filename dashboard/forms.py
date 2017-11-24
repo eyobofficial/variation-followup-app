@@ -113,7 +113,9 @@ class VariationForm(forms.ModelForm):
                         'approved_letter',                        
                     ),
                 )
+        user = kwargs.pop('user')
         super(VariationForm, self).__init__(*args, **kwargs)
+        self.fields['project'].queryset = Project.objects.filter(contractor=user.profile.contractor)
 
 class ClaimForm(forms.ModelForm):
     class Meta:
@@ -155,7 +157,9 @@ class ClaimForm(forms.ModelForm):
                         'approved_letter',                        
                     ),
                 )
+        user = kwargs.pop('user')
         super(ClaimForm, self).__init__(*args, **kwargs)
+        self.fields['project'].queryset = Project.objects.filter(contractor=user.profile.contractor)
 
 class ProjectVariationForm(forms.ModelForm):
     class Meta:
