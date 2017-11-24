@@ -14,7 +14,11 @@
             </div>
             <div class="card-content">
                 <p class="category">Active Projects</p>
+                {% if active_project_list.count %}
                 <h3 class="title">{{ active_project_list.count }}</h3>
+                {% else %}
+                <h3 class="title text-fade">(None)</h3>
+                {% endif %}
             </div>
         </div>
     </div>
@@ -25,7 +29,11 @@
             </div>
             <div class="card-content">
                 <p class="category">Expired Insurance</p>
+                {% if expired_insurance_list %}
                 <h3 class="title">{{ expired_insurance_list }}</h3>
+                {% else %}
+                <h3 class="title text-fade">(None)</h3>
+                {% endif %}
             </div>
         </div>
     </div>
@@ -36,7 +44,11 @@
             </div>
             <div class="card-content">
                 <p class="category">Pending Variations</p>
+                {% if pending_variation_list %}
                 <h3 class="title">{{ pending_variation_list }}</h3>
+                {% else %}
+                <h3 class="title text-fade">(None)</h3>
+                {% endif %}
             </div>
         </div>
     </div>
