@@ -327,7 +327,7 @@ legend + div.form-group {
 
 /****************** Mobile Responsive Views **********/
 @media screen and (max-width: 480px){
-    .bottom-btn-container a.btn {
+    .bottom-btn-container .btn {
         display: block !important;
         width: 100%;
     }

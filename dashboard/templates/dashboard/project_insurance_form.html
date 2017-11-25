@@ -3,9 +3,11 @@
 
 {% block page_name %} 
 {% if insurance %}
-{{ insurance.project.short_name}} &nbsp;<span class="fa fa-angle-right"></span>&nbsp; {{ insurance.insurance_type.title|title }} 
+<span class="hidden-md hidden-lg">{{ insurance.insurance_type.short_title|title }}</span>
+<span class="hidden-sm hidden-xs">{{ insurance.project.short_name}} &nbsp;<span class="fa fa-angle-right"></span>&nbsp; {{ insurance.insurance_type.title|title }}</span> 
 {% else %}
-{{ project.short_name}} &nbsp;<span class="fa fa-angle-right"></span>&nbsp; Add New Insurance
+<span class="hidden-md hidden-lg">Add New Insurance</span>
+<span class="hidden-sm hidden-xs">{{ project.short_name}} &nbsp;<span class="fa fa-angle-right"></span>&nbsp; Add New Insurance</span>
 {% endif %}
 {% endblock page_name %}
 
@@ -19,7 +21,7 @@
                 {% else %}
                  <h4 class="title">New Insurance</h4>
                 {% endif %}
-                <p class="category">Description and summary of the insurance</p>
+                <p class="category hidden-xs hidden-sm">Description and summary of the insurance</p>
             </div>
             <div class="card-content">
                 <div class="row">
@@ -35,7 +37,7 @@
 </div><!-- /.row -->
 
 <div class="row">
-    <div class="col-sm-12">
+    <div class="col-sm-12 bottom-btn-container">
         <button type="submit" title="Save Changes" class="btn btn-primary">
             <span class="fa fa-edit"></span>&nbsp; Save 
         </button>
