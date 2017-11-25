@@ -263,6 +263,7 @@ class InsuranceType(models.Model):
     Represents an insurance bond type (Example: Advance bond guranttee, Performance bond guranttee)
     """
     title = models.CharField(max_length=100, help_text='Type of Insurance Bong Guranttee. Example: Advance bond guranttee, Performance bond guranttee etc..')
+    short_title = models.CharField(max_length=60, help_text='Shorter title for mobile responsive views')
     description = models.TextField(null=True, blank=True)
 
     def __str__(self):

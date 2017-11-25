@@ -137,8 +137,8 @@ dl > dd, .dd {
     color: #ccc !important;
 }
 
-/*************** Panel Sizing Styles ***************/
 @media only screen and (min-width: 480px) {
+    /*************** Panel Sizing Styles ***************/
     .card-xs .card-content {
         min-height: 120px;
     }
@@ -323,4 +323,12 @@ legend + div.form-group {
 /**************** Login and Sigup forms ********************/
 #login-form-container h1.brand {
     color: #999;
+}
+
+/****************** Mobile Responsive Views **********/
+@media screen and (max-width: 480px){
+    .bottom-btn-container a.btn {
+        display: block !important;
+        width: 100%;
+    }
 }

@@ -82,7 +82,7 @@ class ClaimAdmin(admin.ModelAdmin):
 
 @admin.register(InsuranceType)
 class InsuranceTypeAdmin(admin.ModelAdmin):
-    list_display = ('title', 'id')
+    list_display = ('title', 'short_title', 'id')
 
 @admin.register(InsuranceStatus)
 class InsuranceStatusAdmin(admin.ModelAdmin):

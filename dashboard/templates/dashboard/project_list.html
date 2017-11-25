@@ -1,11 +1,13 @@
 {% extends 'base.html' %}
 {% load humanize %}
 
-{% block page_name %} Welcome to Projects Dashboard{% endblock page_name %}
+{% block page_name %}
+<span class="hidden-md hidden-lg">Dashboard</span>
+<span class="hidden-sm hidden-xs">Welcome to Projects Dashboard</span>
+{% endblock page_name %}
 
 {% block content %}
 {% include 'partials/messages.html' %}
-
 <div class="row">
     <div class="col-lg-4 col-md-6 col-sm-6">
         <div class="card card-stats">
@@ -332,7 +334,7 @@
 
 {% if user.is_staff %}
 <div class="row">
-    <div class="col-sm-12">
+    <div class="col-sm-12 bottom-btn-container">
         <a href="{% url 'dashboard:project-create' %}" title="Add new project" class="btn btn-primary pull-right">
            <span class="fa fa-plus-circle"></span>&nbsp; Add 
         </a>
