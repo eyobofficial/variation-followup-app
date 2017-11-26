@@ -3,9 +3,12 @@
 
 {% block page_name %} 
 {% if project %}
-{{ project.full_name }} 
+<span class="hidden-md hidden-lg">{{ project.short_name}} &nbsp;<span class="fa fa-angle-right"></span>&nbsp; Update</span>
+<span class="hidden-sm hidden-xs">{{ project.full_name}} &nbsp;<span class="fa fa-angle-right"></span>&nbsp; Update</span>
 {% else %}
-Add New Construction Project
+Add New Project
+<span class="hidden-md hidden-lg">Add New Project</span>
+<span class="hidden-sm hidden-xs">Add New Construction Project</span>
 {% endif %}
 {% endblock page_name %}
 
@@ -19,7 +22,7 @@ Add New Construction Project
                 {% else %}
                  <h4 class="title">New Project</h4>
                 {% endif %}
-                <p class="category">Description and summary of the construction project</p>
+                <p class="category hidden-xs">Description and summary of the construction project</p>
             </div>
             <div class="card-content">
                 <div class="row">
@@ -35,7 +38,7 @@ Add New Construction Project
 </div><!-- /.row -->
 
 <div class="row">
-    <div class="col-sm-12">
+    <div class="col-sm-12 bottom-btn-container">
         <button type="submit" title="Save Changes" class="btn btn-primary">
             <span class="fa fa-edit"></span>&nbsp; Save 
         </button>
