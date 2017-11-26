@@ -102,16 +102,16 @@ class ProjectList(UserPassesTestMixin, generic.ListView):
     List all projects for a particular contractor
     """
     model = Project
-    context_object_name = 'active_project_list'
 
     def test_func(self, *args, **kwargs):
         return self.request.user.is_active
 
     def get_queryset(self, *args, **kwargs):
-        return Project.objects.filter(contractor=self.request.user.profile.contractor).filter(status__level=10)
+        return Project.objects.filter(contractor=self.request.user.profile.contractor)
 
     def get_context_data(self, *args, **kwargs):
         context = super(ProjectList, self).get_context_data(*args, **kwargs)
+        context['active_project_list'] = Project.objects.filter(contractor=self.request.user.profile.contractor).filter(status__level=10)
         context['defect_project_list'] = Project.objects.filter(contractor=self.request.user.profile.contractor).filter(status__level=210)
         context['closed_project_list'] = Project.objects.filter(contractor=self.request.user.profile.contractor).filter(status__level=110)
         context['danger_project_list'] = Project.objects.filter(contractor=self.request.user.profile.contractor).filter(status__group=4)
