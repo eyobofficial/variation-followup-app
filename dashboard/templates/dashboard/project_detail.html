@@ -214,17 +214,25 @@
                       <div class="nav-tabs-navigation pull-right">
                           <div class="nav-tabs-wrapper">
                               <ul class="nav nav-tabs text-right" data-tabs="tabs">
-
-                                  <li class="active">
-                                      <a href="#active-insurances" data-toggle="tab">
-                                          Active
+                                  <li class="active hidden-xs hidden-sm hidden-md hidden-lg">
+                                      <a href="#all-insurances" data-toggle="tab">
+                                          All
                                           {% if insurance_list.count > 0 %}
                                           <span class="notification notification-info">{{ insurance_list.count }}</span>
                                           {% endif %}
                                       <div class="ripple-container"></div></a>
                                   </li>
 
-                                  <li class="">
+                                  <li class="active hidden-xs">
+                                      <a href="#active-insurances" data-toggle="tab">
+                                          Active
+                                          {% if active_insurance_list.count > 0 %}
+                                          <span class="notification notification-info">{{ active_insurance_list.count }}</span>
+                                          {% endif %}
+                                      <div class="ripple-container"></div></a>
+                                  </li>
+
+                                  <li class="hidden-xs">
                                       <a href="#expired-insurances" data-toggle="tab">
                                           Expired
                                           {% if expired_insurance_list.count > 0 %}
@@ -233,7 +241,7 @@
                                       <div class="ripple-container"></div></a>
                                   </li>
 
-                                  <li class="">
+                                  <li class="hidden-xs">
                                       <a href="#closed-insurances" data-toggle="tab">
                                           Closed
                                           {% if closed_insurance_list.count > 0 %}
@@ -250,7 +258,7 @@
 
           <div class="card-content">
               <div class="tab-content">
-                  <div class="tab-pane active" id="active-insurances">
+                  <div class="tab-pane active hidden-sm hidden-md hidden-lg" id="all-insurances">
                       {% if insurance_list %}
                       <div class="table-responsive">
                           <table class="table">
@@ -303,9 +311,64 @@
                           <i class="material-icons">info_outline</i>&nbsp; No Record of Active Insurance
                       </div>
                       {% endif %}
-                  </div><!-- /.tab-pane #all-insurance (Active Insurance) -->
+                  </div><!-- /.tab-pane #all-insurance -->
 
-                  <div class="tab-pane" id="expired-insurances">
+                  <div class="tab-pane active hidden-xs" id="active-insurances">
+                      {% if active_insurance_list %}
+                      <div class="table-responsive">
+                          <table class="table">
+                              <thead class="text-primary">
+                                  <th>Insurance Type</th>
+                                  <th>Status</th>
+                                  <th>Expiration Date</th>
+                                  <th>Days Left</th>
+                              </thead>
+                              <tbody>
+                              {% for insurance in active_insurance_list %}
+                                  <tr>
+                                      <td><a href="{% url 'dashboard:project-insurance-detail' insurance.id %}">{{ insurance.insurance_type.title|title }}</a></td>
+
+                                      {% if insurance.status.level >= 0 and insurance.status.level < 100 %}
+                                      <td>
+                                         <span class="label label-info">
+                                             <span class="fa fa-info-circle"></span> {{ insurance.status.title|title }}
+                                         </span>
+                                      </td>
+                                      {% elif insurance.status.level >= 100 and insurance.status.level < 200 %}
+                                      <td>
+                                         <span class="label label-success">
+                                             <span class="fa fa-check-square-o"></span> {{ insurance.status.title|title }}
+                                         </span>
+                                      </td>
+                                      {% elif insurance.status.level >= 200 and insurance.status.level < 300 %}
+                                      <td>
+                                         <span class="label label-warning">
+                                             <span class="fa fa-warning"></span> {{ insurance.status.title|title }}
+                                         </span>
+                                      </td>
+                                      {% else %}
+                                      <td>
+                                         <span class="label label-danger">
+                                             <span class="fa fa-warning"></span> {{ insurance.status.title|title }}
+                                         </span>
+                                      </td>
+                                      {% endif %}
+
+                                      <td>{{ insurance.end_date|naturalday:'M d, Y'|title }}</td>
+                                      <td>{{ insurance.get_days_left }}</td>
+                                  </tr>
+                              {% endfor %}
+                              </tbody>
+                          </table>
+                      </div><!-- /.table-responsive -->
+                      {% else %}
+                      <div class="banner banner-default push-up-md">
+                          <i class="material-icons">info_outline</i>&nbsp; No Record of Active Insurance
+                      </div>
+                      {% endif %}
+                  </div><!-- /.tab-pane #active-insurance -->
+
+                  <div class="tab-pane hidden-xs" id="expired-insurances">
                       {% if expired_insurance_list %}
                       <div class="table-responsive">
                           <table class="table">
@@ -358,7 +421,7 @@
                       {% endif %}
                   </div><!-- /.tab-pane #expired-insurances -->
 
-                  <div class="tab-pane" id="closed-insurances">
+                  <div class="tab-pane hidden-xs" id="closed-insurances">
                       {% if closed_insurance_list %}
                       <div class="table-responsive">
                           <table class="table">
@@ -439,7 +502,7 @@
                       <div class="nav-tabs-navigation pull-right">
                           <div class="nav-tabs-wrapper">
                               <ul class="nav nav-tabs text-right" data-tabs="tabs">
-                                  <li class="active">
+                                  <li class="active hidden-xs">
                                       <a href="#all-claims" data-toggle="tab">
                                           All
                                           {% if all_claim_list.count > 0 %}
@@ -448,7 +511,7 @@
                                       <div class="ripple-container"></div></a>
                                   </li>
 
-                                  <li class="">
+                                  <li class="hidden-xs">
                                       <a href="#submitted-claims" data-toggle="tab">
                                           Submitted
                                           {% if submitted_claim_list.count > 0 %}
@@ -457,7 +520,7 @@
                                       <div class="ripple-container"></div></a>
                                   </li>
 
-                                  <li class="">
+                                  <li class="hidden-xs">
                                       <a href="#approved-claims" data-toggle="tab">
                                           Approved/Rejected
                                           {% if approved_claim_list.count > 0 %}
@@ -661,7 +724,7 @@
                       <div class="nav-tabs-navigation pull-right">
                           <div class="nav-tabs-wrapper">
                               <ul class="nav nav-tabs text-right" data-tabs="tabs">
-                                  <li class="active">
+                                  <li class="active hidden-xs">
                                       <a href="#all-variations" data-toggle="tab">
                                           All
                                           {% if all_variation_list.count > 0 %}
@@ -669,7 +732,7 @@
                                           {% endif %}
                                       <div class="ripple-container"></div></a>
                                   </li>
-                                  <li class="">
+                                  <li class="hidden-xs">
                                       <a href="#under-prep-variations" data-toggle="tab">
                                           Under Prep.
                                           {% if under_prep_variation_list.count > 0 %}
@@ -678,7 +741,7 @@
                                       <div class="ripple-container"></div></a>
                                   </li>
 
-                                  <li class="">
+                                  <li class="hidden-xs">
                                       <a href="#pending-variations" data-toggle="tab">
                                           Pending
                                           {% if pending_variation_list.count > 0 %}
@@ -687,7 +750,7 @@
                                       <div class="ripple-container"></div></a>
                                   </li>
 
-                                  <li class="">
+                                  <li class="hidden-xs">
                                       <a href="#submitted-variations" data-toggle="tab">
                                           Submitted
                                           {% if submitted_variation_list.count > 0 %}
@@ -696,7 +759,7 @@
                                       <div class="ripple-container"></div></a>
                                   </li>
 
-                                  <li class="">
+                                  <li class="hidden-xs">
                                       <a href="#approved-variations" data-toggle="tab">
                                           Approved/Rejected
                                           {% if approved_variation_list.count > 0 %}

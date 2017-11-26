@@ -3,9 +3,15 @@
 
 {% block page_name %} 
 {% if variation %}
-{{ variation.project.short_name}} &nbsp;<span class="fa fa-angle-right"></span>&nbsp; {{ variation.title|title }} &nbsp;<span class="fa fa-angle-right"></span>&nbsp; Update
+<span class="hidden-md hidden-lg">{{ variation.title|title }}</span>
+<span class="hidden-sm hidden-xs"> 
+   {{ variation.project.short_name}} &nbsp;<span class="fa fa-angle-right"></span>&nbsp; {{ variation.title|title }} &nbsp;<span class="fa fa-angle-right"></span>&nbsp; Update
+</span> 
 {% else %}
-{{ project.short_name}} &nbsp;<span class="fa fa-angle-right"></span>&nbsp; Add Variation
+<span class="hidden-md hidden-lg">Add New Variation</span>
+<span class="hidden-sm hidden-xs"> 
+   {{ project.short_name}} &nbsp;<span class="fa fa-angle-right"></span>&nbsp; Add Variation
+</span> 
 {% endif %}
 {% endblock page_name %}
 
@@ -19,7 +25,7 @@
                 {% else %}
                  <h4 class="title">New Variation</h4>
                 {% endif %}
-                <p class="category">Description and summary of the variation works</p>
+                <p class="category hidden-xs hidden-sm">Description and summary of the variation works</p>
             </div>
             <div class="card-content">
                 <div class="row">
@@ -35,11 +41,10 @@
 </div><!-- /.row -->
 
 <div class="row">
-    <div class="col-sm-12">
+    <div class="col-sm-12 bottom-btn-container">
         <button type="submit" title="Save Changes" class="btn btn-primary">
             <span class="fa fa-edit"></span>&nbsp; Save 
-        </button>
-        
+        </button>       
         {% if variation %}
         <a href="{% url 'dashboard:project-detail' variation.project.id %}" title="Discard Chages" class="btn btn-danger pull-right">
             Cancel

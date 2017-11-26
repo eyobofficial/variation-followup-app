@@ -158,8 +158,9 @@ class ProjectDetail(UserPassesTestMixin, generic.DetailView):
         context['submitted_claim_list'] = Claim.objects.filter(project=self.kwargs['pk']).filter(status__group=3).order_by('-updated_at')
         context['approved_claim_list'] = Claim.objects.filter(project=self.kwargs['pk']).filter(status__group=4).order_by('-updated_at')
         context['page_name'] = 'projects'
-
-        context['insurance_list'] = Insurance.objects.filter(project=self.kwargs['pk']).filter(status__level=10).order_by('end_date')
+        
+        context['insurance_list'] = Insurance.objects.filter(project=self.kwargs['pk']).order_by('end_date')
+        context['active_insurance_list'] = Insurance.objects.filter(project=self.kwargs['pk']).filter(status__level=10).order_by('end_date')
         context['expired_insurance_list'] = Insurance.objects.filter(project=self.kwargs['pk']).filter(status__level=310).order_by('end_date')
         context['closed_insurance_list'] = Insurance.objects.filter(project=self.kwargs['pk']).filter(status__level=110).order_by('end_date')
         return context
