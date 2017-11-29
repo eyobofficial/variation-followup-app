@@ -53,7 +53,7 @@
         <div class="card">
             <div class="card-header" data-background-color="purple">
                 <h4 class="title">Insurance Summary</h4>
-                <p class="category">Description and summary of the insurance</p>
+                <p class="category hidden-xs hidden-sm">Description and summary of the insurance</p>
             </div>
             <div class="card-content">
                 <dl>
@@ -126,7 +126,7 @@
         <div class="card card-sm">
             <div class="card-header" data-background-color="purple">
                 <h4 class="title">Remarks/Notes</h4>
-                <p class="category">Special remarks and notes regarding the current insurance</p>
+                <p class="category hidden-xs hidden-sm">Special remarks and notes regarding the current insurance</p>
             </div>
             <div class="card-content">
             {% if insurance.description %}
@@ -141,15 +141,13 @@
 
 {% if user.is_staff %}
 <div class="row">
-    <div class="col-sm-12">
+    <div class="col-sm-12 bottom-btn-container">
+        <a href="{% url 'dashboard:insurance-list' %}" title="Back to insurance list" class="btn btn-primary">
+           <span class="fa fa-angle-left"></span>&nbsp; Back 
+        </a> &nbsp;
         <a href="{% url 'dashboard:insurance-update' insurance.id %}" title="Update insurance" class="btn btn-primary">
            <span class="fa fa-edit"></span>&nbsp; Update 
         </a>
-        &nbsp;&nbsp;
-        <a href="{% url 'dashboard:insurance-list' %}" title="Back to insurance list" class="btn btn-primary">
-           <span class="fa fa-angle-left"></span>&nbsp; Back 
-        </a>
-
         <a href="{% url 'dashboard:insurance-delete' insurance.id %}" title="Delete insurance" class="btn btn-danger pull-right">
            Delete  
         </a>

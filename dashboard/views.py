@@ -33,6 +33,7 @@ from .forms import (SignupForm,
                     ProjectForm,
                     ProjectVariationForm,
                     ProjectClaimForm, 
+                    InsuranceForm,  
                     VariationForm,
                     ClaimForm,)
 
@@ -726,11 +727,16 @@ class InsuranceCreate(UserPassesTestMixin, SuccessMessageMixin, CreateView):
     Create a new insurance record
     """
     model = Insurance
-    fields = ('project', 'insurance_type', 'bank', 'amount', 'start_date', 'period', 'status', 'issue_number', 'description',)
+    form_class = InsuranceForm
     success_message = 'New insurance record created successfully.'
 
     def test_func(self, *args, **kwargs):
         return self.request.user.is_active and self.request.user.is_staff
+
+    def get_form_kwargs(self, *args, **kwargs):
+        kwargs = super(InsuranceCreate, self).get_form_kwargs(*args, **kwargs)
+        kwargs.update({'user': self.request.user})
+        return kwargs
 
     def get_context_data(self, *args, **kwargs):
         context = super(InsuranceCreate, self).get_context_data(*args, **kwargs)
@@ -742,12 +748,17 @@ class InsuranceUpdate(UserPassesTestMixin, SuccessMessageMixin, UpdateView):
     Update a particular insurance record
     """
     model = Insurance
-    fields = ('project', 'insurance_type', 'bank', 'amount', 'start_date', 'period', 'status', 'issue_number', 'description',)
+    form_class = InsuranceForm
     success_message = 'Insurance record updated successfully.'
 
     def test_func(self, *args, **kwargs):
         insurance = get_object_or_404(Insurance, pk=self.kwargs['pk'])
         return self.request.user.is_active and self.request.user.is_staff and insurance.project.contractor == self.request.user.profile.contractor
+    
+    def get_form_kwargs(self, *args, **kwargs):
+        kwargs = super(InsuranceUpdate, self).get_form_kwargs(*args, **kwargs)
+        kwargs.update({'user': self.request.user})
+        return kwargs
 
     def get_context_data(self, *args, **kwargs):
         context = super(InsuranceUpdate, self).get_context_data(*args, **kwargs)

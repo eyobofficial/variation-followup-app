@@ -12,6 +12,7 @@ from django.contrib.auth.models import User
 from .models import (Profile, 
                      Contractor, 
                      Project, 
+                     Insurance, 
                      Variation, 
                      Claim,)
 
@@ -64,6 +65,16 @@ class ProjectForm(forms.ModelForm):
                     ),
                 )
         super(ProjectForm, self).__init__(*args, **kwargs)
+
+class InsuranceForm(forms.ModelForm):
+    class Meta:
+        model = Insurance 
+        fields = ('project', 'insurance_type', 'bank', 'amount', 'start_date', 'period', 'status', 'issue_number', 'description',)
+
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user')
+        super(InsuranceForm, self).__init__(*args, **kwargs)
+        self.fields['project'].queryset = Project.objects.filter(contractor=user.profile.contractor)
 
 class VariationForm(forms.ModelForm):
     class Meta:
