@@ -75,6 +75,7 @@ def signup(request):
             user.last_name = last_name
             user.email = email
             user.profile.contractor = form.cleaned_data['contractor']
+            user.profile.title = form.cleaned_data['title']
 
             if user.profile.contractor.package.group != 1:
                 user.is_active = False
@@ -485,6 +486,107 @@ class ProjectClaimDelete(UserPassesTestMixin, DeleteView):
         context['page_name'] = 'projects'
         return context
 
+class InsuranceList(UserPassesTestMixin, generic.ListView):
+    """
+    Lists all insurance for all project
+    """
+    model = Insurance
+
+    def test_func(self, *args, **kwargs):
+        return self.request.user.is_active
+
+    def get_queryset(self, *args, **kwargs):
+        return Insurance.objects.filter(project__contractor=self.request.user.profile.contractor).exclude(status__level=110).order_by('end_date')
+    
+    def get_context_data(self, *args, **kwargs):
+        context = super(InsuranceList, self).get_context_data(*args, **kwargs)
+        context['active_insurance_list'] = Insurance.objects.filter(project__contractor=self.request.user.profile.contractor).filter(status__level=10).order_by('end_date')
+        context['expired_insurance_list'] = Insurance.objects.filter(project__contractor=self.request.user.profile.contractor).filter(status__level=310)
+        context['closed_insurance_list'] = Insurance.objects.filter(project__contractor=self.request.user.profile.contractor).filter(status__level=110)
+        context['page_name'] = 'insurances'
+        # Run update status code
+        update_ins_status()        
+        return context
+
+class InsuranceDetail(UserPassesTestMixin, generic.DetailView):
+    """
+    Detail for a particular insurance record
+    """
+    model = Insurance
+
+    def test_func(self, *args, **kwargs):
+        insurance = get_object_or_404(Insurance, pk=self.kwargs['pk'])
+        return self.request.user.is_active and insurance.project.contractor == self.request.user.profile.contractor
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(InsuranceDetail, self).get_context_data(*args, **kwargs)
+        context['page_name'] = 'insurances'
+        return context
+
+class InsuranceCreate(UserPassesTestMixin, SuccessMessageMixin, CreateView):
+    """
+    Create a new insurance record
+    """
+    model = Insurance
+    form_class = InsuranceForm
+    success_message = 'New insurance record created successfully.'
+
+    def test_func(self, *args, **kwargs):
+        return self.request.user.is_active and self.request.user.is_staff
+
+    def get_form_kwargs(self, *args, **kwargs):
+        kwargs = super(InsuranceCreate, self).get_form_kwargs(*args, **kwargs)
+        kwargs.update({'user': self.request.user})
+        return kwargs
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(InsuranceCreate, self).get_context_data(*args, **kwargs)
+        context['page_name'] = 'insurances'
+        return context
+
+class InsuranceUpdate(UserPassesTestMixin, SuccessMessageMixin, UpdateView):
+    """
+    Update a particular insurance record
+    """
+    model = Insurance
+    form_class = InsuranceForm
+    success_message = 'Insurance record updated successfully.'
+
+    def test_func(self, *args, **kwargs):
+        insurance = get_object_or_404(Insurance, pk=self.kwargs['pk'])
+        return self.request.user.is_active and self.request.user.is_staff and insurance.project.contractor == self.request.user.profile.contractor
+    
+    def get_form_kwargs(self, *args, **kwargs):
+        kwargs = super(InsuranceUpdate, self).get_form_kwargs(*args, **kwargs)
+        kwargs.update({'user': self.request.user})
+        return kwargs
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(InsuranceUpdate, self).get_context_data(*args, **kwargs)
+        context['page_name'] = 'insurances'
+        return context
+
+class InsuranceDelete(UserPassesTestMixin, DeleteView):
+    """
+    Delete a particular insurance record
+    """
+    model = Insurance
+    success_url = '/dashboard/insurances/'
+    success_message = 'Insurance record deleted successfully.'
+
+    def test_func(self, *args, **kwargs):
+        insurance = get_object_or_404(Insurance, pk=self.kwargs['pk'])
+        return self.request.user.is_active and self.request.user.is_staff and insurance.project.contractor == self.request.user.profile.contractor
+
+    def delete(self, *args, **kwargs):
+        messages.success(self.request, self.success_message)
+        return super(InsuranceDelete, self).delete(*args, **kwargs)
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(InsuranceDelete, self).get_context_data(*args, **kwargs)
+        context['page_name'] = 'insurances'
+        return context
+
 class VariationList(UserPassesTestMixin, generic.ListView):
     """
     Lists all variations for all project
@@ -685,105 +787,6 @@ class ClaimDelete(UserPassesTestMixin, DeleteView):
     def get_context_data(self, *args, **kwargs):
         context = super(ClaimDelete, self).get_context_data(*args, **kwargs)
         context['page_name'] = 'time claims'
-        return context
-
-class InsuranceList(UserPassesTestMixin, generic.ListView):
-    """
-    Lists all insurance for all project
-    """
-    model = Insurance
-
-    def test_func(self, *args, **kwargs):
-        return self.request.user.is_active
-
-    def get_queryset(self, *args, **kwargs):
-        return Insurance.objects.filter(project__contractor=self.request.user.profile.contractor).filter(status__level=10).order_by('end_date')
-
-    def get_context_data(self, *args, **kwargs):
-        context = super(InsuranceList, self).get_context_data(*args, **kwargs)
-        context['expired_insurance_list'] = Insurance.objects.filter(project__contractor=self.request.user.profile.contractor).filter(status__level=310)
-        context['page_name'] = 'insurances'
-        # Run update status code
-        update_ins_status()        
-        return context
-
-class InsuranceDetail(UserPassesTestMixin, generic.DetailView):
-    """
-    Detail for a particular insurance record
-    """
-    model = Insurance
-
-    def test_func(self, *args, **kwargs):
-        insurance = get_object_or_404(Insurance, pk=self.kwargs['pk'])
-        return self.request.user.is_active and insurance.project.contractor == self.request.user.profile.contractor
-
-    def get_context_data(self, *args, **kwargs):
-        context = super(InsuranceDetail, self).get_context_data(*args, **kwargs)
-        context['page_name'] = 'insurances'
-        return context
-
-class InsuranceCreate(UserPassesTestMixin, SuccessMessageMixin, CreateView):
-    """
-    Create a new insurance record
-    """
-    model = Insurance
-    form_class = InsuranceForm
-    success_message = 'New insurance record created successfully.'
-
-    def test_func(self, *args, **kwargs):
-        return self.request.user.is_active and self.request.user.is_staff
-
-    def get_form_kwargs(self, *args, **kwargs):
-        kwargs = super(InsuranceCreate, self).get_form_kwargs(*args, **kwargs)
-        kwargs.update({'user': self.request.user})
-        return kwargs
-
-    def get_context_data(self, *args, **kwargs):
-        context = super(InsuranceCreate, self).get_context_data(*args, **kwargs)
-        context['page_name'] = 'insurances'
-        return context
-
-class InsuranceUpdate(UserPassesTestMixin, SuccessMessageMixin, UpdateView):
-    """
-    Update a particular insurance record
-    """
-    model = Insurance
-    form_class = InsuranceForm
-    success_message = 'Insurance record updated successfully.'
-
-    def test_func(self, *args, **kwargs):
-        insurance = get_object_or_404(Insurance, pk=self.kwargs['pk'])
-        return self.request.user.is_active and self.request.user.is_staff and insurance.project.contractor == self.request.user.profile.contractor
-    
-    def get_form_kwargs(self, *args, **kwargs):
-        kwargs = super(InsuranceUpdate, self).get_form_kwargs(*args, **kwargs)
-        kwargs.update({'user': self.request.user})
-        return kwargs
-
-    def get_context_data(self, *args, **kwargs):
-        context = super(InsuranceUpdate, self).get_context_data(*args, **kwargs)
-        context['page_name'] = 'insurances'
-        return context
-
-class InsuranceDelete(UserPassesTestMixin, DeleteView):
-    """
-    Delete a particular insurance record
-    """
-    model = Insurance
-    success_url = '/dashboard/insurances/'
-    success_message = 'Insurance record deleted successfully.'
-
-    def test_func(self, *args, **kwargs):
-        insurance = get_object_or_404(Insurance, pk=self.kwargs['pk'])
-        return self.request.user.is_active and self.request.user.is_staff and insurance.project.contractor == self.request.user.profile.contractor
-
-    def delete(self, *args, **kwargs):
-        messages.success(self.request, self.success_message)
-        return super(InsuranceDelete, self).delete(*args, **kwargs)
-
-    def get_context_data(self, *args, **kwargs):
-        context = super(InsuranceDelete, self).get_context_data(*args, **kwargs)
-        context['page_name'] = 'insurances'
         return context
 
 @login_required

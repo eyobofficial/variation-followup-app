@@ -20,6 +20,7 @@ class SignupForm(UserCreationForm):
     first_name = forms.CharField(max_length=100)
     last_name = forms.CharField(max_length=100)
     email = forms.CharField(max_length=100)
+    title = forms.CharField(label='Job Title', max_length=100)
     contractor = forms.ModelChoiceField(queryset=Contractor.objects.filter(is_active=True))
 
     def __init__(self, *args, **kwargs):

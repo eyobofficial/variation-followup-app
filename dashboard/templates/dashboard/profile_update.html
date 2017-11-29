@@ -38,11 +38,22 @@ User Profile &nbsp;<span class="fa fa-angle-right"></span>&nbsp; Update
             </div>
 
             <div class="content">
+                {% if user.profile.title %}
                 <h6 class="category text-gray">{{ user.profile.title }}</h6>
+                {% else %}
+                <h6 class="category text-gray">(No Job Title)</h6>
+                {% endif %}
                 <h4 class="card-title">{{ user.get_full_name|title }}</h4>
+
+                {% if user.profile.bio %}
                 <p class="card-content">
                     {{ user.profile.bio }}
                 </p>
+                {% else %}
+                <p class="card-content">
+                    <span class="text-gray small">(No User Bio)</span>
+                </p>
+                {% endif %}
                 <a href="mailto:{{ user.email }}" class="btn btn-primary btn-round">Email</a>
             </div>
         </div>
