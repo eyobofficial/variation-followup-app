@@ -75,13 +75,14 @@
 
 <!-- TIME CLAIMS -->
 <div class="row">
-  <div class="col-sm-12">
+  <!-- FOR LARGER SCREENS -->
+  <div class="col-sm-12 hidden-xs hidden-sm">
       <div class="card card-nav-tabs card-lg">
           <div class="card-header clearfix" data-background-color="purple">
               <div class="row">
                   <div class="col-sm-5">
                       <h4 class="title">Time Claims</h4>
-                      <p class="category hidden-xs hidden-sm">List of all time extension claims status for all projects</p>
+                      <p class="category hidden-xs">List of all time extension claims status for all projects</p>
                   </div>
 
                   <div class="col-sm-7">
@@ -288,11 +289,72 @@
           </div><!-- /.card-content -->
       </div><!-- /.card -->
   </div>
+
+  <!-- FOR SMALLER AND MOBILE SCREENS -->
+  <div class="col-sm-12 hidden-md hidden-lg">
+      <div class="card card-nav-tabs card-lg">
+          <div class="card-header clearfix" data-background-color="purple">
+              <h4 class="title">All Time Claims</h4>
+              <p class="category hidden-xs">List of all time extension claims status for all projects</p>
+          </div><!-- /.card-header -->
+
+          <div class="card-content">
+              {% if claim_list %}
+               <div class="table-responsive">
+                   <table class="table">
+                       <thead class="text-primary">
+                           <th>Title</th>
+                           <th>Project</th>
+                           <th>Status</th>
+                       </thead>
+                       <tbody>
+                       {% for claim in claim_list %}
+                           <tr>
+                               <td><a href="{% url 'dashboard:claim-detail' claim.id %}">{{ claim.title|title }}</a></td>
+                               <td>{{ claim.project.short_name }}</td>
+                               {% if claim.status.level >= 0 and claim.status.level < 100 %}
+                               <td>
+                                  <span class="label label-info">
+                                      <span class="fa fa-info-circle"></span> {{ claim.status.title|title }}
+                                  </span>
+                               </td>
+                               {% elif claim.status.level >= 100 and claim.status.level < 200 %}
+                               <td>
+                                  <span class="label label-success">
+                                      <span class="fa fa-check-square-o"></span> {{ claim.status.title|title }}
+                                  </span>
+                               </td>
+                               {% elif claim.status.level >= 200 and claim.status.level < 300 %}
+                               <td>
+                                  <span class="label label-warning">
+                                      <span class="fa fa-warning"></span> {{ claim.status.title|title }}
+                                  </span>
+                               </td>
+                               {% else %}
+                               <td>
+                                  <span class="label label-danger">
+                                      <span class="fa fa-warning"></span> {{ claim.status.title|title }}
+                                  </span>
+                               </td>
+                               {% endif %}
+                           </tr>
+                       {% endfor %}
+                       </tbody>
+                   </table>
+               </div><!-- /.table-responsive -->
+              {% else %}
+              <div class="banner banner-default">
+                  <i class="material-icons">info_outline</i>&nbsp; NOT AVAILABLE
+              </div>
+              {% endif %}
+          </div><!-- /.card-content -->
+      </div><!-- /.card -->
+  </div>
 </div><!-- /.row -->
 
 {% if user.is_staff %}
 <div class="row">
-    <div class="col-sm-12">
+    <div class="col-sm-12 bottom-btn-container">
         <a href="{% url 'dashboard:claim-create' %}" title="Add new time claim" class="btn btn-primary pull-right">
            <span class="fa fa-plus-circle"></span>&nbsp; Add 
         </a>

@@ -689,7 +689,7 @@ class ClaimDelete(UserPassesTestMixin, DeleteView):
 
 class InsuranceList(UserPassesTestMixin, generic.ListView):
     """
-    Lists all time claims for all project
+    Lists all insurance for all project
     """
     model = Insurance
 
