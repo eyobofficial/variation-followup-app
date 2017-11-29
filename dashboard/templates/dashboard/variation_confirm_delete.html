@@ -8,7 +8,7 @@
         <div class="card card-sm">
             <div class="card-header" data-background-color="purple">
                 <h4 class="title"><span class="fa fa-warning"></span> Delete Variation</h4>
-                <p class="category">Deleting a variation record is irreversable</p>
+                <p class="category hidden-xs">Deleting a variation record is irreversable</p>
             </div>
             <div class="card-content">
               <p class="text-center margin-up-md"><span class=" text-danger fa fa-warning"></span> You are about to delete this variation. Please confirm to proceed with this action.</p>
@@ -18,7 +18,7 @@
 </div><!-- /.row -->
 
 <div class="row">
-    <div class="col-sm-12">
+    <div class="col-sm-12 bottom-btn-container">
         <form method="POST">
             {% csrf_token %}
             <button type="submit" title="Confirm and Delete" class="btn btn-primary"> Delete </button>

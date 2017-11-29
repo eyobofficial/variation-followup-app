@@ -98,7 +98,7 @@
         <div class="card">
             <div class="card-header" data-background-color="purple">
                 <h4 class="title">Variation Summary</h4>
-                <p class="category">Description and summary of the variation works</p>
+                <p class="category hidden-xs">Description and summary of the variation works</p>
             </div>
             <div class="card-content">
                 <dl>
@@ -162,7 +162,7 @@
         <div class="card">
             <div class="card-header" data-background-color="purple">
                 <h4 class="title">Submitted vs Approved</h3>
-                <p class="category">Are you looking for more components? Please check our Premium Version of Material Dashboard.</p>
+                <p class="category hidden-xs">Compare and contrast approved variations against the submitted variations.</p>
             </div>
             <div class="card-content">
                 <div class="table-responsive table-upgrade">
@@ -239,7 +239,7 @@
         <div class="card card-sm">
             <div class="card-header" data-background-color="purple">
                 <h4 class="title">Remarks/Notes</h4>
-                <p class="category">Description and summary of the variation works</p>
+                <p class="category hidden-xs">Description and summary of the variation works</p>
             </div>
             <div class="card-content">
             {% if variation.remark %}
@@ -254,15 +254,13 @@
 
 {% if user.is_staff %}
 <div class="row">
-    <div class="col-sm-12">
+    <div class="col-sm-12 bottom-btn-container">
+        <a href="{% url 'dashboard:variation-list' %}" title="Back to variation list" class="btn btn-primary">
+           <span class="fa fa-angle-left"></span>&nbsp; Back 
+        </a>&nbsp;
         <a href="{% url 'dashboard:variation-update' variation.id %}" title="Update Variation" class="btn btn-primary">
            <span class="fa fa-edit"></span>&nbsp; Update 
         </a>
-        &nbsp;&nbsp;
-        <a href="{% url 'dashboard:variation-list' %}" title="Back to variation list" class="btn btn-primary">
-           <span class="fa fa-angle-left"></span>&nbsp; Back 
-        </a>
-
         <a href="{% url 'dashboard:variation-delete' variation.id %}" title="Delete Variation" class="btn btn-danger pull-right">
            Delete  
         </a>

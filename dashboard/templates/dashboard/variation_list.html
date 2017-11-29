@@ -77,12 +77,13 @@
 
 <!-- VARIATION LIST -->
 <div class="row">
-  <div class="col-sm-12">
+  <!-- FOR LARGER SCREENS -->
+  <div class="col-sm-12 hidden-xs hidden-sm">
       <div class="card card-nav-tabs card-lg">
           <div class="card-header clearfix" data-background-color="purple">
               <div class="row">
                   <div class="col-sm-5">
-                      <h4 class="title">Variations</h4>
+                      <h4 class="title">All Variations</h4>
                       <p class="category hidden-xs hidden-sm">List of all variation status for all projects</p>
                   </div>
 
@@ -460,11 +461,81 @@
           </div><!-- /.card-content -->
       </div>
   </div>
+  
+  <!-- FOR SMALLER AND MOBILE SCREENS -->
+  <div class="col-sm-12 hidden-md hidden-lg">
+      <div class="card card-nav-tabs card-lg">
+          <div class="card-header clearfix" data-background-color="purple">
+              <h4 class="title">All Variations</h4>
+              <p class="category hidden-xs">List of all variation status for all projects</p>
+          </div><!-- /.card-header -->
+
+          <div class="card-content">
+              {% if variation_list %}
+              <div class="table-responsive">
+                  <table class="table">
+                      <thead class="text-primary">
+                          <th>Title</th>
+                          <th>Project</th>
+                          <th>Work Order</th>
+                          <th>Status</th>
+                      </thead>
+                      <tbody>
+                      {% for variation in variation_list %}
+                          <tr>
+                              <td><a href="{% url 'dashboard:variation-detail' variation.id %}">{{ variation.title|title }}</a></td>
+
+                              <td>{{ variation.project.short_name }}</td>
+
+                              {% if variation.work_order %}
+                              <td>{{ variation.work_order }}</td>
+                              {% else %}
+                              <td class="text-fade">(None)</td>
+                              {% endif %}
+
+                              {% if variation.status.level >= 0 and variation.status.level < 100 %}
+                              <td>
+                                 <span class="label label-info">
+                                     <span class="fa fa-info-circle"></span> {{ variation.status.title|title }}
+                                 </span>
+                              </td>
+                              {% elif variation.status.level >= 100 and variation.status.level < 200 %}
+                              <td>
+                                 <span class="label label-success">
+                                     <span class="fa fa-check-square-o"></span> {{ variation.status.title|title }}
+                                 </span>
+                              </td>
+                              {% elif variation.status.level >= 200 and variation.status.level < 300 %}
+                              <td>
+                                 <span class="label label-warning">
+                                     <span class="fa fa-warning"></span> {{ variation.status.title|title }}
+                                 </span>
+                              </td>
+                              {% else %}
+                              <td>
+                                 <span class="label label-danger">
+                                     <span class="fa fa-warning"></span> {{ variation.status.title|title }}
+                                 </span>
+                              </td>
+                              {% endif %}
+                          </tr>
+                      {% endfor %}
+                      </tbody>
+                  </table>
+              </div><!-- /.table-responsive -->
+              {% else %}
+              <div class="banner banner-default push-up-md">
+                  <i class="material-icons">info_outline</i>&nbsp; NOT AVAILABLE
+              </div>
+              {% endif %}
+          </div><!-- /.card-content -->
+      </div>
+  </div>
 </div><!-- /.row -->
 
 {% if user.is_staff %}
 <div class="row">
-    <div class="col-sm-12">
+    <div class="col-sm-12 bottom-btn-container">
         <a href="{% url 'dashboard:variation-create' %}" title="Add New Variation" class="btn btn-primary pull-right">
            <span class="fa fa-plus-circle"></span>&nbsp; Add 
         </a>
