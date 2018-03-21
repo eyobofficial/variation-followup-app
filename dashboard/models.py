@@ -16,7 +16,10 @@ class Profile(models.Model):
     )
     title = models.CharField('Job Title', max_length=100)
     bio = models.TextField('Short Bio', null=True, blank=True)
-    thumbanil = models.ImageField(upload_to='user/thumbanils/')
+    thumbanil = models.ImageField(
+        upload_to='user/thumbanils/',
+        null=True, blank=True,
+    )
 
 
 @receiver(post_save, sender=User)
