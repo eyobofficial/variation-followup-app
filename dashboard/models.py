@@ -79,12 +79,12 @@ class Package(models.Model):
         null=True,
         blank=True,
     )
-    max_projects = models.PostiveIntegerField(
+    max_projects = models.PositiveIntegerField(
         'Max number of projects allowed',
         null=True,
         blank=True,
     )
-    max_users = models.PostiveIntegerField(
+    max_users = models.PositiveIntegerField(
         'Max number of users allowed',
         null=True,
         blank=True,
