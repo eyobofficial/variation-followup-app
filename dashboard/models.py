@@ -6,16 +6,24 @@ from django.dispatch import receiver
 
 import datetime
 
+
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    contractor = models.ForeignKey('Contractor', null=True, on_delete=models.SET_NULL)
+    contractor = models.ForeignKey(
+        'Contractor',
+        null=True,
+        on_delete=models.SET_NULL,
+    )
     title = models.CharField('Job Title', max_length=100)
     bio = models.TextField('Short Bio', null=True, blank=True)
+    thumbanil = models.ImageField(upload_to='user/thumbanils/')
+
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
         Profile.objects.create(user=instance)
+
 
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
@@ -31,21 +39,33 @@ def save_user_profile(sender, instance, **kwargs):
 #  warning            200 - 299
 #  error              300 - 399
 
+
 class Consultant(models.Model):
     """
     Represents a Consultant Firm
     """
-    full_name = models.CharField(max_length=100, help_text='Official full name of the Consultant firm')
-    short_name = models.CharField(max_length=100, help_text='Short common name of the Consultant firm')
-    description = models.TextField(null=True, blank=True, help_text='Short description of the Consultant firm. (Optional)')
+    full_name = models.CharField(
+        max_length=100,
+        help_text='Official full name of the Consultant firm',
+    )
+    short_name = models.CharField(
+        max_length=100,
+        help_text='Short common name of the Consultant firm',
+    )
+    description = models.TextField(
+        null=True,
+        blank=True,
+        help_text='Short description of the Consultant firm. (Optional)',
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.short_name 
+        return self.short_name
 
     def get_absolute_url(self):
-        return reverse('dashboard:consultant-detail', kwargs={'pk': str(self.pk)})
+        return reverse('dashboard:consultant-detail', args=[str(self.pk)])
+
 
 class Package(models.Model):
     """
@@ -54,32 +74,61 @@ class Package(models.Model):
     title = models.CharField('Package title', max_length=100)
     level = models.IntegerField('Package level')
     group = models.IntegerField()
-    duration = models.IntegerField('Package duration in days', null=True, blank=True)
-    max_projects = models.IntegerField('Max number of projects allowed', null=True, blank=True)
-    max_users = models.IntegerField('Max number of users allowed', null=True, blank=True)
-    price = models.DecimalField('Package price', decimal_places=2, max_digits=2, default=0.0)
+    duration = models.IntegerField(
+        'Package duration in days',
+        null=True,
+        blank=True,
+    )
+    max_projects = models.PostiveIntegerField(
+        'Max number of projects allowed',
+        null=True,
+        blank=True,
+    )
+    max_users = models.PostiveIntegerField(
+        'Max number of users allowed',
+        null=True,
+        blank=True,
+    )
+    price = models.DecimalField(
+        'Package price',
+        decimal_places=2,
+        max_digits=2,
+        default=0.0,
+    )
     description = models.TextField(null=True, blank=True)
 
     def __str__(self):
-        return self.title 
+        return self.title
+
 
 class Contractor(models.Model):
     """
     Represents a Contractor Firm
     """
     package = models.ForeignKey(Package, on_delete=models.CASCADE)
-    full_name = models.CharField(max_length=100, help_text='Official full name of the Contractor firm')
-    short_name = models.CharField(max_length=100, help_text='Short common name of the Contractor firm')
-    description = models.TextField(null=True, blank=True, help_text='Short description of the Contractor firm. (Optional)')
+    full_name = models.CharField(
+        max_length=100,
+        help_text='Official full name of the Contractor firm',
+    )
+    short_name = models.CharField(
+        max_length=100,
+        help_text='Short common name of the Contractor firm',
+    )
+    description = models.TextField(
+        null=True,
+        blank=True,
+        help_text='Short description of the Contractor firm. (Optional)',
+    )
     is_active = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    def __str__(self):
-        return self.short_name 
-
     def get_absolute_url(self):
-        return reverse('dashboard:contractor-detail', kwargs={'pk': str(self.pk)})
+        return reverse('dashboard:contractor-detail', args=[str(self.pk)])
+
+    def __str__(self):
+        return self.short_name
+
 
 class Subscription(models.Model):
     """
@@ -101,15 +150,20 @@ class Subscription(models.Model):
     def __str__(self):
         return '{} Subscription'.format(self.contractor)
 
+
 class ConstructionType(models.Model):
     """
     Represents a construction type (Example: Building, Road, Irrigation)
     """
-    title = models.CharField(max_length=100, help_text='Type of the construction. Example: Building, Highway etc..')
+    title = models.CharField(
+        max_length=100,
+        help_text='Type of the construction. Example: Building, Highway etc..',
+    )
     description = models.TextField(null=True, blank=True)
 
     def __str__(self):
-        return self.title 
+        return self.title
+
 
 class ProjectStatus(models.Model):
     """
@@ -118,14 +172,23 @@ class ProjectStatus(models.Model):
     title = models.CharField(max_length=30)
     short_title = models.CharField(max_length=30)
     level = models.IntegerField()
-    group = models.IntegerField(null=True, blank=True, help_text='To group different status with different level, give them the same group number')
-    description = models.TextField(null=True, blank=True, help_text='Short description of the status meaning. (Optional)')
+    group = models.IntegerField(
+        null=True,
+        blank=True,
+        help_text='To group different status with different level, give them the same group number',
+    )
+    description = models.TextField(
+        null=True,
+        blank=True,
+        help_text='Short description of the status meaning. (Optional)',
+    )
 
     class Meta:
         verbose_name_plural = 'Project Status'
 
     def __str__(self):
-        return self.title 
+        return self.title
+
 
 class Project(models.Model):
     """
