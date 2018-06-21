@@ -26,9 +26,18 @@
             </div><!-- /.card-content -->
 
             <div class="card-footer">
-                <p class="small text-center">Don't have an account yet? <a href="{% url 'signup' %}">Register Now</a></p>
+                <p class="small text-center">Don't have an account yet? <a href="{% url 'signup' %}">Register Now</a> | <a href="#demo-section">Demo</a>
+                </p>
             </div>
         </div><!-- /.card -->
+
+        <div id="demo-section">
+            <p>For <strong>Demo</strong>:</p>
+            <ul>
+                <li>username: <strong>testuser</strong></li>
+                <li>password: <strong>test1234</strong></li>
+            </ul>
+        </div>
     </div>
 </div><!-- /.row --> 
 {% endblock wrapper %}
